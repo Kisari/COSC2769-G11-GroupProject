@@ -17,7 +17,13 @@ const orderDetailsSchema = mongoose.Schema({
         default: 1
     },
 
-    subTotal: Number
+    subTotal: Number,
+
+    productStatus: {
+        type: String,
+        enum: ['delivering', 'shipped', 'accepted', 'rejected'],
+        default: 'delivering'
+    }
 })
 
 // Create the order details model

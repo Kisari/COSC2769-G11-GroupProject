@@ -8,7 +8,9 @@ const categorySchema = new mongoose.Schema({
         unique: true
     },
 
-    description: String
+    description: String,
+    
+    attributes: []
 })
 
 // Create the category model

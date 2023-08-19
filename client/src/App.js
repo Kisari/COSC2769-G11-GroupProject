@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login.js";
+import Signup from "./pages/Signup.js";
 
 function App() {
   //Chỉ có 1 Router và 1 Routes
@@ -11,6 +12,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/login" element={<Login />}></Route>
+          <Route exact path="/signup" element={<Signup />}></Route>
         </Routes>
       </Router>
     </>

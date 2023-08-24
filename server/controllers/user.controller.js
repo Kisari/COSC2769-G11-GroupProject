@@ -1,5 +1,5 @@
 const Customer = require("../models/customer.model")
-const Seller = require("../models/customer.model")
+const Seller = require("../models/seller.model")
 //signup for customer account
 exports.customerSignUp = async(req,res,next) => {
     try{

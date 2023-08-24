@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("../helpers/mongoose");
 import {userSchema} from "./user.model";
 
 const customerSchema = mongoose.Schema({

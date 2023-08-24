@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("../helpers/mongoose");
 
 // Define the category schema
 const categorySchema = new mongoose.Schema({

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("../helpers/mongoose");
 
 // Define the order details schema
 const orderDetailsSchema = mongoose.Schema({

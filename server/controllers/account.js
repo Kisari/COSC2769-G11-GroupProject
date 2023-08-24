@@ -45,8 +45,7 @@ exports.sellerSignUp = async(req,res,next) => {
             username : req.body.username,
             password : req.body.password,
             email : req.body.email,
-            phoneNumber : req.body.phoneNumber,
-            status: req.body.status,
+            phoneNumber : req.body.phoneNumber
         };
 
         //Create the seller in database

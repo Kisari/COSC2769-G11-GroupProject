@@ -1,8 +1,11 @@
-const {mongoose} = require("../helpers/mongoose");
-import {userSchema} from "./user.model";
+const {mongoose} = require("mongoose");
+const userModel = require("./user.model");
 
 const customerSchema = mongoose.Schema({
-    type: 'customer',
+    type: {
+        type: String,
+        default: 'customer',
+    },
     name: {
         type: String,
         trim: true,
@@ -14,7 +17,7 @@ const customerSchema = mongoose.Schema({
 });
 
 // Customer schema is a child of User schema
-customerSchema.extends(userSchema);
+customerSchema.add(userModel.userSchema);
 
 // Create the customer model
 const Customer = mongoose.model("Customer", customerSchema);

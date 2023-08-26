@@ -1,6 +1,6 @@
 const Customer = require("../models/customer.model");
 const Seller = require("../models/seller.model");
-const { User } = require("../models/user.model");
+const userModel = require("../models/user.model");
 const {createToken} = require('../helpers/user.helper');
 
 
@@ -19,11 +19,12 @@ module.exports.signupPost = async (req, res) => {
     const { email, password, type } = req.body;
 
     try {
+        let user = null;
         if (type === 'customer') {
-            const user = await Customer.create({ email, phone, password, address, name });
+            user = await Customer.create({ email, phone, password, address, name });
         }
         else if (type === 'seller') {
-            const user = await Seller.create({ email, password, address, businessName });
+            user = await Seller.create({ email, password, address, businessName });
         }
         else {
             throw new Error('Invalid role');
@@ -47,7 +48,7 @@ module.exports.loginPost = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await User.login(email, password);
+        const user = await userModel.User.login(email, password);
         const token = createToken(user._id);
         res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 });
         // Success status 

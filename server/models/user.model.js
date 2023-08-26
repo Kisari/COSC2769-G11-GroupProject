@@ -27,6 +27,12 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password required'],
         minlength: [6, 'Minimum password length is 6 characters'],
     },
+    
+    type: {
+        type: String,
+        enum: ['seller', 'customer'],
+        required: true
+    }
 });
 
 // Confirm user saved 

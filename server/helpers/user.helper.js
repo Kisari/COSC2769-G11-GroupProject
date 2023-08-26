@@ -46,7 +46,7 @@ const login = async(email, password) => {
 // Authentication using jwt 
 const maxAge = 24 * 60 * 60 
 const createToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_KEY, {
+    return jwt.sign({id}, "group11secret", {
         // Token expires in 1 day 
         expiresIn: maxAge
     });

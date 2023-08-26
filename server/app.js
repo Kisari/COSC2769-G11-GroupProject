@@ -2,10 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 
 const app = express();
+
+// middleware
+app.use(cookieParser());
 
 app.use(cors());
 

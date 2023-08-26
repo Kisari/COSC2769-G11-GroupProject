@@ -1,122 +1,69 @@
-const Customer = require("../models/customer.model")
-const Seller = require("../models/customer.model")
-//signup for customer account
-exports.customerSignUp = async(req,res,next) => {
-    try{
-        //check if username already exists
-        const exist = await Customer.findOne({username: req.body.username});
+const Customer = require("../models/customer.model");
+const Seller = require("../models/seller.model");
+const { User } = require("../models/user.model");
+const {createToken} = require('../helpers/user.helper');
 
-        if(exist){
-            //Này chuyển render sau 
-            console.log("Username already exists");
-        }
-        var data = {
-            username : req.body.username,
-            password : req.body.password,
-            email : req.body.email,
-            phoneNumber : req.body.phoneNumber,
-            birthDate : req.body.birthDate
-        };
 
-        //Create the customer in database
-        Customer.create(data);
-
-    }
-    catch(error){
-        console.log(error);
-    res.status(400).json({
-      success: false,
-      message: error.message
-    })
-    next(error);
-    }
+// Login / Sign up controllers
+// Render pages 
+module.exports.signupGet = (req, res) => {
+    res.render('signup');
 }
-//signup for seller account
-exports.sellerSignUp = async(req,res,next) => {
-    try{
-        //check if name already exists
-        const exist = await Seller.findOne({username: req.body.businessName});
 
-        if(exist){
-            //Này chuyển render sau 
-            console.log("Username already exists");
+module.exports.loginGet = (req, res) => {
+    res.render('login');
+}
+
+// Sign up
+module.exports.signupPost = async (req, res) => {
+    const { email, password, type } = req.body;
+
+    try {
+        if (type === 'customer') {
+            const user = await Customer.create({ email, phone, password, address, name });
         }
-        var data = {
-            businessName : req.body.businessName,
-            password : req.body.password,
-            email : req.body.email,
-            phoneNumber : req.body.phoneNumber
-        };
+        else if (type === 'seller') {
+            const user = await Seller.create({ email, password, address, businessName });
+        }
+        else {
+            throw new Error('Invalid role');
+        }
 
-        //Create the seller in database
-        Seller.create(data);
-
+        // Create token for the user
+        const token = createToken(user._id);
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 });
+        // Success status
+        res.status(200).json({ user: user._id });
     }
-    catch(error){
-        console.log(error);
-    res.status(400).json({
-      success: false,
-      message: error.message
-    })
-    next(error);
+    catch (err) {
+        // Error handling 
+
+        res.status(400).json();
     }
 }
 
-exports.logInCustomer = async(req,res,next) => {
-    try{
-        var data = {
-            username : req.body.username,
-            password : req.body.password
-        }
-        //verify the user  
+// Login
+module.exports.loginPost = async (req, res) => {
+    const { email, password } = req.body;
 
-        //check username
-        const username = await Customer.findOne({username : data.username})
-        if(!username){
-            //render later
-            console.log("Username wrong");
-        }
-
-        //check password
-
-        //will change with hashing later
-        if(username.password != data.password){
-            console.log("Password wrong");
-        }
-
-        //generate token afterwards
-    }   
-    catch(error){
-        next(new ErrorResponse(`Cannot log in, check your credentials`, 400));
+    try {
+        const user = await User.login(email, password);
+        const token = createToken(user._id);
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 });
+        // Success status 
+        res.status(200).json({ user: user._id });
     }
-}
+    catch (err) {
+        // Error handling
 
-exports.sellerLogIn = async(req,res,next) => {
-    try{
-        var data = {
-            username : req.body.username,
-            password : req.body.password
-        }
-        //verify the user  
-
-        //check username
-        const username = await Seller.findOne({username : data.username})
-        if(!username){
-            //render later
-            console.log("Username wrong");
-        }
-
-        //check password
-
-        //will change with hashing later
-        if(username.password != data.password){
-            //render later
-            console.log("Password wrong");
-        }
-
-        //generate token afterwards
-    }   
-    catch(error){
-        next(new ErrorResponse(`Cannot log in, check your credentials`, 400));
+        res.status(400).json({ errors });
     }
+
+};
+
+// Logout
+module.exports.logoutGet = (req, res) => {
+    // Delete token
+    res.cookie('jwt', '', { maxAge: 1 });
+    res.redirect('/login');
 }

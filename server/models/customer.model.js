@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 import {userSchema} from "./user.model";
 
 const customerSchema = mongoose.Schema({
-    user: {
-        type: userSchema,
-        required: true
-    },
+    type: 'customer',
     name: {
         type: String,
         trim: true,
@@ -14,13 +11,10 @@ const customerSchema = mongoose.Schema({
 
     address: String,
 
-    birthdate: {
-        type: Date,
-        validate: {
-            validator: (doc) => new Date(doc).getTime < Date.now()
-        }
-    }
-})
+});
+
+// Customer schema is a child of User schema
+customerSchema.extends(userSchema);
 
 // Create the customer model
 const Customer = mongoose.model("Customer", customerSchema);

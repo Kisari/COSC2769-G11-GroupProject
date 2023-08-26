@@ -5,10 +5,10 @@ const userRouter = express.Router();
 
 
 // Login/Sign up route
-userRouter.get('/api/user/signup', userController.signupGet);
-userRouter.post('/api/user/signup', userController.signupPost);
-userRouter.get('/login', userController.loginGet);
-userRouter.post('/login', userController.loginPost);
-userRouter.get('/logout', userController.logoutGet);
+userRouter.get('/api/v1/user/signup', userController.signupGet);
+userRouter.post('/api/v1/user/signup', userController.signupPost);
+userRouter.get('/api/v1/user/login', userController.loginGet);
+userRouter.post('/api/v1/user/login', userController.loginPost);
+userRouter.get('/api/v1/user/logout', userController.logoutGet);
 
 module.exports = userRouter;

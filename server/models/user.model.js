@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const userHelper = require('../helpers/user.helper');
+// const bcrypt = require('bcrypt');
 
 // Define the user schema
 const userSchema = new mongoose.Schema({
@@ -35,16 +36,15 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+
 // Confirm user saved 
 userSchema.post('save', userHelper.confirmNewUser);
 
 // Hash password
-userSchema.pre('save', userHelper.hashPassword);
+userSchema.pre('save', async function(next) {
+    await userHelper.hashPassword(this, next);
+});
 
-// Set the login function as static
-userSchema.statics = {
-    login: userHelper.login,
-};
 
 const User = mongoose.model('User', userSchema);
 

@@ -2,10 +2,6 @@ const {mongoose} = require("mongoose");
 const userModel = require('./user.model');
 
 const sellerSchema = mongoose.Schema({
-    type: {
-        type: String,
-        default: 'seller',
-    },
     businessName: {
         type: String,
         trim: true,

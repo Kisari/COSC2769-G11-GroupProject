@@ -1,12 +1,8 @@
-const {mongoose} = require("mongoose");
+const mongoose = require("mongoose");
 const userModel = require("./user.model");
 
 const customerSchema = mongoose.Schema({
-    type: {
-        type: String,
-        default: 'customer',
-    },
-    name: {
+    userName: {
         type: String,
         trim: true,
         required: [true, 'Name required'],

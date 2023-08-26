@@ -4,7 +4,7 @@ const {mongoose} = require("../helpers/mongoose");
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'Product name required'],
     },
 
     productImgUrl: String,

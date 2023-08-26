@@ -4,7 +4,7 @@ const {mongoose} = require("../helpers/mongoose");
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'Category name required'],
         unique: true
     },
 

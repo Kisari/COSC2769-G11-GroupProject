@@ -9,7 +9,7 @@ const customerSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        required: true,
+        required: [true, 'Name required'],
     },
 
     address: String,

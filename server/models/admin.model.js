@@ -9,7 +9,7 @@ const adminSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        required: true,
+        required: [true, 'Name required']
     },
 
 })

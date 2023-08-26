@@ -4,8 +4,16 @@ const {mongoose} = require("../helpers/mongoose");
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
+        required: [true, 'Email required'],
         unique: true,
+        lowercase: true,
+        validate: {
+            // Validate email pattern 
+            validator: function(val) {
+                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val);
+            },
+            message: 'Please enter a valid email'
+        }
     },
 
     phone: {
@@ -15,7 +23,8 @@ const userSchema = new mongoose.Schema({
     
     password: {
         type: String,
-        required: true
+        required: [true, 'Password required'],
+        minlength: [6, 'Minimum password length is 6 characters'],
     },
 
     role: {

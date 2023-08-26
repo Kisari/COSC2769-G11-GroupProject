@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const userHelper = require('../helpers/user.helper');
 
 // Define the user schema
 const userSchema = new mongoose.Schema({
@@ -17,12 +18,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
-    role: {
-        type: String,
-        enum: ["customer", "admin", "seller"],
-        default: "customer"
-    }
 });
 
-module.exports = userSchema;
+// Confirm user saved 
+userSchema.post('save', userHelper.confirmNewUser);
+
+// Hash password
+userSchema.pre('save', userHelper.hashPassword);
+
+// Set the login function as static
+userSchema.statics = {
+    login: userHelper.login,
+};
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = {User, userSchema};

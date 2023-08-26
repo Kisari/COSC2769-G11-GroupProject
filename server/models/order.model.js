@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("../helpers/mongoose");
 
 // Define the order schema
 const orderSchema = new mongoose.Schema({

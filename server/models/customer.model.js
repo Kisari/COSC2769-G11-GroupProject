@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("../helpers/mongoose");
 import {userSchema} from "./user.model";
 
 const customerSchema = mongoose.Schema({
@@ -9,7 +9,7 @@ const customerSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true,
-        required: true,
+        required: [true, 'Name required'],
     },
 
     address: String,

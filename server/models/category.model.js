@@ -10,8 +10,15 @@ const categorySchema = new mongoose.Schema({
 
     description: String,
     
-    attributes: []
-})
+    attributes: [
+        {
+            attributeID : String,
+            attributeName : String,
+            attributeDescription : String
+        }
+    ]
+    }
+)
 
 // Create the category model
 const Category = mongoose.model("Category", categorySchema);

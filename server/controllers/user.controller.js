@@ -36,14 +36,6 @@ const handleErrors = (err) => {
 
 
 // Login / Sign up controllers
-// Render pages: Not fixed
-module.exports.signupGet = (req, res) => {
-    res.render('/signup');
-}
-
-module.exports.loginGet = (req, res) => {
-    res.render('/login');
-}
 
 // Sign up
 module.exports.signupPost = async (req, res) => {
@@ -122,5 +114,5 @@ module.exports.loginPost = async (req, res) => {
 module.exports.logoutGet = (req, res) => {
     // Delete token
     res.cookie('jwt', '', { maxAge: 1 });
-    res.redirect('/login');
+    res.status(200).json({message: "Logged out successfully"});
 }

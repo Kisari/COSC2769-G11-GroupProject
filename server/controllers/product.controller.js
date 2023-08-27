@@ -78,3 +78,70 @@ exports.deleteProduct = async(req,res,next) => {
     product.findOneAndDelete(product);
 
 }
+
+//filter product based on categories name
+exports.filterProductByCategory1 = async(req,res) => {
+    Product.find()
+    .then((products) => {
+        var category1 = [];
+        for (var i = 0; i< products.length; i++) {
+          // Check if the product's category fit with the category
+          if (products[i].category == "category1") {
+            category1.push(products[i]);
+          }
+        };
+    } 
+    )
+}
+
+//sort by name
+exports.sortByName = async(req,res) => {
+    Product.find()
+    .then((products) => {
+        var productName = [];
+        var productSorted = [];
+        for(var i = 0 ; i < products.length; i++){
+            productName.push(products.name)
+        }
+        productName.sort()
+        for(var i = 0; i < products.length; i++){
+            var pro = Product.find({name : productName[i]});
+            productSorted.push(pro)
+        }
+    }
+    )
+}
+//sort by price
+exports.sortByPrice = async(req,res) => {
+    Product.find()
+    .then((products) => {
+        var productPrice = [];
+        var productSorted = [];
+        for(var i = 0 ; i < products.length; i++){
+            productName.push(products.price)
+        }
+        productPrice.sort()
+        for(var i = 0; i < products.length; i++){
+            var pro = Product.find({price : productPrice[i]});
+            productSorted.push(pro)
+        }
+    }
+    )
+}
+//sort by date
+exports.sortByPrice = async(req,res) => {
+    Product.find()
+    .then((products) => {
+        var productDate = [];
+        var productSorted = [];
+        for(var i = 0 ; i < products.length; i++){
+            productDate.push(products.date)
+        }
+        productDate.sort()
+        for(var i = 0; i < products.length; i++){
+            var pro = Product.find({dateAdded : productDate[i]});
+            productSorted.push(pro)
+        }
+    }
+    )
+}

@@ -44,7 +44,7 @@ exports.addAttributes = async(req,res,next) => {
     }
 }
 
-exports.productProfile = async(req,res,next) =>{
+exports.findProductByID = async(req,res,next) =>{
     const product = await Product(req.params.id);
     //render
 }

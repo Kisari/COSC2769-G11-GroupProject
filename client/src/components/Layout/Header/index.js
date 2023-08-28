@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Import image
 import logo from "../../../assets/images/lazlogo.png";
@@ -34,21 +35,40 @@ const Header = () => {
           </div>
           {/* Search Box End*/}
           {/* Action */}
+
           <div className="col-1 d-flex justify-content-end align-items-center">
-            <button type="button" className="btn btn-outline-primary">
-              <i className="bi bi-cart"></i>
-            </button>
+            <Link
+              to="/shoppingCart"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <button type="button" className="btn btn-outline-primary">
+                <i className="bi bi-cart"></i>
+              </button>
+            </Link>
           </div>
+
           <div className="col-1 d-flex justify-content-end align-items-center">
-            <button type="button" className="btn btn-outline-secondary">
-              Sign In
-            </button>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <button type="button" className="btn btn-outline-secondary">
+                Sign In
+              </button>
+            </Link>
           </div>
+
           <div className="col-1 d-flex justify-content-end align-items-center">
-            <button type="button" className="btn btn-primary">
-              Sign Up
-            </button>
+            <Link
+              to="/signup"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <button type="button" className="btn btn-primary">
+                Sign Up
+              </button>
+            </Link>
           </div>
+
           {/* Action End*/}
         </div>
       </div>

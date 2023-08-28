@@ -10,7 +10,6 @@ function Home() {
   return (
     <div className="container-fluid">
       <Hero />
-
       {/* Flash Sale Product */}
       <div className="container-lg mt-4">
         <h3>Flash Sale</h3>
@@ -59,9 +58,6 @@ function Home() {
 
       <div className="container-lg mt-4">
         <MenuTabs />
-        <div className="d-flex justify-content-center mt-5">
-          <PaginationCustom />
-        </div>
       </div>
       {/* Normal Product End */}
     </div>

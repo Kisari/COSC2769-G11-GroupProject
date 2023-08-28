@@ -1,62 +1,100 @@
 const Product = require("../models/product.model");
 
-exports.createProduct = async(req,res,next) => {
 
-    //take in data
-    var data = {
+// Create a new product 
+module.exports.createProduct = async(req,res,) => {
+
+    let data = {
         name : req.body.name,
-        //lưu image (Xian)
         stock : req.body.stock,
         description : req.body.description,
         price : req.body.price,
         date : req.body.date,
-        categoryName : req.body.categoryName,
-        categoryDescription: req.body.categoryDescription,
-        categoryAttribute : req.body.categoryAttribute
-    }
+        image: req.file.path,
+        categories : req.body.categories,
+        attributes: req.body.attributes
+    };
+
+    
+    data.attributes = JSON.parse(data.attributes); 
 
     try{
-        var product = null;
-        product = await Product.create(data);
+        const product = await Product.create(data);
+        res.status(200).json({product});
+        console.log(product);
     }
     catch(error){
-        //error handling (Xian)
+        res.status(500).send(error);
     }
 }
 
-//function add attribute 
-//add ntn tùy Xian
-//giống như cart v 
-//bên Na :))
-exports.addAttributes = async(req,res,next) => {
-    const product = Product.findById(req.params.id);
-    //Check if attribute exists or not
-    const existProductAttribute = product.category.attributeID.find(id => id.attributeID.equals(req.params.id));
-    if(existProductAttribute){
-        //error
-    }
-    else{
-        const newAttribute = {
-            attributeName : req.body.attributeName,
-            attributeDescription : req.body.attributeDescription
+// Get all product, with optional category filtering
+// Implemented for pagination
+module.exports.getAllProducts = async(req, res) => {
+    const page = req?.query.page;
+    const category = req?.query?.category.toLowerCase();
+
+    // Check if there is no page and category specified
+    if (page === undefined && category === undefined) {
+        try {
+            let products = await Product.find();
+            
+            // Send products as json
+            res.status(200).json({products});
         }
-        product.category.attribute.push(newAttribute);
+        catch (error) {
+            res.status(500).json({message: 'Cannot get data'});
+        }
+    }
+    
+    else {
+        // page 1 if no page number specified
+        const currentPage = req?.query?.page || 1;
+        const limit = 16;
+
+        // Count the matching products 
+        const count = await Product.find(category ? {categories: {$in: [category]}} : null).count();
+        // Find the maximum page nuber
+        const maxPage = Math.ceil(count / limit);
+        // Count the products to skip
+        const skip = parseInt(page) === 1 ? 0 : page * limit - limit;
+
+        try {
+            let products = await Product.find(category ? {categories: {$in: {category}}}: null).skip(skip).limit(limit);
+            res.status(200).json({products});
+        }
+
+        catch (error) {
+            res.status(500).json({message: 'Cannot get data'});
+        }
+
     }
 }
 
-exports.findProductByID = async(req,res,next) =>{
-    const product = await Product(req.params.id);
-    //render
+
+// Retrieve a product by ID
+module.exports.findProductByID = async(req,res) =>{
+    const id = req?.params?.id;
+    try {
+        const product  = Product.findById(id).populate('categories');
+        res.status(201).json({product});
+    }
+    catch (err) {
+        res.status(500).send("Internal server error");
+    }
+    
+    
+    
 }
 
-exports.updateProduct = async(req,res,next) => {
+exports.editProduct = async(req,res,next) => {
     const product = await Product.findById(req.params.id);
     Product.findOneAndUpdate(
         {_id : product.id},
         {
             $set: {
                name: req.body.name,
-                //change image(Xian)
+                image: req.file.path,
                 stock : req.body.stock,
                 description : req.body.description,
                 price : req.body.price,
@@ -77,71 +115,4 @@ exports.deleteProduct = async(req,res,next) => {
     //cần check product ko tồn tại ko (Xian)
     product.findOneAndDelete(product);
 
-}
-
-//filter product based on categories name
-exports.filterProductByCategory1 = async(req,res) => {
-    Product.find()
-    .then((products) => {
-        var category1 = [];
-        for (var i = 0; i< products.length; i++) {
-          // Check if the product's category fit with the category
-          if (products[i].category == "category1") {
-            category1.push(products[i]);
-          }
-        };
-    } 
-    )
-}
-
-//sort by name
-exports.sortByName = async(req,res) => {
-    Product.find()
-    .then((products) => {
-        var productName = [];
-        var productSorted = [];
-        for(var i = 0 ; i < products.length; i++){
-            productName.push(products.name)
-        }
-        productName.sort()
-        for(var i = 0; i < products.length; i++){
-            var pro = Product.find({name : productName[i]});
-            productSorted.push(pro)
-        }
-    }
-    )
-}
-//sort by price
-exports.sortByPrice = async(req,res) => {
-    Product.find()
-    .then((products) => {
-        var productPrice = [];
-        var productSorted = [];
-        for(var i = 0 ; i < products.length; i++){
-            productName.push(products.price)
-        }
-        productPrice.sort()
-        for(var i = 0; i < products.length; i++){
-            var pro = Product.find({price : productPrice[i]});
-            productSorted.push(pro)
-        }
-    }
-    )
-}
-//sort by date
-exports.sortByPrice = async(req,res) => {
-    Product.find()
-    .then((products) => {
-        var productDate = [];
-        var productSorted = [];
-        for(var i = 0 ; i < products.length; i++){
-            productDate.push(products.date)
-        }
-        productDate.sort()
-        for(var i = 0; i < products.length; i++){
-            var pro = Product.find({dateAdded : productDate[i]});
-            productSorted.push(pro)
-        }
-    }
-    )
 }

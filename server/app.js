@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user.route');
+const productRouter = require('./routes/product.route');
 
 dotenv.config();
 
@@ -11,8 +12,10 @@ const app = express();
 
 // middleware
 app.use(cookieParser());
-
 app.use(cors());
+
+// static img upload foler
+app.use('./server/uploads', express.static('./server/uploads'));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,6 +36,8 @@ app.get("/", (req, res) => {
 // Database connection 
 const db = require('./helpers/mongoose');
 
+// Routes
 app.use(userRouter);
+app.use(productRouter);
 
 module.exports = app;

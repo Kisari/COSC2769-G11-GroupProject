@@ -1,4 +1,4 @@
-const {mongoose} = require("../helpers/mongoose");
+const {mongoose} = require("mongoose");
 
 // Define the cart schema
 const cartSchema = new mongoose.Schema({

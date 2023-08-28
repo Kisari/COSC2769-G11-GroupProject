@@ -1,4 +1,6 @@
-const {mongoose} = require("../helpers/mongoose");
+const mongoose = require("mongoose");
+const userHelper = require('../helpers/user.helper');
+// const bcrypt = require('bcrypt');
 
 // Define the user schema
 const userSchema = new mongoose.Schema({
@@ -26,12 +28,24 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password required'],
         minlength: [6, 'Minimum password length is 6 characters'],
     },
-
-    role: {
+    
+    type: {
         type: String,
-        enum: ["customer", "admin", "seller"],
-        default: "customer"
+        enum: ['seller', 'customer'],
+        required: true
     }
 });
 
-module.exports = userSchema;
+
+// Confirm user saved 
+userSchema.post('save', userHelper.confirmNewUser);
+
+// Hash password
+userSchema.pre('save', async function(next) {
+    await userHelper.hashPassword(this, next);
+});
+
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = {User, userSchema};

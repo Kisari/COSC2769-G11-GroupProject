@@ -1,12 +1,8 @@
-const {mongoose} = require("../helpers/mongoose");
-import {userSchema} from "./user.model";
+const mongoose = require("mongoose");
+const userModel = require("./user.model");
 
 const customerSchema = mongoose.Schema({
-    user: {
-        type: userSchema,
-        required: true
-    },
-    name: {
+    userName: {
         type: String,
         trim: true,
         required: [true, 'Name required'],
@@ -14,13 +10,10 @@ const customerSchema = mongoose.Schema({
 
     address: String,
 
-    birthdate: {
-        type: Date,
-        validate: {
-            validator: (doc) => new Date(doc).getTime < Date.now()
-        }
-    }
-})
+});
+
+// Customer schema is a child of User schema
+customerSchema.add(userModel.userSchema);
 
 // Create the customer model
 const Customer = mongoose.model("Customer", customerSchema);

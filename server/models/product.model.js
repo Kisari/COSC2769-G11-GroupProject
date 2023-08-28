@@ -1,4 +1,4 @@
-const {mongoose} = require("../helpers/mongoose");
+const {mongoose} = require("mongoose");
 
 // Define the product schema
 const productSchema = new mongoose.Schema({

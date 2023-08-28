@@ -1,11 +1,7 @@
-const {mongoose} = require("../helpers/mongoose");
-import {userSchema} from "./user.model";
+const {mongoose} = require("mongoose");
+const userModel = require('./user.model');
 
 const sellerSchema = mongoose.Schema({
-    user: {
-        type: userSchema,
-        required: true
-    },
     businessName: {
         type: String,
         trim: true,
@@ -20,7 +16,10 @@ const sellerSchema = mongoose.Schema({
         default: 'pending'
     }
 
-})
+});
+
+// Seller schema is a child of User schema
+sellerSchema.add(userModel.userSchema);
 
 // Create the customer model
 const Seller = mongoose.model("Seller", sellerSchema);

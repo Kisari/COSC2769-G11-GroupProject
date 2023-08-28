@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login.js";
-import Signup from "./pages/Signup.js";
-import Home from "./pages/Home.js";
-import ProductDetail from "./pages/ProductDetail.js";
+import { publicRoutes } from "./routes";
 
 function App() {
   //Chỉ có 1 Router và 1 Routes
@@ -13,10 +10,10 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<ProductDetail />}></Route>
-          <Route exact path="/login" element={<Login />}></Route>
-          <Route exact path="/signup" element={<Signup />}></Route>
-          <Route exact path="/home" element={<Home />}></Route>
+          {publicRoutes.map((route, index) => {
+            const Page = route.component;
+            return <Route key={index} path={route.path} element={<Page />} />;
+          })}
         </Routes>
       </Router>
     </>

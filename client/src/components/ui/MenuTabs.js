@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Card from "../ui/Card";
+import Card from "./CardProduct";
 
 function MenuTabs() {
   const [key, setKey] = useState("category1");

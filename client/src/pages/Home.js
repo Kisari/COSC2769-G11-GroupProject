@@ -2,7 +2,7 @@ import React from "react";
 import { Carousel } from "react-bootstrap";
 
 import Hero from "../components/Hero";
-import Card from "../components/ui/Card";
+import CardProduct from "../components/ui/CardProduct";
 import MenuTabs from "../components/ui/MenuTabs";
 import PaginationCustom from "../components/ui/PaginationCustom";
 
@@ -20,32 +20,32 @@ function Home() {
               <Carousel.Item key={1}>
                 <div className="row">
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                 </div>
               </Carousel.Item>
               <Carousel.Item key={2}>
                 <div className="row">
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                   <div className="col-3">
-                    <Card />
+                    <CardProduct />
                   </div>
                 </div>
               </Carousel.Item>

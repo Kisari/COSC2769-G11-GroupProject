@@ -3,7 +3,7 @@ import React from "react";
 // Import image
 import product from "../../assets/images/producttest.webp";
 
-const Card = () => {
+const CardProduct = () => {
   return (
     <div className="card" style={{ width: "18rem" }}>
       <img src={product} className="Product image" alt="..." />
@@ -19,4 +19,4 @@ const Card = () => {
   );
 };
 
-export default Card;
+export default CardProduct;

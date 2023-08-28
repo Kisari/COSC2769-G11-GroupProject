@@ -11,6 +11,8 @@ import {
   Alert,
 } from "react-bootstrap";
 
+import product from "../assets/images/producttest.webp";
+
 function ShoppingCart() {
   const [quantities, setQuantities] = useState([1, 1, 1]);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -88,11 +90,7 @@ function ShoppingCart() {
                           key={index}
                         >
                           <Col md={2} lg={2} xl={2}>
-                            <Image
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                              fluid
-                              rounded
-                            />
+                            <Image src={product} fluid rounded />
                           </Col>
                           <Col md={3} lg={3} xl={3}>
                             <h6 className="text-muted">Shirt</h6>

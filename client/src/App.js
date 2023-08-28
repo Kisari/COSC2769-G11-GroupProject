@@ -1,8 +1,10 @@
+import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./routes";
 import { Fragment } from "react";
 
 import { DefaultLayout } from "./components/Layout";
+
 
 function App() {
   //Chỉ có 1 Router và 1 Routes
@@ -28,6 +30,7 @@ function App() {
               />
             );
           })}
+
         </Routes>
       </Router>
     </>

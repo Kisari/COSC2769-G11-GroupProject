@@ -1,0 +1,23 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #bfe5cf !important;
+}
+
+.nav-item{
+    transition: all 0.2s ease-in-out !important;
+}
+
+.nav-item:hover{
+    background-color: #bfe5cf !important;
+}
+
+.custom-btn:hover {
+    background-color: #bfe5cf !important;
+}
+
+.btn-custom {
+    background-color: #bfe5cf !important;
+}

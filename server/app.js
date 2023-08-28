@@ -2,10 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const userRouter = require('./routes/user.route');
 
 dotenv.config();
 
 const app = express();
+
+// middleware
+app.use(cookieParser());
 
 app.use(cors());
 
@@ -25,7 +30,9 @@ app.get("/", (req, res) => {
   res.send("Tesing");
 });
 
-//create router for app
-// require("./routes/route.js")(app);
+// Database connection 
+const db = require('./helpers/mongoose');
+
+app.use(userRouter);
 
 module.exports = app;

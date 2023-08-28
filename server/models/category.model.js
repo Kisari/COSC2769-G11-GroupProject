@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("mongoose");
 
 // Define the category schema
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'Category name required'],
         unique: true
     },
 

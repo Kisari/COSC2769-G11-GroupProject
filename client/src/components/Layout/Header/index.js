@@ -1,7 +1,8 @@
 import React from "react";
 
 // Import image
-import logo from "../assets/images/lazlogo.png";
+import logo from "../../../assets/images/lazlogo.png";
+
 const Header = () => {
   return (
     <div className="container-fluid py-5 border-bottom">

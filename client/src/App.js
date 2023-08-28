@@ -1,10 +1,10 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { publicRoutes } from "./routes";
+import { Fragment } from "react";
 
-//import pages
-import Login from "./pages/Login.js";
-import Signup from "./pages/Signup.js";
-import Seller from "./pages/Seller.js";
+import { DefaultLayout } from "./components/Layout";
+
 
 function App() {
   //Chỉ có 1 Router và 1 Routes
@@ -15,10 +15,22 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Login />}></Route>
-          <Route exact path="/login" element={<Login />}></Route>
-          <Route exact path="/signup" element={<Signup />}></Route>
-          <Route exact path="/sellers/*" element={<Seller />}></Route>
+          {publicRoutes.map((route, index) => {
+            const Layout = route.layout === null ? Fragment : DefaultLayout;
+            const Page = route.component;
+            return (
+              <Route
+                key={index}
+                path={route.path}
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                }
+              />
+            );
+          })}
+
         </Routes>
       </Router>
     </>

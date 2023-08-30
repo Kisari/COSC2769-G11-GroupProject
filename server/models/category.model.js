@@ -1,27 +1,28 @@
 const {mongoose} = require("mongoose");
 
 // Define the attribute schema supporting the category
-const attributeSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        require: [true, 'Name required'],
-    },
-    require: Boolean,
-    type: String
+// const attributeSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         require: [true, 'Name required'],
+//     },
+//     type: String
 
-})
+// })
 
 // Define the category schema
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Category name required'],
+        required: true,
         unique: true
     },
 
     description: String,
     
-    attributes: [attributeSchema]
+    attributes: {
+        type: [String]
+    }
     }
 )
 

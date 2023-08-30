@@ -20,7 +20,7 @@ const hashPassword = async function (doc, next) {
 // Authentication using jwt 
 const maxAge = 24 * 60 * 60
 const createToken = (id) => {
-    return jwt.sign({ id }, "group11secret", {
+    return jwt.sign({ id }, process.env.JWT_KEY, {
         // Token expires in 1 day 
         expiresIn: maxAge
     });
@@ -32,7 +32,7 @@ const requireAuth = (req, res, next) => {
     
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, 'group11secret', (err, decodedToken) => {
+        jwt.verify(token, process.env.JWT_KEY, (err, decodedToken) => {
             if (err) {
                 console.log(err.message);
                 res.status(401).json({error: "Authentication failed"});

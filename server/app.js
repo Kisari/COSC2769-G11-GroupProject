@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user.route');
 const productRouter = require('./routes/product.route');
+const categoryRouter = require('./routes/category.route');
 
 dotenv.config();
 
@@ -39,5 +40,6 @@ const db = require('./helpers/mongoose');
 // Routes
 app.use(userRouter);
 app.use(productRouter);
+app.use(categoryRouter);
 
 module.exports = app;

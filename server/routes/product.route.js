@@ -5,10 +5,10 @@ const uploadImg = require('../helpers/upload');
 const productRouter = express.Router();
 
 // CRUD Product
-productRouter.get('/api/v1/product');
-productRouter.get('/api/v1/product/:id',);
+productRouter.get('/api/v1/product', productController.getAllProducts);
+productRouter.get('/api/v1/product/:id', productController.findProductByID);
 productRouter.post('/api/v1/product/create', uploadImg, productController.createProduct);
-productRouter.delete('/api/v1/product/:id',);
-productRouter.patch('/api/product/:id',);
+productRouter.delete('/api/v1/product/:id', productController.deleteProduct);
+productRouter.patch('/api/product/:id', productController.editProduct);
 
 module.exports = productRouter;

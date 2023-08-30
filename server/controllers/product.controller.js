@@ -2,7 +2,7 @@ const Product = require("../models/product.model");
 
 
 // Create a new product 
-module.exports.createProduct = async(req,res,) => {
+module.exports.createProduct = async(req,res) => {
 
     let data = {
         name : req.body.name,
@@ -50,7 +50,7 @@ module.exports.getAllProducts = async(req, res) => {
     else {
         // page 1 if no page number specified
         const currentPage = req?.query?.page || 1;
-        const limit = 16;
+        const limit = 12;
 
         // Count the matching products 
         const count = await Product.find(category ? {categories: {$in: [category]}} : null).count();

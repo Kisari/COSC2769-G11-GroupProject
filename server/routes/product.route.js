@@ -9,6 +9,6 @@ productRouter.get('/api/v1/product');
 productRouter.get('/api/v1/product/:id',);
 productRouter.post('/api/v1/product/create', uploadImg, productController.createProduct);
 productRouter.delete('/api/v1/product/:id',);
-productRouter.patch('/api/product/:id',);
+productRouter.patch('/api/product/:id',productController.editProduct);
 
 module.exports = productRouter;

@@ -15,6 +15,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors());
 
+
 // static img upload foler
 app.use('./server/uploads', express.static('./server/uploads'));
 

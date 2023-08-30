@@ -28,12 +28,7 @@ const productSchema = new mongoose.Schema({
         default: Date.now()
     },
 
-    categories: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Category'
-        }],  
-    },
+    categories: String,
     attributes: {
         type: Map,
         of: String

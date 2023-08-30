@@ -87,33 +87,29 @@ module.exports.findProductByID = async(req,res) =>{
     
 }
 
-exports.editProduct = async(req,res,next) => {
-    const product = await Product.findById(req.params.id);
+exports.editProduct = async(req,res) => {
+    const product = await Product.findById(req.body.id);
     var data = {
         name : req.body.name,
         stock : req.body.stock,
         description : req.body.description,
         price : req.body.price,
         date : req.body.date,
-        image: req.file.path,
-        categories : req.body.categories,
-        attributes: req.body.attributes
+        // categories : req.body.categories,
+        // attributes: req.body.attributes
     }
 
-    data.attributes = JSON.parse(data.attributes); 
-    Product.findOneAndUpdate(
-        {_id : product.id},
-        {
-            $set: {
-               data
-            }
-        },
+    // data.attributes = JSON.parse(data.attributes); 
+    console.log(product)
+    let newProduct = Product.findOneAndUpdate(
+        { _id : product.id},data,
         {new:true}
     )
-    res.status(200).json({data})
-    .catch(error =>{
-        res.status(500).send("Internal server error");
-    })
+    console.log(newProduct);
+    res.status(200).send("data sent correctly")
+    // .catch((error) =>{
+    //     res.status(500).send("Internal server error");
+    // })
 }
 
 exports.deleteProduct = async(req,res,next) => {

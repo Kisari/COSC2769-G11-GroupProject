@@ -1,6 +1,6 @@
 import React from "react";
 
-import DashBoard from "../components/DashBoard.js";
+import DashBoardLayout from "../components/Layout/DashBoardLayout/DashBoardLayout.js";
 import SellerRenderPage from "./seller/SellerRenderPage.js";
 
 import productIcon from "../assets/images/dashboard/productIcon.png";
@@ -27,7 +27,7 @@ const Seller = () => {
   ];
   return (
     <div className="d-flex flex-column flex-md-row">
-      <DashBoard path={pathName}></DashBoard>
+      <DashBoardLayout path={pathName}></DashBoardLayout>
       <SellerRenderPage></SellerRenderPage>
     </div>
   );

@@ -2,10 +2,10 @@ import React from "react";
 
 import { useLocation } from "react-router-dom";
 
-import logoutIcon from "../assets/images/dashboard/logoutIcon.png";
-import onlineShop from "../assets/images/dashboard/online-shop.png";
+import logoutIcon from "../../../assets/images/dashboard/logoutIcon.png";
+import onlineShop from "../../../assets/images/dashboard/online-shop.png";
 
-const DashBoard = ({ path }) => {
+const DashBoardLayout = ({ path }) => {
   //get the current path name
   const location = useLocation().pathname;
   //path contain array of object path & name (more in Seller page)
@@ -74,4 +74,4 @@ const DashBoard = ({ path }) => {
   );
 };
 
-export default DashBoard;
+export default DashBoardLayout;

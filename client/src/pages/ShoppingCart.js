@@ -150,7 +150,7 @@ function ShoppingCart() {
                       <div className="pt-5">
                         <h6 className="mb-0">
                           <a href="#!" className="text-body">
-                            <i class="bi bi-arrow-left"></i>
+                            <i className="bi bi-arrow-left"></i>
                             Back to shop
                           </a>
                         </h6>

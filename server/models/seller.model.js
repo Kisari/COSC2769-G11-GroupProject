@@ -8,8 +8,6 @@ const sellerSchema = mongoose.Schema({
         required: [true, 'Business name required']
     },
 
-    address: String,
-
     status: {
         type: String,
         enum: ['pending', 'approved', 'rejected'],

@@ -12,7 +12,12 @@ const categorySchema = new mongoose.Schema({
     
     attributes: {
         type: [String],
-    }
+    },
+
+    parents: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Category'
+    }]
 });
 
 // Create the category model

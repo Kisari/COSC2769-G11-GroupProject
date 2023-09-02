@@ -29,11 +29,10 @@ const productSchema = new mongoose.Schema({
     },
 
     categories: {
-        // type: [{
-        //     type: Schema.Types.ObjectId,
-        //     ref: 'Category'
-        // }],  
-        type: [String]
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Category'
+        }],  
     },
     attributes: {
         type: Map,

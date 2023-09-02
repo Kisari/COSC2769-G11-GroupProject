@@ -2,7 +2,7 @@ const Product = require("../models/product.model");
 
 
 // Create a new product 
-module.exports.createProduct = async(req,res) => {
+module.exports.add = async(req,res) => {
 
     let data = {
         name : req.body.name,
@@ -11,7 +11,8 @@ module.exports.createProduct = async(req,res) => {
         price : req.body.price,
         date : req.body.date,
         image: req.file.path,
-        categories : req.body.categories,
+        // Delete the split in real app 
+        categories : req.body.categories.split(','),
         attributes: req.body.attributes
     };
 
@@ -24,13 +25,13 @@ module.exports.createProduct = async(req,res) => {
         console.log(product);
     }
     catch(error){
-        res.status(500).send(error);
+        res.status(500).json({message: error});
     }
 }
 
 // Get all product, with optional category filtering
 // Implemented for pagination
-module.exports.getAllProducts = async(req, res) => {
+module.exports.getAll = async(req, res) => {
     const page = req?.query.page;
     const category = req?.query?.category.toLowerCase();
 
@@ -43,7 +44,7 @@ module.exports.getAllProducts = async(req, res) => {
             res.status(200).json({products});
         }
         catch (error) {
-            res.status(500).json({message: 'Cannot get data'});
+            res.status(500).json({message: error});
         }
     }
     
@@ -65,54 +66,59 @@ module.exports.getAllProducts = async(req, res) => {
         }
 
         catch (error) {
-            res.status(500).json({message: 'Cannot get data'});
+            res.status(500).json({message: err});
         }
-
     }
 }
 
 
 // Retrieve a product by ID
-module.exports.findProductByID = async(req,res) =>{
+module.exports.get = async(req,res) =>{
     const id = req?.params?.id;
     try {
         const product  = Product.findById(id).populate('categories');
         res.status(201).json({product});
     }
     catch (err) {
-        res.status(500).send("Internal server error");
+        res.status(500).json({message: err});
     }
-    
-    
-    
 }
 
-exports.editProduct = async(req,res,next) => {
-    const product = await Product.findById(req.params.id);
-    Product.findOneAndUpdate(
-        {_id : product.id},
-        {
-            $set: {
-               name: req.body.name,
-                image: req.file.path,
-                stock : req.body.stock,
-                description : req.body.description,
-                price : req.body.price,
-                date : req.body.date,
-                //category
-            }
-        },
-        {new:true}
-    )
-    //render
-    .catch(error =>{
-        //error handle
-    })
+// Update a product 
+module.exports.update = async(req,res) => {
+    const id = req.params.id;
+    const data = {
+        image: req.file.path,
+        stock : req.body.stock,
+        description : req.body.description,
+        price : req.body.price,
+        date : req.body.date,
+        attributes: req.body.attributes,
+        // Split for testing
+        categories: req.body.categories.split(',')
+    };
+
+    data.attributes = JSON.parse(data.attributes); 
+
+    try {
+        const updated = Product.findByIdAndUpdate({_id: id}, {$set: data}, {new: true});
+        res.status(200).json({updated});
+    }
+    catch (err) {
+        res.status(500).json({message: err});
+    }
 }
 
-exports.deleteProduct = async(req,res,next) => {
-    const product = Product.findById(req.params.id);
-    //cần check product ko tồn tại ko (Xian)
-    product.findOneAndDelete(product);
+// Delete a product
+module.exports.delete = async (req, res) => {
+    const id = req.params.id;
 
+    try {
+        const deleted = await Product.findByIdAndDelete({_id: id});
+        res.status(201).json({message: 'Delete successfully', product: deleted._id});
+    }
+    catch (err) {
+        res.status(500).json({message: err});
+    }
 }
+

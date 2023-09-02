@@ -5,20 +5,19 @@ const Product = require("../models/product.model");
 module.exports.add = async(req,res) => {
 
     let data = {
-        name : req.body.name,
-        stock : req.body.stock,
-        description : req.body.description,
-        price : req.body.price,
-        date : req.body.date,
-        image: req.file.path,
+        name : req?.body?.name,
+        stock : req?.body?.stock,
+        description : req?.body?.description,
+        price : req?.body?.price,
+        image: req?.file?.path,
         // Delete the split in real app 
-        categories : req.body.categories.split(','),
-        attributes: req.body.attributes
+        categories : req?.body?.categories.split(','),
+        attributes: req?.body?.attributes
     };
 
-    
-    data.attributes = JSON.parse(data.attributes); 
-
+    if (data.attributes) {
+        data.attributes = JSON.parse(data.attributes); 
+    }
     try{
         const product = await Product.create(data);
         res.status(200).json({product});
@@ -33,7 +32,11 @@ module.exports.add = async(req,res) => {
 // Implemented for pagination
 module.exports.getAll = async(req, res) => {
     const page = req?.query.page;
-    const category = req?.query?.category.toLowerCase();
+    let category = req?.query?.category;
+
+    if (category) {
+        category = category.toLowerCase();
+    }
 
     // Check if there is no page and category specified
     if (page === undefined && category === undefined) {
@@ -76,7 +79,7 @@ module.exports.getAll = async(req, res) => {
 module.exports.get = async(req,res) =>{
     const id = req?.params?.id;
     try {
-        const product  = Product.findById(id).populate('categories');
+        const product  = await Product.findById(id).populate('categories');
         res.status(201).json({product});
     }
     catch (err) {
@@ -88,20 +91,21 @@ module.exports.get = async(req,res) =>{
 module.exports.update = async(req,res) => {
     const id = req.params.id;
     const data = {
-        image: req.file.path,
-        stock : req.body.stock,
-        description : req.body.description,
-        price : req.body.price,
-        date : req.body.date,
-        attributes: req.body.attributes,
+        image: req?.file?.path,
+        stock : req?.body?.stock,
+        description : req?.body?.description,
+        price : req?.body?.price,
+        attributes: req?.body?.attributes,
         // Split for testing
-        categories: req.body.categories.split(',')
+        categories: req?.body?.categories
     };
 
-    data.attributes = JSON.parse(data.attributes); 
+    if (data.attributes) {
+        data.attributes = JSON.parse(data.attributes); 
+    }
 
     try {
-        const updated = Product.findByIdAndUpdate({_id: id}, {$set: data}, {new: true});
+        const updated = await Product.findByIdAndUpdate({_id: id}, {$set: data}, {new: true});
         res.status(200).json({updated});
     }
     catch (err) {

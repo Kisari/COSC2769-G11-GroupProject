@@ -1,4 +1,4 @@
-const {mongoose} = require("mongoose");
+const {mongoose, Schema} = require("mongoose");
 
 // Define the product schema
 const productSchema = new mongoose.Schema({
@@ -7,7 +7,9 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Product name required'],
     },
 
-    productImgUrl: String,
+    image: {
+        type: String
+    },
 
     stock: {
         type: Number,
@@ -22,14 +24,20 @@ const productSchema = new mongoose.Schema({
     },
 
     dateAdded: {
-        type: Date
+        type: Date,
+        default: Date.now()
     },
 
     categories: {
-        type: [mongoose.Schema.Types.ObjectId], 
-        ref: "Category",
-        required: true 
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Category'
+        }],  
     },
+    attributes: {
+        type: Map,
+        of: String
+    }
 
 });
 

@@ -1,4 +1,4 @@
-const {mongoose} = require("mongoose");
+const mongoose = require("mongoose");
 
 // Define the category schema
 const categorySchema = new mongoose.Schema({
@@ -10,12 +10,18 @@ const categorySchema = new mongoose.Schema({
 
     description: String,
     
-    attributes: []
-})
+    attributes: {
+        type: [String],
+    },
+
+    parents: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Category'
+    }]
+});
 
 // Create the category model
 const Category = mongoose.model("Category", categorySchema);
 
-module.exports = Category
+module.exports = Category;
 
-// Missing attributes 

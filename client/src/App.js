@@ -5,7 +5,6 @@ import { Fragment } from "react";
 
 import { DefaultLayout } from "./components/Layout";
 
-
 function App() {
   //Chỉ có 1 Router và 1 Routes
   //Router sẽ wrap lại tất cả những Routes
@@ -30,7 +29,6 @@ function App() {
               />
             );
           })}
-
         </Routes>
       </Router>
     </>

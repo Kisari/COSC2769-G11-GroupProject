@@ -19,9 +19,11 @@ const Card = ({ data, statistic }) => {
             <span className="ms-auto">{data?.account}%</span>
           </div>
         )}
-        <a className="btn btn-custom" href={data?.feature}>
-          {data?.actionText}
-        </a>
+        {data?.actionText && (
+          <a className="btn btn-custom" href={data?.feature}>
+            {data.actionText}
+          </a>
+        )}
       </div>
     </div>
   );

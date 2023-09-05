@@ -11,9 +11,10 @@ const CardProduct = () => {
         <h5 className="card-title">Card title</h5>
         <h6 className="card-title text-danger">10.000 VND</h6>
         <p className="card-text">Some quick example text</p>
-        <a href="#" className="btn btn-primary">
+        {/* later need to include a button instead of a tag */}
+        {/* <a href="#" className="btn btn-primary">
           Buy Now
-        </a>
+        </a> */}
       </div>
     </div>
   );

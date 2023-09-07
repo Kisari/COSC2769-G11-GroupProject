@@ -5,6 +5,8 @@ import { Fragment } from "react";
 
 import { DefaultLayout } from "./components/Layout";
 
+import { AuthProvider } from "./hook/AuthHook";
+
 function App() {
   //Chỉ có 1 Router và 1 Routes
   //Router sẽ wrap lại tất cả những Routes
@@ -13,23 +15,25 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Layout = route.layout === null ? Fragment : DefaultLayout;
-            const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            {publicRoutes.map((route, index) => {
+              const Layout = route.layout === null ? Fragment : DefaultLayout;
+              const Page = route.component;
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })}
+          </Routes>
+        </AuthProvider>
       </Router>
     </>
   );

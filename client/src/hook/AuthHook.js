@@ -1,17 +1,17 @@
 import { createContext, useContext, useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "./LocalStorageHook";
-import { loginUser } from "../action/auth/auth";
+import { loginUser } from "../action/auth.js";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useLocalStorage("lazada-login-token", null);
+  const [user, setUser] = useLocalStorage("e-commerce-token", null);
 
   const token = () => {
     const jwtToken = JSON.parse(
-      localStorage.getItem("lazada-login-token")
+      localStorage.getItem("e-commerce-token")
     )?.token;
     return jwtToken;
   };
@@ -28,12 +28,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log(user);
     //Check if the user is not that role, navigate to the home page
     if (user && location.pathname === "/" && user.role === "admin") {
       navigate("/admin");
     } else if (user && location.pathname === "/" && user.role === "seller") {
       navigate("/seller");
-    } else navigate("/");
+    }
     // eslint-disable-next-line
   }, [user, location.pathname]);
 

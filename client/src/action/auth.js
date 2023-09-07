@@ -24,7 +24,9 @@ export const loginUser = async (formData) => {
     } else {
       return res;
     }
-  } catch (error) {}
+  } catch (error) {
+    return;
+  }
 };
 
 export const logoutUser = async () => {

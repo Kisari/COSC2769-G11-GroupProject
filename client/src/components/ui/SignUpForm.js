@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { signupUser } from "../../action/auth.js";
 
 import Input from "./Input";
+import Loading from "./Loading";
 
 function SignUpForm({ type }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,15 +12,15 @@ function SignUpForm({ type }) {
     event.preventDefault();
     var payload = {
       email: event.target[0].value,
-      phone: event.target[1].value,
       password: event.target[2].value,
       type: type === "customer" ? "customer" : "seller",
+      phone: event.target[1].value,
       name: event.target[0].value,
     };
     if (type === "customer") {
       payload = { ...payload, address: event.target.address.value };
     } else {
-      payload = { ...payload, address: event.target.business.value };
+      payload = { ...payload, name: event.target.business.value };
     }
     await signupUser(payload).then((res) => {
       console.log(res);

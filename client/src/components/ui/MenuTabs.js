@@ -1,10 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Card from "./CardProduct";
 
-function MenuTabs() {
+function MenuTabs({ products }) {
   const [key, setKey] = useState("category1");
+
+  function getUniqueCategory(data) {
+    var listOfCats = [];
+    data?.products?.forEach((product) => {
+      if (product?.categories) {
+        listOfCats = [...listOfCats, ...product?.categories];
+      }
+    });
+    listOfCats = [...new Set(listOfCats)];
+    return listOfCats;
+  }
+
+  function getProductByCategory(catName) {
+    return products?.products?.filter((product) =>
+      product?.categories?.includes(catName)
+    );
+  }
+  useEffect(() => {
+    if (products?.length !== 0) {
+      setKey(getUniqueCategory(products)[0]);
+    }
+    // eslint-disable-next-line
+  }, [products]);
 
   return (
     <Tabs
@@ -13,99 +37,27 @@ function MenuTabs() {
       onSelect={(k) => setKey(k)}
       className="mb-3"
     >
-      <Tab eventKey="category1" title="Category 1">
-        <h3>Category 1</h3>
-        <div className="container-lg my-4">
-          <div className="row">
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-          </div>
-        </div>
-      </Tab>
-      <Tab eventKey="category2" title="Category 2">
-        <h3>Category 2</h3>
-        <div className="container-lg my-4">
-          <div className="row">
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-          </div>
-        </div>
-      </Tab>
-      <Tab eventKey="category3" title="Category 3">
-        <h3>Category 3</h3>
-        <div className="container-lg my-4">
-          <div className="row">
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-            <div className="col-3 mt-4">
-              <Card />
-            </div>
-          </div>
-        </div>
-      </Tab>
+      {products?.length !== 0 &&
+        getUniqueCategory(products)?.map((singleCat) => {
+          return (
+            <Tab eventKey={singleCat} title={singleCat} key={singleCat}>
+              <h3>{singleCat}</h3>
+              <div className="container-lg my-4">
+                <div className="row">
+                  {products?.length !== 0 &&
+                    key === singleCat &&
+                    getProductByCategory(singleCat)?.map((item) => {
+                      return (
+                        <div className="col mt-4" key={item?._id}>
+                          <Card data={item} />
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </Tab>
+          );
+        })}
     </Tabs>
   );
 }

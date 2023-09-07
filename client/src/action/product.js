@@ -1,4 +1,4 @@
-import * as api from "../api/auth.js";
+import * as api from "../api/product.js";
 //file for handle the api call and the data (res)
 export const getAllProduct = async () => {
   try {

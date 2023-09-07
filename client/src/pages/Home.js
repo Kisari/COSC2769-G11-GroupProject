@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
+
+import { getAllProduct } from "../action/product.js";
 
 import Hero from "../components/Hero";
 import CardProduct from "../components/ui/CardProduct";
@@ -7,6 +9,19 @@ import MenuTabs from "../components/ui/MenuTabs";
 import PaginationCustom from "../components/ui/PaginationCustom";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllProduct().then((res) => {
+        if (res) {
+          setProducts(res);
+        }
+      });
+    }
+
+    getInitialData();
+  }, []);
   return (
     <div className="container-fluid">
       <Hero />
@@ -19,34 +34,26 @@ function Home() {
             <Carousel>
               <Carousel.Item key={1}>
                 <div className="row">
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
+                  {products?.products?.length !== 0 &&
+                    products?.products?.slice(0, 4).map((product) => {
+                      return (
+                        <div className="col" key={product._id}>
+                          <CardProduct data={product} />
+                        </div>
+                      );
+                    })}
                 </div>
               </Carousel.Item>
               <Carousel.Item key={2}>
                 <div className="row">
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
-                  <div className="col-3">
-                    <CardProduct />
-                  </div>
+                  {products?.products?.length !== 0 &&
+                    products?.products?.slice(-4).map((product) => {
+                      return (
+                        <div className="col" key={product?._id}>
+                          <CardProduct data={product} />
+                        </div>
+                      );
+                    })}
                 </div>
               </Carousel.Item>
             </Carousel>
@@ -58,7 +65,7 @@ function Home() {
       {/* Normal Product */}
 
       <div className="container-lg mt-4">
-        <MenuTabs />
+        <MenuTabs products={products} />
         <div className="d-flex justify-content-center mt-5">
           <PaginationCustom />
         </div>

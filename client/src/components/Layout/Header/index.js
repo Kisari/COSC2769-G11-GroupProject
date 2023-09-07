@@ -17,9 +17,9 @@ const Header = () => {
       <div className="container-lg">
         <div className="row">
           {/* Brand Logo */}
-          <div className="col-2 d-flex align-items-center">
+          <a className="col-2 d-flex align-items-center" href="/">
             <img src={logo} height="40" alt="brand logo" />
-          </div>
+          </a>
           {/* Brand Logo End*/}
           {/* Search Box */}
           <div className="col-6 d-flex justify-content-center align-items-center">
@@ -43,7 +43,11 @@ const Header = () => {
           {/* Search Box End*/}
           {/* Action */}
           <div className="col-1 d-flex justify-content-end align-items-center">
-            <button type="button" className="btn btn-outline-primary">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/shoppingCart")}
+            >
               <i className="bi bi-cart"></i>
             </button>
           </div>

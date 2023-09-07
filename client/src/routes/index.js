@@ -17,7 +17,7 @@ const publicRoutes = [
   { path: "/productDetail", component: ProductDetail },
   { path: "/login", component: Login, layout: null },
   { path: "/signup", component: Signup, layout: null },
-  { path: "/shoppingCart", component: ShoppingCart, layout: null },
+  { path: "/shoppingCart", component: ShoppingCart },
   { path: "/sellers/*", component: Seller, layout: null, require: "seller" },
   { path: "/admin/*", component: Admin, layout: null, require: "admin" },
 ];

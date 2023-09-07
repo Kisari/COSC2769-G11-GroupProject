@@ -14,5 +14,5 @@ export const createProduct = (formData) =>
 export const deleteProduct = (id) =>
   axios.delete(`${backend_url}/api/v1/product/${id}`);
 
-export const updateProduct = (id) =>
-  axios.put(`${backend_url}/api/v1/product/${id}`);
+export const updateProduct = (id, formData) =>
+  axios.put(`${backend_url}/api/v1/product/${id}`, formData);

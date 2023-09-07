@@ -4,6 +4,7 @@ import { publicRoutes } from "./routes";
 import { Fragment } from "react";
 
 import { DefaultLayout } from "./components/Layout";
+import { AuthRoute } from "./hook/AuthRoute";
 
 import { AuthProvider } from "./hook/AuthHook";
 
@@ -25,9 +26,15 @@ function App() {
                   key={index}
                   path={route.path}
                   element={
-                    <Layout>
-                      <Page />
-                    </Layout>
+                    route?.require ? (
+                      <AuthRoute role={route.require}>
+                        <Page />
+                      </AuthRoute>
+                    ) : (
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    )
                   }
                 />
               );

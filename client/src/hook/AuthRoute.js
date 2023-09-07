@@ -7,12 +7,12 @@ export const AuthRoute = ({ children, role }) => {
 
   //Navigate the user to blocked page if they are not the specific user
 
-  //   if (user == null) {
-  //     return <Navigate to="/blocked" />;
-  //   }
-  //   if (user?.role !== role) {
-  //     return <Navigate to="/blocked" />;
-  //   }
+  if (user == null) {
+    return <Navigate to="/blocked" />;
+  }
+  if (user?.type !== role) {
+    return <Navigate to="/blocked" />;
+  }
 
   return children;
 };

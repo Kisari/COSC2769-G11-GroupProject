@@ -1,9 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../../hook/AuthHook";
 
 // Import image
 import logo from "../../../assets/images/lazlogo.png";
 
 const Header = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogOut = async () => {
+    await logout();
+  };
   return (
     <div className="container-fluid py-5 border-bottom">
       <div className="container-lg">
@@ -14,7 +22,7 @@ const Header = () => {
           </div>
           {/* Brand Logo End*/}
           {/* Search Box */}
-          <div className="col-7 d-flex justify-content-center align-items-center">
+          <div className="col-6 d-flex justify-content-center align-items-center">
             <div className="input-group">
               <input
                 type="text"
@@ -39,15 +47,39 @@ const Header = () => {
               <i className="bi bi-cart"></i>
             </button>
           </div>
-          <div className="col-1 d-flex justify-content-end align-items-center">
-            <button type="button" className="btn btn-outline-secondary">
-              Sign In
-            </button>
+          <div className="col-2 d-flex justify-content-end align-items-center">
+            {user ? (
+              <button type="button" className="btn btn-outline-secondary">
+                {user?.userName}
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => navigate("/login")}
+              >
+                Sign In
+              </button>
+            )}
           </div>
           <div className="col-1 d-flex justify-content-end align-items-center">
-            <button type="button" className="btn btn-primary">
-              Sign Up
-            </button>
+            {user ? (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => handleLogOut()}
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => navigate("/signup")}
+              >
+                Sign Up
+              </button>
+            )}
           </div>
           {/* Action End*/}
         </div>

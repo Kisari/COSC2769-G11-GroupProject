@@ -8,7 +8,7 @@ export const useLocalStorage = (keyName, defaultValue) => {
     try {
       const value = localStorage.getItem(keyName);
       if (value) {
-        return jwt_decode(JSON.parse(value?.token)?.user);
+        return jwt_decode(JSON.parse(value).token).user;
       } else {
         localStorage.setItem(keyName, JSON.stringify(defaultValue));
         return defaultValue;
@@ -23,7 +23,7 @@ export const useLocalStorage = (keyName, defaultValue) => {
         localStorage.setItem(keyName, JSON.stringify(newValue));
       } else {
         localStorage.setItem(keyName, JSON.stringify(newValue));
-        setStoredValue(jwt_decode(newValue?.token)?.user);
+        setStoredValue(jwt_decode(newValue.token).user);
       }
     } catch (err) {}
   };

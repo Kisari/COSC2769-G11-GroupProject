@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "./LocalStorageHook";
-import { loginUser } from "../action/auth.js";
+import { loginUser, logoutUser } from "../action/auth.js";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
       (location.pathname === "/login" || location.pathname === "/signup") &&
       user?.type === "seller"
     ) {
-      navigate("/seller");
+      navigate("/sellers");
     } else if (
       user &&
       (location.pathname === "/login" || location.pathname === "/signup") &&
@@ -51,9 +51,11 @@ export const AuthProvider = ({ children }) => {
     // eslint-disable-next-line
   }, [user, location.pathname]);
 
-  const logout = () => {
-    setUser(null);
-    navigate(0);
+  const logout = async () => {
+    await logoutUser().then(() => {
+      setUser(null);
+      navigate(0);
+    });
   };
 
   const value = useMemo(

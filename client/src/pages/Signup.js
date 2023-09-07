@@ -2,7 +2,7 @@ import React from "react";
 
 import poster from "../assets/images/poster.webp";
 
-import SignUpForm from "../components/SignUpForm";
+import SignUpForm from "../components/ui/SignUpForm";
 
 function Signup() {
   return (

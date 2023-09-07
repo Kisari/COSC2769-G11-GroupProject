@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import Input from "./ui/Input";
+import { signupUser } from "../../action/auth.js";
+
+import Input from "./Input";
 
 function SignUpForm({ type }) {
   const [showPassword, setShowPassword] = useState(false);

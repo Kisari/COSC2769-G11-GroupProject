@@ -28,12 +28,25 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log(user);
     //Check if the user is not that role, navigate to the home page
-    if (user && location.pathname === "/" && user.role === "admin") {
+    if (
+      user &&
+      (location.pathname === "/login" || location.pathname === "/signup") &&
+      user?.type === "admin"
+    ) {
       navigate("/admin");
-    } else if (user && location.pathname === "/" && user.role === "seller") {
+    } else if (
+      user &&
+      (location.pathname === "/login" || location.pathname === "/signup") &&
+      user?.type === "seller"
+    ) {
       navigate("/seller");
+    } else if (
+      user &&
+      (location.pathname === "/login" || location.pathname === "/signup") &&
+      user?.type === "customer"
+    ) {
+      navigate("/");
     }
     // eslint-disable-next-line
   }, [user, location.pathname]);

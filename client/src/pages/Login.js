@@ -9,6 +9,7 @@ import Loading from "../components/ui/Loading";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const { login } = useAuth();
 
@@ -21,9 +22,9 @@ function Login() {
     };
     await login(payload).then((res) => {
       if (res) {
-        //sucessfully login
       } else {
         //failed to login
+        setIsError(true);
       }
       setIsLoading(false);
     });
@@ -67,7 +68,9 @@ function Login() {
                     placeholder={"Password"}
                     setShowPassword={setShowPassword}
                   />
-
+                  <p className="text-center text-danger fw-bold">
+                    {isError && "Wrong email or password! Try again"}
+                  </p>
                   <div className="text-center mt-4 pt-2">
                     <button
                       type="submit"

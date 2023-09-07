@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 
+import { loginUser } from "../action/auth.js";
+
 import Input from "../components/ui/Input";
 import Slider from "../components/ui/Slider";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(event.target[0].value);
-    console.log(event.target[1].value);
+    const payload = {
+      email: event.target[0].value,
+      password: event.target[1].value,
+    };
+    await loginUser(payload).then((res) => {
+      console.log(res);
+    });
   };
 
   return (

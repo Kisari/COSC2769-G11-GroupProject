@@ -12,6 +12,7 @@ const Input = ({ name, type, id, placeholder, setShowPassword }) => {
         className="form-control"
         id={id}
         placeholder={placeholder}
+        required
       />
       <label htmlFor={id}>{placeholder}</label>
       {name === "password" && (

@@ -1,20 +1,31 @@
 import React, { useState } from "react";
 
-import Input from "./ui/Input";
+import { signupUser } from "../../action/auth.js";
+
+import Input from "./Input";
+import Loading from "./Loading";
 
 function SignUpForm({ type }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(event.target[0].value);
-    console.log(event.target[1].value);
-    console.log(event.target[2].value);
-    console.log(
-      type === "customer"
-        ? event.target.address.value
-        : event.target.business.value
-    );
+    var payload = {
+      email: event.target[0].value,
+      password: event.target[2].value,
+      type: type === "customer" ? "customer" : "seller",
+      phone: event.target[1].value,
+      name: event.target[0].value,
+    };
+    if (type === "customer") {
+      payload = { ...payload, address: event.target.address.value };
+    } else {
+      payload = { ...payload, name: event.target.business.value };
+    }
+    await signupUser(payload).then((res) => {
+      console.log(res);
+    });
+    console.log(payload);
   };
   return (
     <form className="px-2 pt-4" onSubmit={(event) => handleLogin(event)}>

@@ -4,6 +4,9 @@ import { publicRoutes } from "./routes";
 import { Fragment } from "react";
 
 import { DefaultLayout } from "./components/Layout";
+import { AuthRoute } from "./hook/AuthRoute";
+
+import { AuthProvider } from "./hook/AuthHook";
 
 function App() {
   //Chỉ có 1 Router và 1 Routes
@@ -13,23 +16,31 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Layout = route.layout === null ? Fragment : DefaultLayout;
-            const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            {publicRoutes.map((route, index) => {
+              const Layout = route.layout === null ? Fragment : DefaultLayout;
+              const Page = route.component;
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    route?.require ? (
+                      <AuthRoute role={route.require}>
+                        <Page />
+                      </AuthRoute>
+                    ) : (
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    )
+                  }
+                />
+              );
+            })}
+          </Routes>
+        </AuthProvider>
       </Router>
     </>
   );

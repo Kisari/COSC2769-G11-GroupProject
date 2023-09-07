@@ -2,10 +2,17 @@ import React from "react";
 
 import { useLocation } from "react-router-dom";
 
+import { useAuth } from "../../../hook/AuthHook";
+
 import logoutIcon from "../../../assets/images/dashboard/logoutIcon.png";
 import onlineShop from "../../../assets/images/dashboard/online-shop.png";
 
 const DashBoardLayout = ({ path }) => {
+  const { user, logout } = useAuth();
+  console.log(user);
+  const handleLogout = async () => {
+    await logout();
+  };
   //get the current path name
   const location = useLocation().pathname;
   //path contain array of object path & name (more in Seller page)
@@ -25,7 +32,12 @@ const DashBoardLayout = ({ path }) => {
           style={{ width: "64px" }}
         />
       </a>
-
+      <div className="d-flex flex-column mt-3 gap-2">
+        <div className="text-center text-success fw-bold">{user?.email}</div>
+        <div className="text-center text-success fw-light">
+          {user?.businessName}
+        </div>
+      </div>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         {path?.map((object, index) => {
@@ -58,8 +70,7 @@ const DashBoardLayout = ({ path }) => {
         <button
           type="button"
           className="col-12 d-flex flex-row justtify-content-center align-items-center btn custom-btn"
-          //Later for log out function
-          //   onClick={() => logout()}
+          onClick={() => handleLogout()}
         >
           <img
             src={logoutIcon}

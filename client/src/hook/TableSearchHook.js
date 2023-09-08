@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 
 //warning : DONT TRY TO UNDERSTAND THIS
 
-export const useTableSearch = ({ searchVal, data }) => {
+export const useTableSearch = ({ searchVal, data, sortOption }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [origData, setOrigData] = useState([]);
   const [searchIndex, setSearchIndex] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     const crawl = (objectArray, allValues) => {
       if (!allValues) allValues = [];
       for (var key in objectArray) {
@@ -27,7 +25,6 @@ export const useTableSearch = ({ searchVal, data }) => {
         return { allValues: allValues.toString() };
       });
       setSearchIndex(searchInd);
-      if (data) setLoading(false);
     };
     fetchData();
   }, [data]);
@@ -51,7 +48,27 @@ export const useTableSearch = ({ searchVal, data }) => {
         })
       );
     } else setFilteredData(origData);
-  }, [searchVal, origData, searchIndex]);
+    if (sortOption.option !== 0) {
+      const value = sortOption.option;
+      if (value === 1) {
+        setFilteredData((prev) =>
+          prev.sort((a, b) => (a?.name > b?.name ? 1 : -1))
+        );
+      }
+      if (value === 2) {
+        setFilteredData((prev) =>
+          prev.sort((a, b) => (a?.price > b?.price ? 1 : -1))
+        );
+      } else {
+        setFilteredData((prev) =>
+          prev.sort((a, b) => (a?.dateAdded > b?.dateAdded ? 1 : -1))
+        );
+      }
+    }
+    if (sortOption.asc === true) {
+      setFilteredData((prev) => prev.reverse());
+    }
+  }, [searchVal, origData, searchIndex, sortOption]);
 
-  return { filteredData, loading };
+  return { filteredData };
 };

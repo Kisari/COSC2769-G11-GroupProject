@@ -9,9 +9,14 @@ import ProductRow from "../../components/ui/ProductRow.js";
 const SellerProductList = () => {
   const [products, setProducts] = useState([]);
   const [search, setSeach] = useState(null);
+  const [sortOption, setSortedOption] = useState({
+    option: 0,
+    asc: false,
+  });
   const { filteredData } = useTableSearch({
     searchVal: search,
     data: products,
+    sortOption: sortOption,
   });
 
   useEffect(() => {
@@ -63,18 +68,34 @@ const SellerProductList = () => {
             <div className="fs-5 fw-bolder">Sorted By</div>
             <div className="col-12 d-flex flex-row justify-content-center align-items-center">
               <div className="col-6">
-                <select className="form-select form-select" defaultValue="0">
-                  <option value="0" disabled>
+                <select
+                  className="form-select form-select"
+                  defaultValue={0}
+                  type="number"
+                  onChange={(e) =>
+                    setSortedOption({
+                      ...sortOption,
+                      option: parseInt(e.target.value),
+                    })
+                  }
+                >
+                  <option value={0} disabled>
                     Choose option
                   </option>
-                  <option value="1">Name</option>
-                  <option value="2">Price</option>
-                  <option value="3">Date Added</option>
+                  <option value={1}>Name</option>
+                  <option value={2}>Price</option>
+                  <option value={3}>Date Added</option>
                 </select>
               </div>
               <div className="col-6 px-3">
                 <div className="form-check">
-                  <input className="form-check-input" type="checkbox" />
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    onChange={(e) =>
+                      setSortedOption({ ...sortOption, asc: !sortOption?.asc })
+                    }
+                  />
                   <label
                     className="form-check-label"
                     htmlFor="flexCheckDefault"
@@ -103,20 +124,22 @@ const SellerProductList = () => {
           <div className="d-flex flex-row flex-wrap col-12">
             <div className="col-1 fw-bold">Id</div>
             <div className="col-2 fw-bold">Image</div>
-            <div className="col-2 fw-bold">Product anme</div>
-            <div className="col-4 fw-bold">Product description</div>
+            <div className="col-2 fw-bold">Name</div>
+            <div className="col-3 fw-bold">Description</div>
             <div className="col-1 fw-bold">Price</div>
-            <div className="col-2 fw-bold">Product Quantity</div>
+            <div className="col-1 fw-bold">Stock</div>
+            <div className="col-2 fw-bold">Created</div>
           </div>
         </div>
-        {filteredData?.map((item, index) => {
-          return (
-            <div className="col-12 text-center" key={index}>
-              <ProductRow data={item} />
-              <hr className="my-2" />
-            </div>
-          );
-        })}
+        {filteredData &&
+          filteredData?.map((item, index) => {
+            return (
+              <div className="col-12 text-center" key={index}>
+                <ProductRow data={item} />
+                <hr className="my-2" />
+              </div>
+            );
+          })}
       </div>
     </div>
   );

@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { getAllProduct } from "../../action/product.js";
+import { useTableSearch } from "../../hook/TableSearchHook.js";
 
 import Card from "../../components/ui/Card.js";
 import ProductRow from "../../components/ui/ProductRow.js";
 
 const SellerProductList = () => {
+  const [products, setProducts] = useState([]);
+  const [search, setSeach] = useState(null);
+  const { filteredData } = useTableSearch({
+    searchVal: search,
+    data: products,
+  });
+
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllProduct().then((res) => {
+        if (res?.products) {
+          setProducts(res?.products);
+        }
+      });
+    }
+    getInitialData();
+  }, []);
+
   const displayData = [
     {
       feature: "Total Product",
@@ -53,12 +74,7 @@ const SellerProductList = () => {
               </div>
               <div className="col-6 px-3">
                 <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
+                  <input className="form-check-input" type="checkbox" />
                   <label
                     className="form-check-label"
                     htmlFor="flexCheckDefault"
@@ -77,6 +93,7 @@ const SellerProductList = () => {
                   type="text"
                   className="form-control"
                   placeholder="Search..."
+                  onChange={(e) => setSeach(e.target.value)}
                 />
               </div>
             </div>
@@ -87,14 +104,16 @@ const SellerProductList = () => {
             <div className="col-1 fw-bold">Id</div>
             <div className="col-2 fw-bold">Image</div>
             <div className="col-2 fw-bold">Product anme</div>
-            <div className="col-5 fw-bold">Product description</div>
+            <div className="col-4 fw-bold">Product description</div>
+            <div className="col-1 fw-bold">Price</div>
             <div className="col-2 fw-bold">Product Quantity</div>
           </div>
         </div>
-        {[1, 2, 3].map((item, index) => {
+        {filteredData?.map((item, index) => {
           return (
             <div className="col-12 text-center" key={index}>
               <ProductRow data={item} />
+              <hr className="my-2" />
             </div>
           );
         })}

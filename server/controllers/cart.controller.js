@@ -48,26 +48,33 @@ module.exports.add = async(req,res) => {
     
 }
 
-module.exports.update = async(req,res) =>{
-    const customer = Customer.findByID(req.params.id);
-    const product = Product.findByID(req.params.id);
-    const cart = Cart.findByID(customer.id);
-    const cartDetails = CartDetails.findByID(cart.id);
-    //check if product has already been added or not
-    if(cartDetails.productID == product.id){
-        cartDetails.quantity-= 1;
-    }
-    if(cartDetails.quantity <= 0){
+
+module.exports.remove = async(req, res) => {
+    const {cartId, productId} = req.body;
+
+    try {
+        await CartDetails.findOneAndRemove({cartId, productId});
+        const cart =  await Cart.findByID({cartId});
         cart.numberOfItems -= 1;
+        res.status(201).json({message: "Item removed"});
+    }
+
+    catch (err) {
+        res.status(500).json({message: err});
     }
 }
 
-module.exports.clearALL = async(req,res) => {
-    const customer = Customer.findByID(req.params.id);
-    const product = Product.findByID(req.params.id);
-    const cart = Cart.findByID(customer.id);
-    const cartDetails = CartDetails.findByID(cart.id);
-    if(cartDetails.quantity >= 0 ){
-        cart.numberOfItems = 0;
+module.exports.clear = async(req,res) => {
+    const {cartId} = req.body;
+
+    try {
+        // Delete all items in the CartDetails with the specified cartId
+        await CartDetails.deleteMany({cartId});
+        await Cart.findOneAndRemove({cartId});
+        res.status(201).json({message: "Cart cleared"});
+    }
+
+    catch(err) {
+        res.status(500).json({message: err});
     }
 }

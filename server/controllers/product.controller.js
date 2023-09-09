@@ -10,8 +10,9 @@ module.exports.add = async(req,res) => {
         description : req?.body?.description,
         price : req?.body?.price,
         image: req?.file?.path,
+        sellerId: req.user._id,
         // Delete the split in real app 
-        categories : req?.body?.categories.split(','),
+        // categories : req?.body?.categories.split(','),
         attributes: req?.body?.attributes
     };
 
@@ -28,7 +29,22 @@ module.exports.add = async(req,res) => {
     }
 }
 
-// Get all product, with optional category filtering
+// Product inventory for seller
+module.exports.getInventory = async(req, res) => {
+    const sellerId = req?.user?.id;
+
+    try {
+        let products = await Product.find({seller: sellerId});
+        console.log(products);
+        res.status(201).json({products});
+    }
+    catch (err) {
+        res.status(500).json({message: err});
+    }
+
+}
+
+// Get all product, with optional category filtering for customer 
 // Implemented for pagination
 module.exports.getAll = async(req, res) => {
     const page = req?.query.page;
@@ -125,4 +141,6 @@ module.exports.delete = async (req, res) => {
         res.status(500).json({message: err});
     }
 }
+
+
 

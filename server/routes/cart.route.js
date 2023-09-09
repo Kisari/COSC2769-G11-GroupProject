@@ -1,7 +1,7 @@
 const express = require('express');
 const cartController = require('../controllers/cart.controller');
 const cartRouter = express.Router();
-const {requireAuth} = require('../helpers/user.helper');
+const {requireAuth} = require('../helpers/auth');
 
 // Get all items
 cartRouter.get('/api/v1/cart', requireAuth, cartController.get);

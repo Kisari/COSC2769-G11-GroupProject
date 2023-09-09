@@ -1,4 +1,4 @@
-const {mongoose, Schema} = require("mongoose");
+const {mongoose} = require("mongoose");
 
 // Define the product schema
 const productSchema = new mongoose.Schema({
@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema({
 
     categories: {
         type: [{
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Category'
         }],  
     },
@@ -40,8 +40,8 @@ const productSchema = new mongoose.Schema({
     },
     
     seller: {
-        type: Schema.Types.ObjectId,
-        ref: 'Seller'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Seller"
     }
 
 });

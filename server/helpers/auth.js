@@ -39,6 +39,7 @@ const requireAuth = (req, res, next) => {
             }
             else {
                 console.log(decodedToken);
+                req.user = {id: decodedToken.id};
                 next();
             }
         })

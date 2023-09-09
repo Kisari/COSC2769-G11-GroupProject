@@ -9,7 +9,6 @@ import onlineShop from "../../../assets/images/dashboard/online-shop.png";
 
 const DashBoardLayout = ({ path }) => {
   const { user, logout } = useAuth();
-  console.log(user);
   const handleLogout = async () => {
     await logout();
   };

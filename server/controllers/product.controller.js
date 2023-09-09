@@ -10,11 +10,13 @@ module.exports.add = async(req,res) => {
         description : req?.body?.description,
         price : req?.body?.price,
         image: req?.file?.path,
-        sellerId: req.user._id,
+        seller: req.id,
         // Delete the split in real app 
-        // categories : req?.body?.categories.split(','),
+        categories : req?.body?.categories,
         attributes: req?.body?.attributes
     };
+
+    // console.log(data.seller);
 
     if (data.attributes) {
         data.attributes = JSON.parse(data.attributes); 

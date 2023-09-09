@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const userHelper = require('../helpers/auth');
+const userHelper = require('../helpers/user.helper');
 // const bcrypt = require('bcrypt');
 
 // Define the user schema

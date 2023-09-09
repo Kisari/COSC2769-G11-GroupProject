@@ -1,6 +1,6 @@
 const Customer = require("../models/customer.model");
 const Seller = require("../models/seller.model");
-const { createToken } = require('../helpers/auth');
+const { createToken } = require('../helpers/user.helper');
 const bcrypt = require("bcrypt");
 
 // Error handling

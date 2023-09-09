@@ -10,8 +10,9 @@ module.exports.add = async(req,res) => {
         description : req?.body?.description,
         price : req?.body?.price,
         image: req?.file?.path,
+        sellerId: req.user._id,
         // Delete the split in real app 
-        categories : req?.body?.categories.split(','),
+        // categories : req?.body?.categories.split(','),
         attributes: req?.body?.attributes
     };
 
@@ -28,7 +29,22 @@ module.exports.add = async(req,res) => {
     }
 }
 
-// Get all product, with optional category filtering
+// Product inventory for seller
+module.exports.getInventory = async(req, res) => {
+    const sellerId = req?.user?.id;
+
+    try {
+        let products = await Product.find({seller: sellerId}).populate('categories', 'name');
+        console.log(products);
+        res.status(201).json({products});
+    }
+    catch (err) {
+        res.status(500).json({message: err});
+    }
+
+}
+
+// Get all product, with optional category filtering for customer 
 // Implemented for pagination
 module.exports.getAll = async(req, res) => {
     const page = req?.query.page;
@@ -41,7 +57,7 @@ module.exports.getAll = async(req, res) => {
     // Check if there is no page and category specified
     if (page === undefined && category === undefined) {
         try {
-            let products = await Product.find();
+            let products = await Product.find().populate('categories', 'name');
             
             // Send products as json
             res.status(200).json({products});
@@ -64,7 +80,7 @@ module.exports.getAll = async(req, res) => {
         const skip = parseInt(page) === 1 ? 0 : page * limit - limit;
 
         try {
-            let products = await Product.find(category ? {categories: {$in: {category}}}: null).skip(skip).limit(limit);
+            let products = await Product.find(category ? {categories: {$in: {category}}}: null).skip(skip).limit(limit).populate('categories', 'name');
             res.status(200).json({products});
         }
 
@@ -79,7 +95,7 @@ module.exports.getAll = async(req, res) => {
 module.exports.get = async(req,res) =>{
     const id = req?.params?.id;
     try {
-        const product  = await Product.findById(id).populate('categories');
+        const product  = await Product.findById(id).populate('categories', 'name');
         res.status(201).json({product});
     }
     catch (err) {
@@ -125,4 +141,6 @@ module.exports.delete = async (req, res) => {
         res.status(500).json({message: err});
     }
 }
+
+
 

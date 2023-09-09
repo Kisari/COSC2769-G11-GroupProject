@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/user.route');
 const productRouter = require('./routes/product.route');
 const categoryRouter = require('./routes/category.route');
+const cartRouter = require('./routes/cart.route');
 
 dotenv.config();
 
@@ -42,5 +43,6 @@ const db = require('./helpers/mongoose');
 app.use(userRouter);
 app.use(productRouter);
 app.use(categoryRouter);
+app.use(cartRouter);
 
 module.exports = app;

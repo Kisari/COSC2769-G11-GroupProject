@@ -1,21 +1,33 @@
 const Product = require("../models/product.model");
-const Customer = require("../models/customer.model")
 const Cart = require("../models/cart.model")
 const CartDetails = require("../models/cartDetails.model")
 
-module.exports.add = async(req,res) => {
-    const {productId, quantity} = req.body;
-    const customerId = req.user_.id;
+module.exports.get = async(req, res)  => {
+    const {cartId} = req.body;
 
     try {
-        let cart = await Cart.findByID({customerId});
+        let allItems = await CartDetails.find({cartId}).populate('productId','name');
+        res.status(200).json({allItems});
+    }
+
+    catch (err) {
+        res.status(500).json({message: 'Cannot retrieve cart'});
+    }
+}
+
+module.exports.add = async(req,res) => {
+    const {productId, quantity} = req.body;
+    const customerId = req?.user?._id;
+
+    try {
+        let cart = await Cart.findOne({customerId});
         
         // If cart already exists, find the cart details 
         if (cart) {
-            let cartDetails = await CartDetails.findByID({cartId: cart._id, productId});
+            let cartDetails = await CartDetails.findOne({cartId: cart._id, productId});
             
             if (cartDetails) {
-                const product = Product.findByID({_id: productId});
+                const product = await Product.findById({_id: productId});
                 if (product.stock == 0 || product.stock < quantity) {
                     res.json({message: 'Inadequate stock'});
                 }
@@ -23,18 +35,22 @@ module.exports.add = async(req,res) => {
                     // If product exists in the cart, update the quantity
                     cartDetails.quantity = quantity;
                     await cartDetails.save();
+                    res.status(201).json({cart, cartDetails});
                 }
             }
             else {
-                var newItem = cartDetails.create({cartId: cart._id, productId, quantity});
+                var newItem = await CartDetails.create({cartId: cart._id, productId, quantity});
                 cart.numberOfItems += 1;
+                res.status(201).json({cart, newItem});
+                await cart.save();
             }
 
-            res.status(201).json({cart, newItem});
+            
         }
         else {
             let newCart = await Cart.create({customerId, numberOfItems: 1}); 
-            let newCartDetails = await CartDetails.create({cartId: cart._id, productId, quantity});
+            let newCartDetails = await CartDetails.create({cartId: newCart._id, productId, quantity});
+           
 
             res.status(201).json({newCart, newCartDetails});
 
@@ -54,8 +70,9 @@ module.exports.remove = async(req, res) => {
 
     try {
         await CartDetails.findOneAndRemove({cartId, productId});
-        const cart =  await Cart.findByID({cartId});
+        const cart =  await Cart.findById(cartId);
         cart.numberOfItems -= 1;
+        await cart.save();
         res.status(201).json({message: "Item removed"});
     }
 

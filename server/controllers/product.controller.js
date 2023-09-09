@@ -41,7 +41,7 @@ module.exports.getAll = async(req, res) => {
     // Check if there is no page and category specified
     if (page === undefined && category === undefined) {
         try {
-            let products = await Product.find();
+            let products = await Product.find().populate('categories', 'name');
             
             // Send products as json
             res.status(200).json({products});
@@ -64,7 +64,7 @@ module.exports.getAll = async(req, res) => {
         const skip = parseInt(page) === 1 ? 0 : page * limit - limit;
 
         try {
-            let products = await Product.find(category ? {categories: {$in: {category}}}: null).skip(skip).limit(limit);
+            let products = await Product.find(category ? {categories: {$in: {category}}}: null).skip(skip).limit(limit).populate('categories', 'name');
             res.status(200).json({products});
         }
 
@@ -79,7 +79,7 @@ module.exports.getAll = async(req, res) => {
 module.exports.get = async(req,res) =>{
     const id = req?.params?.id;
     try {
-        const product  = await Product.findById(id).populate('categories');
+        const product  = await Product.findById(id).populate('categories', 'name');
         res.status(201).json({product});
     }
     catch (err) {

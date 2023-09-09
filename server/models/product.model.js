@@ -37,6 +37,11 @@ const productSchema = new mongoose.Schema({
     attributes: {
         type: Map,
         of: String
+    },
+    
+    seller: {
+        type: Schema.Types.ObjectId,
+        ref: 'Seller'
     }
 
 });

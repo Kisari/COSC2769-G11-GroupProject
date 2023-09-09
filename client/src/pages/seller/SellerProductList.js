@@ -5,6 +5,7 @@ import { useTableSearch } from "../../hook/TableSearchHook.js";
 
 import Card from "../../components/ui/Card.js";
 import ProductRow from "../../components/ui/ProductRow.js";
+import SellerCreateProductForm from "../../components/ui/SellerCreateProductForm.js";
 
 const SellerProductList = () => {
   const [products, setProducts] = useState([]);
@@ -18,6 +19,11 @@ const SellerProductList = () => {
     data: products,
     sortOption: sortOption,
   });
+  const [showCreateProductForm, setShowCreateProductForm] = useState(false);
+
+  const handleShowCreateProductForm = () => {
+    setShowCreateProductForm((prev) => !prev);
+  };
 
   useEffect(() => {
     async function getInitialData() {
@@ -30,16 +36,29 @@ const SellerProductList = () => {
     getInitialData();
   }, []);
 
+  function countAllProductQuantity(data) {
+    if (data?.length !== 0) {
+      const result = data?.reduce((acc, current) => acc + current?.stock, 0);
+      return result;
+    }
+  }
+
+  function countAllProductOutOfStock(data) {
+    if (data?.length !== 0) {
+      return data?.filter((item) => item?.stock === 0).length;
+    }
+  }
+
   const displayData = [
     {
       feature: "Total Product",
-      title: 243,
+      title: countAllProductQuantity(products),
       text: "Calculating all the stored product in warehouses",
       actionText: "Detail",
     },
     {
       feature: "Out Of Stock",
-      title: 93,
+      title: countAllProductOutOfStock(products),
       text: "All the products that quantity equals 0 and need to restock",
       actionText: "Detail",
     },
@@ -60,8 +79,17 @@ const SellerProductList = () => {
           <p className="fs-4 fw-bolder">Product List</p>
           <div className="d-flex ms-auto flex-row">
             <button className="btn btn-warning">Update</button>
-            <button className="btn btn-success ms-3">Create</button>
+            <button
+              className="btn btn-success ms-3"
+              onClick={() => handleShowCreateProductForm()}
+            >
+              Create
+            </button>
           </div>
+          <SellerCreateProductForm
+            show={showCreateProductForm}
+            handleClose={handleShowCreateProductForm}
+          />
         </div>
         <div className="col-12 mb-3 d-flex flex-column flex-md-row">
           <div className="col-12 col-md-6 d-flex flex-column">

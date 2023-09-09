@@ -34,7 +34,7 @@ module.exports.getInventory = async(req, res) => {
     const sellerId = req?.user?.id;
 
     try {
-        let products = await Product.find({seller: sellerId});
+        let products = await Product.find({seller: sellerId}).populate('categories', 'name');
         console.log(products);
         res.status(201).json({products});
     }

@@ -19,7 +19,7 @@ export const getAllCategory = async () => {
 
     if (res?.status === 200) {
       const { data } = res;
-      return data;
+      return data?.categories;
     } else {
       return res;
     }

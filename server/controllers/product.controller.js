@@ -15,9 +15,10 @@ module.exports.add = async(req,res) => {
         categories : req?.body?.categories,
         attributes: req?.body?.attributes
     };
+    
+    data.image = data.image.replace(/\\/g, '/');
 
-    // console.log(data.seller);
-
+    // Parse attributes as Json for mapping 
     if (data.attributes) {
         data.attributes = JSON.parse(data.attributes); 
     }
@@ -33,7 +34,7 @@ module.exports.add = async(req,res) => {
 
 // Product inventory for seller
 module.exports.getInventory = async(req, res) => {
-    const sellerId = req?.user?.id;
+    const sellerId = req?.id;
 
     try {
         let products = await Product.find({seller: sellerId}).populate('categories', 'name');

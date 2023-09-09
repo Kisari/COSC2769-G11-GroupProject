@@ -6,7 +6,7 @@ const Product = require("../models/product.model")
 
 // Check out cart and creat an order
 module.exports.checkout = async(req,res) => {
-  const customerId = req.user.id;
+  const customerId = req.id;
   let totalPrice = 0;
   try {
     const order = await Order.create({customerId, totalPrice});
@@ -16,23 +16,26 @@ module.exports.checkout = async(req,res) => {
     const cartItems = await CartDetails.find({carId: cart._id});
 
     for (let cartItem of cartItems) {
-      let product = await Product.find({_id: cartItem.productId});
+      var product = await Product.findById(cartItem.productId);
       // Calculate the subtotal 
-      let subtotal = product.price * cartItem.quantity;
+      let subTotal = product.price * cartItem.quantity;
       var orderDetails = await OrderDetails.create({
         orderId: order._id,
         productId: cartItem.productId,
         quantity: cartItem.quantity,
-        subtotal: subtotal
+        subTotal: subTotal
       })
     };
 
     // Calculate the total cost 
-    let orderItems = OrderDetails.find({orderId: order._id});
-    const total = orderItems.reduce((total, item) => total + item.subtotal, 0);
+    let orderItems = await OrderDetails.find({orderId: order._id});
+    let total = 0;
+    for (let orderItem of orderItems) {
+      total += orderItem.subTotal;
+    }
 
     // Update the product stock
-    for (const orderItem of orderItems) {
+    for (let orderItem of orderItems) {
       let  product = await Product.findById(orderItem.productId);
       if (product) {
         product.stock -= orderItem.quantity;
@@ -45,7 +48,7 @@ module.exports.checkout = async(req,res) => {
 
     // Empty the cart
     await CartDetails.deleteMany({cartId: cart._id});
-    await Cart.findAndRemove({customerId: customerId});
+    await Cart.findOneAndRemove({customerId: customerId});
     
     res.status(200).json({order, orderDetails});
   }
@@ -55,9 +58,15 @@ module.exports.checkout = async(req,res) => {
   }
 }
 
-module.exports.customerView = async(req, res) => {
+// Customer's order history 
+module.exports.customerGetAll = async(req, res) => {
   
 } 
+
+// Seller's order database 
+module.exports.sellerGetAll = async(req, res) => {
+
+}
 
 exports.changeProductStatus = async(req,res) => {
     const order = Order.findbyId(req.params.id);

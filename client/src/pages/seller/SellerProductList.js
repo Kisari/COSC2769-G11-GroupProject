@@ -1,19 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { getAllProduct } from "../../action/product.js";
+import { useTableSearch } from "../../hook/TableSearchHook.js";
 
 import Card from "../../components/ui/Card.js";
 import ProductRow from "../../components/ui/ProductRow.js";
+import SellerCreateProductForm from "../../components/ui/SellerCreateProductForm.js";
 
 const SellerProductList = () => {
+  const [products, setProducts] = useState([]);
+  const [search, setSeach] = useState(null);
+  const [sortOption, setSortedOption] = useState({
+    option: 0,
+    asc: false,
+  });
+  const { filteredData } = useTableSearch({
+    searchVal: search,
+    data: products,
+    sortOption: sortOption,
+  });
+  const [showCreateProductForm, setShowCreateProductForm] = useState(false);
+
+  const handleShowCreateProductForm = () => {
+    setShowCreateProductForm((prev) => !prev);
+  };
+
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllProduct().then((res) => {
+        if (res?.products) {
+          setProducts(res?.products);
+        }
+      });
+    }
+    getInitialData();
+  }, []);
+
+  function countAllProductQuantity(data) {
+    if (data?.length !== 0) {
+      const result = data?.reduce((acc, current) => acc + current?.stock, 0);
+      return result;
+    }
+  }
+
+  function countAllProductOutOfStock(data) {
+    if (data?.length !== 0) {
+      return data?.filter((item) => item?.stock === 0).length;
+    }
+  }
+
   const displayData = [
     {
       feature: "Total Product",
-      title: 243,
+      title: countAllProductQuantity(products),
       text: "Calculating all the stored product in warehouses",
       actionText: "Detail",
     },
     {
       feature: "Out Of Stock",
-      title: 93,
+      title: countAllProductOutOfStock(products),
       text: "All the products that quantity equals 0 and need to restock",
       actionText: "Detail",
     },
@@ -34,21 +79,40 @@ const SellerProductList = () => {
           <p className="fs-4 fw-bolder">Product List</p>
           <div className="d-flex ms-auto flex-row">
             <button className="btn btn-warning">Update</button>
-            <button className="btn btn-success ms-3">Create</button>
+            <button
+              className="btn btn-success ms-3"
+              onClick={() => handleShowCreateProductForm()}
+            >
+              Create
+            </button>
           </div>
+          <SellerCreateProductForm
+            show={showCreateProductForm}
+            handleClose={handleShowCreateProductForm}
+          />
         </div>
         <div className="col-12 mb-3 d-flex flex-column flex-md-row">
           <div className="col-12 col-md-6 d-flex flex-column">
             <div className="fs-5 fw-bolder">Sorted By</div>
             <div className="col-12 d-flex flex-row justify-content-center align-items-center">
               <div className="col-6">
-                <select className="form-select form-select" defaultValue="0">
-                  <option value="0" disabled>
+                <select
+                  className="form-select form-select"
+                  defaultValue={0}
+                  type="number"
+                  onChange={(e) =>
+                    setSortedOption({
+                      ...sortOption,
+                      option: parseInt(e.target.value),
+                    })
+                  }
+                >
+                  <option value={0} disabled>
                     Choose option
                   </option>
-                  <option value="1">Name</option>
-                  <option value="2">Price</option>
-                  <option value="3">Date Added</option>
+                  <option value={1}>Name</option>
+                  <option value={2}>Price</option>
+                  <option value={3}>Date Added</option>
                 </select>
               </div>
               <div className="col-6 px-3">
@@ -56,8 +120,9 @@ const SellerProductList = () => {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
+                    onChange={(e) =>
+                      setSortedOption({ ...sortOption, asc: !sortOption?.asc })
+                    }
                   />
                   <label
                     className="form-check-label"
@@ -77,6 +142,7 @@ const SellerProductList = () => {
                   type="text"
                   className="form-control"
                   placeholder="Search..."
+                  onChange={(e) => setSeach(e.target.value)}
                 />
               </div>
             </div>
@@ -86,18 +152,22 @@ const SellerProductList = () => {
           <div className="d-flex flex-row flex-wrap col-12">
             <div className="col-1 fw-bold">Id</div>
             <div className="col-2 fw-bold">Image</div>
-            <div className="col-2 fw-bold">Product anme</div>
-            <div className="col-5 fw-bold">Product description</div>
-            <div className="col-2 fw-bold">Product Quantity</div>
+            <div className="col-2 fw-bold">Name</div>
+            <div className="col-3 fw-bold">Description</div>
+            <div className="col-1 fw-bold">Price</div>
+            <div className="col-1 fw-bold">Stock</div>
+            <div className="col-2 fw-bold">Created</div>
           </div>
         </div>
-        {[1, 2, 3].map((item, index) => {
-          return (
-            <div className="col-12 text-center" key={index}>
-              <ProductRow data={item} />
-            </div>
-          );
-        })}
+        {filteredData &&
+          filteredData?.map((item, index) => {
+            return (
+              <div className="col-12 text-center" key={index}>
+                <ProductRow data={item} />
+                <hr className="my-2" />
+              </div>
+            );
+          })}
       </div>
     </div>
   );

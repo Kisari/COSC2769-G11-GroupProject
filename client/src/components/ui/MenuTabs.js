@@ -15,13 +15,26 @@ function MenuTabs({ products }) {
       }
     });
     listOfCats = [...new Set(listOfCats)];
-    return listOfCats;
+    var out = listOfCats.reduce(function (p, c) {
+      if (
+        !p.some(function (el) {
+          return el._id === c._id;
+        })
+      )
+        p.push(c);
+      return p;
+    }, []);
+    return out;
   }
 
-  function getProductByCategory(catName) {
-    return products?.products?.filter((product) =>
-      product?.categories?.includes(catName)
+  function getProductByCategory(catId) {
+    var result = [];
+    products?.products?.filter((product) =>
+      product?.categories?.map(
+        (cat) => cat?._id === catId && result.push(product)
+      )
     );
+    return result;
   }
   useEffect(() => {
     if (products?.length !== 0) {
@@ -38,15 +51,19 @@ function MenuTabs({ products }) {
       className="mb-3"
     >
       {products?.length !== 0 &&
-        getUniqueCategory(products)?.map((singleCat) => {
+        getUniqueCategory(products)?.map((singleCat, index) => {
           return (
-            <Tab eventKey={singleCat} title={singleCat} key={singleCat}>
-              <h3>{singleCat}</h3>
+            <Tab
+              eventKey={singleCat?._id}
+              title={singleCat?.name}
+              key={singleCat?._id}
+            >
+              <h3>{singleCat?.name}</h3>
               <div className="container-lg my-4">
                 <div className="row">
                   {products?.length !== 0 &&
-                    key === singleCat &&
-                    getProductByCategory(singleCat)?.map((item) => {
+                    key === singleCat?._id &&
+                    getProductByCategory(singleCat?._id)?.map((item) => {
                       return (
                         <div className="col mt-4" key={item?._id}>
                           <Card data={item} />

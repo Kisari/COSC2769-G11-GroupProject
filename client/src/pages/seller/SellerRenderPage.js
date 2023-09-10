@@ -8,7 +8,7 @@ import SellerStatistic from "./SellerStatistic.js";
 const SellerRenderPage = () => {
   const location = useLocation().pathname;
   return (
-    <div className="container col-12 col-md-9 col-lg-10 p-4">
+    <div className="col-12 col-md-9 col-lg-10 p-4">
       {location === "/sellers/productList" && <SellerProductList />}
       {location === "/sellers/orderList" && <SellerOrderList />}
       {location === "/sellers/statistic" && <SellerStatistic />}

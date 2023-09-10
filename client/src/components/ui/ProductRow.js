@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { deleteProduct } from "../../action/product.js";
 
 import SellerUpdateProductForm from "../../components/ui/SellerUpdateProductForm.js";
 
 const ProductRow = ({ data }) => {
+  const navigate = useNavigate();
   const [showUpdateProductForm, setShowUpdateProductForm] = useState(false);
 
   const handleShowUpdateProductForm = () => {
@@ -13,7 +15,9 @@ const ProductRow = ({ data }) => {
 
   const handleDeleteProduct = async (id) => {
     await deleteProduct(id).then((res) => {
-      console.log(res);
+      if (res?.message) {
+        navigate(0);
+      }
     });
   };
   function formatDate(dateString) {
@@ -24,7 +28,6 @@ const ProductRow = ({ data }) => {
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   }
-  console.log(data);
 
   return (
     <div className="d-flex flex-row flex-wrap col-12 text-warp my-1">
@@ -36,6 +39,14 @@ const ProductRow = ({ data }) => {
         {data?.image?.split("\\")?.[4] && (
           <img
             src={require(`../../uploads/${data?.image?.split("\\")[4]}`)}
+            alt="..."
+            className="img-fluid"
+            style={{ width: "64px", height: "64px" }}
+          />
+        )}
+        {data?.image?.split("/")?.[4] && (
+          <img
+            src={require(`../../uploads/${data?.image?.split("/")[4]}`)}
             alt="..."
             className="img-fluid"
             style={{ width: "64px", height: "64px" }}

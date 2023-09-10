@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { updateProduct } from "../../action/product";
 import { getAllCategory } from "../../action/category";
-
-import { useAuth } from "../../hook/AuthHook";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -11,10 +10,10 @@ import Form from "react-bootstrap/Form";
 import FormInput from "./FormInput";
 
 const SellerUpdateProductForm = ({ data, show, handleClose }) => {
+  const navigate = useNavigate();
   const [file, setFile] = useState();
   const [allCats, setAllCats] = useState([]);
   const [currentChoice, setCurrentChoice] = useState("");
-  const { user } = useAuth();
 
   const handleSetFile = (e) => {
     setFile(URL.createObjectURL(e.target.files[0]));
@@ -42,10 +41,10 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
     }
     payload = { ...payload, attributes: atr };
 
-    console.log(payload);
-
     await updateProduct(data?._id, payload).then((res) => {
-      console.log(res);
+      if (res) {
+        navigate(0);
+      }
     });
   };
 

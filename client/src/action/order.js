@@ -40,6 +40,19 @@ export const getOrderByCustomerID = async (id) => {
   } catch (error) {}
 };
 
+export const getCustomerInfoByOrderID = async (id) => {
+  try {
+    const res = await api.getCustomerInfoByOrderID(id);
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
 export const getOrderBySellerID = async (id) => {
   try {
     const res = await api.getOrderBySellerID(id);

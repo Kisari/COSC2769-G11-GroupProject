@@ -4,6 +4,7 @@ const Cart = require("../models/cart.model")
 const CartDetails = require("../models/cartDetails.model")
 const Product = require("../models/product.model")
 const Customer = require('../models/customer.model')
+const mongoose  = require("mongoose")
 
 // Check out cart and creat an order
 module.exports.checkout = async (req, res) => {
@@ -288,4 +289,47 @@ module.exports.getCustomerInfo = async (req, res) => {
   }
 }
 
+module.exports.viewStatistics = async (req, res) => {
+  const sellerId = req?.id._id;
+  console.log(sellerId);
+  
+  try {
+    const statistics = await OrderDetails.aggregate([
+      // Find the product
+      { $lookup: {
+        from: 'products',
+        localField: 'productId',
+        foreignField: '_id',
+        as: 'product'
+      }},
 
+      {
+        // Check if the seller is matched 
+        $match: {
+          'product.seller': new mongoose.Types.ObjectId(sellerId)
+        }
+      },
+      {
+        // Group the order by order status 
+        $group: {
+          _id: '$status',
+          count: {$sum:  1}
+        }
+      }
+
+    ]);
+    console.log(statistics);
+    // Convert result to object
+    const result = {};
+    for (const stat of statistics) {
+      console.log(stat);
+      result[stat._id] = stat.count;
+    }
+    // Success
+    res.status(201).json({result});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json({message: 'Cannot get data'});
+  }
+}

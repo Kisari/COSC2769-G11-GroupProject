@@ -16,7 +16,6 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
         return;
     }
   }
-  console.log(mode);
   return (
     <Modal show={show} onHide={handleShow}>
       <Modal.Header closeButton>

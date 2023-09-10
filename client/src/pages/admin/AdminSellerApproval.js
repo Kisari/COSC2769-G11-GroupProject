@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import UpdateSellerStatus from "../../components/ui/UpdateSellerStatus.js";
+import {
+  getAllSeller,
+  approveSeller,
+  rejectSeller,
+} from "../../action/auth.js";
+
 import Card from "../../components/ui/Card.js";
 
 const AdminSellerApproval = () => {
-  const [showSeller, showShowSeller] = useState(false);
-  var testData = [
-    {
-      businessName: "NeetQ",
-      status: "pending",
-      email: "123sadn@gmail.com",
-      phone: "091273784",
-      username: "minhkute",
-    },
-  ];
+  const [sellerList, setSellerList] = useState([]);
 
   const displayData = [
     {
@@ -35,9 +31,32 @@ const AdminSellerApproval = () => {
       actionText: "Details",
     },
   ];
-  const handleShowSeller = () => {
-    showShowSeller((prev) => !prev);
+
+  useEffect(() => {
+    async function getAllPendingSeller() {
+      await getAllSeller().then((res) => {
+        if (res?.sellers) {
+          setSellerList(res?.sellers);
+        }
+      });
+    }
+
+    getAllPendingSeller();
+  }, []);
+
+  console.log(sellerList);
+
+  const handleAcceptSeller = async (id) => {
+    await approveSeller(id).then((res) => {
+      console.log(res);
+    });
   };
+  const handleRejectSeller = async (id) => {
+    await rejectSeller(id).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <div className="p-md-3">
       <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row mb-md-4">
@@ -55,34 +74,37 @@ const AdminSellerApproval = () => {
       <div className="col-12">
         <div className="col-12 text-center mb-3">
           <div className="d-flex flex-row flex-wrap col-12">
-            <div className="col-2 fw-bold">User Name</div>
-            <div className="col-2 fw-bold">Bussiness Name</div>
-            <div className="col-3 fw-bold">Email</div>
-            <div className="col-2 fw-bold">Status</div>
+            <div className="col-2 fw-bold text-break">Bussiness Name</div>
+            <div className="col-2 fw-bold text-break">Phone</div>
+            <div className="col-3 fw-bold text-break">Email</div>
+            <div className="col-2 fw-bold text-break">Status</div>
             <div className="col-3">Update</div>
           </div>
         </div>
-        {testData.map((item, index) => {
+        {sellerList?.map((item, index) => {
           return (
             <div className="col-12 text-center" key={index}>
               <div className="d-flex flex-row flex-wrap col-12 text-warp my-1">
-                <div className="col-2 fw-bold">{item?.username}</div>
-                <div className="col-2 fw-bold">{item?.businessName}</div>
-                <div className="col-3 fw-bold">{item?.email}</div>
-                <div className="col-2 fw-bold">{item?.status}</div>
-                <div className="col-3">
+                <div className="col-2 fw-bold text-break">
+                  {item?.businessName}
+                </div>
+                <div className="col-2 fw-bold text-break">{item?.phone}</div>
+                <div className="col-3 fw-bold text-break">{item?.email}</div>
+                <div className="col-2 fw-bold text-break">{item?.status}</div>
+                <div className="d-flex flex-row flex-wrap col-3 gap-2 justify-content-center align-items-center">
                   <button
                     className="btn btn-success"
-                    onClick={() => handleShowSeller()}
+                    onClick={() => handleAcceptSeller(item?._id)}
                   >
-                    Update
+                    Accept
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleRejectSeller(item?._id)}
+                  >
+                    Reject
                   </button>
                 </div>
-                <UpdateSellerStatus
-                  data={item}
-                  show={showSeller}
-                  handleClose={handleShowSeller}
-                />
               </div>
             </div>
           );

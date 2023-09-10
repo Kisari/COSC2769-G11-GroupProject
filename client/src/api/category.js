@@ -12,7 +12,7 @@ export const getCategoryByID = (id) =>
   axios.get(`${backend_url}/api/v1/category/${id}`);
 
 export const deleteCategory = (id) =>
-  axios.get(`${backend_url}/api/v1/category/${id}`);
+  axios.delete(`${backend_url}/api/v1/category/${id}`);
 
 export const updateCategory = (id, formData) =>
-  axios.get(`${backend_url}/api/v1/category/${id}`, formData);
+  axios.put(`${backend_url}/api/v1/category/${id}`, formData);

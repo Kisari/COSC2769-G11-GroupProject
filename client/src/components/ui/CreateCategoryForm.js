@@ -34,8 +34,7 @@ const CreateCategoryForm = ({ data, show, handleClose, isSub }) => {
     var payload = {};
 
     for (let [key, value] of formData.entries()) {
-      if (idx === 3 && !isSub) {
-        payload = { ...payload, [key]: [value] };
+      if (idx === 3 && !value) {
         continue;
       }
       if (idx === 2) {
@@ -45,8 +44,6 @@ const CreateCategoryForm = ({ data, show, handleClose, isSub }) => {
       }
       idx += 1;
     }
-
-    console.log(payload);
 
     await createCategory(payload).then((res) => {
       if (res?.category) {
@@ -131,7 +128,6 @@ const CreateCategoryForm = ({ data, show, handleClose, isSub }) => {
               className="form-select mb-3"
               name="parents"
               value={currentChoice}
-              required
               onChange={(e) => setCurrentChoice(e.target.value)}
             >
               <option value={""} disabled>

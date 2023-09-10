@@ -1,13 +1,39 @@
 import React, { useEffect, useState } from "react";
 
 import { getProductByID } from "../../action/product";
+import {
+  getCustomerInfoByOrderID,
+  sellerShipOrder,
+  sellerCancelOrder,
+} from "../../action/order";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const OrderPreview = ({ data, show, handleShow, mode }) => {
+const OrderPreview = ({ data, show, handleShow, mode, customer }) => {
   const [productDetail, setProductDetail] = useState([]);
+  const [customerInfo, setCustomerInfo] = useState();
 
+  console.log(data);
+
+  const handleShippedProduct = async (index) => {
+    if (data?.[index]?.orderId && data?.[index]?._id) {
+      await sellerShipOrder(data?.[index]?.orderId, data?.[index]?._id).then(
+        (res) => {
+          console.log(res);
+        }
+      );
+    }
+  };
+  const handleCancelProduct = async (index) => {
+    if (data?.[index]?.orderId && data?.[index]?._id) {
+      await sellerCancelOrder(data?.[index]?.orderId, data?.[index]?._id).then(
+        (res) => {
+          console.log(res);
+        }
+      );
+    }
+  };
   useEffect(() => {
     async function getProductDetail(id) {
       await getProductByID(id).then((res) => {
@@ -21,8 +47,26 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
         getProductDetail(element?.productId);
       });
     }
+
+    async function getCustomerInformation(id) {
+      await getCustomerInfoByOrderID(id).then((res) => {
+        if (res?.customerInfo) {
+          setCustomerInfo(res?.customerInfo);
+        }
+      });
+    }
+
+    if (data && data?.length !== 0) {
+      getCustomerInformation(data?.[0].orderId);
+    }
     // eslint-disable-next-line
   }, [data]);
+
+  function sumTheTotal() {
+    if (data) {
+      return data.reduce((acc, current) => acc + current?.subTotal, 0);
+    }
+  }
 
   return (
     <Modal show={show} onHide={handleShow}>
@@ -31,19 +75,6 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex flex-column justify-content-center align-items-center">
-          {/* <div className="col-12">
-            <div className="progress col-12">
-              <div
-                className={`progress-bar ${stateProgressBar()} bg-warning`}
-                role="progressbar"
-              ></div>
-            </div>
-            <div className="mt-3 col-12 d-flex flex-row text-center">
-              <div className="col-3 text-muted">Pending</div>
-              <div className="col-6 text-muted">Accepted</div>
-              <div className="col-3 text-muted">Shipping</div>
-            </div>
-          </div> */}
           <div className="col-12 d-flex flex-column my-3">
             <div className="d-flex flex-row justify-content-between align-items-center p-2 text-start fw-bold text-center">
               <div className="col-2 text-break">Name</div>
@@ -74,10 +105,22 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
                   <div className="col-2 text-break">
                     {data?.[index]?.status}
                   </div>
-                  {data?.[index]?.status !== "accepted" ? (
+                  {data?.[index]?.status === "new" &&
+                  mode &&
+                  mode === "Update" ? (
                     <div className="col-3 text-break">
-                      <button className="btn btn-sm btn-success">Accept</button>
-                      <button className="btn btn-sm btn-danger">Reject</button>
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() => handleShippedProduct(index)}
+                      >
+                        Shipped
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleCancelProduct(index)}
+                      >
+                        Cancel
+                      </button>
                     </div>
                   ) : (
                     <div className="col-3 text-break">
@@ -90,9 +133,23 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
               );
             })}
           </div>
-          <div className="col-12 d-flex flex-row justify-content-between align-items-center">
-            <div className="fw-bold">Total</div>
-            <div className="text-secondary">{data?.totalPrice}</div>
+          <div className="col-12 d-flex flex-column justify-content-center align-items center">
+            {customerInfo &&
+              Object.keys(customerInfo).map((key, index) => {
+                return (
+                  <div key={index}>
+                    <b className="text-capitalize fw-bold text-danger">
+                      {" "}
+                      {key}
+                    </b>{" "}
+                    {":"} {customerInfo[key]}
+                  </div>
+                );
+              })}
+          </div>
+          <div className="col-12 d-flex flex-row justify-content-between align-items-center mt-3">
+            <div className="fw-bold">Sub total</div>
+            <div className="text-secondary">{sumTheTotal()}</div>
           </div>
         </div>
       </Modal.Body>
@@ -110,7 +167,7 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
         {mode && mode === "Update" && (
           <div className="col-12 d-flex flex-row justify-content-between">
             <Button
-              className="col-5"
+              className="w-100"
               variant="warning"
               type="button"
               onClick={() => handleShow()}

@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { getAllOrderBySeller } from "../../action/order";
 
 import Card from "../../components/ui/Card.js";
 import OrderRow from "../../components/ui/OrderRow.js";
 
 const SellerStatistic = () => {
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllOrderBySeller().then((res) => {
+        if (res?.orders) {
+          setOrders(res?.orders);
+        }
+      });
+    }
+
+    getInitialData();
+  }, []);
+
+  console.log(orders);
   const displayData = [
     {
       feature: "New Orders",
@@ -48,27 +64,6 @@ const SellerStatistic = () => {
           return (
             <div key={index} className="col-12 col-md-4 col-lg-3">
               <Card data={item} statistic={true} />
-            </div>
-          );
-        })}
-      </div>
-      <div className="col-12 mb-3 d-flex flex-column">
-        <div className="col-12">
-          <p className="fs-4 fw-bolder">Product List</p>
-        </div>
-        <div className="col-12 text-center mb-3">
-          <div className="d-flex flex-row flex-wrap col-12">
-            <div className="col-1 fw-bold">Id</div>
-            <div className="col-2 fw-bold">Products count</div>
-            <div className="col-2 fw-bold">Status</div>
-            <div className="col-2 fw-bold">Total</div>
-            <div className="col-5 fw-bold">Action</div>
-          </div>
-        </div>
-        {[1, 2, 3].map((item, index) => {
-          return (
-            <div className="col-12 text-center" key={index}>
-              <OrderRow data={item} isView={true} />
             </div>
           );
         })}

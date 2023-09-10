@@ -59,6 +59,7 @@ const OrderRow = ({ data, isView }) => {
           show={viewModal}
           handleShow={setViewModal}
           mode={"View"}
+          customer={data?.customerId}
         />
       )}
       {updateModal && (

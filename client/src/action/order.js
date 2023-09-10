@@ -27,6 +27,32 @@ export const getAllOrderBySeller = async () => {
   } catch (error) {}
 };
 
+export const getOrderByCustomerID = async (id) => {
+  try {
+    const res = await api.getOrderByCustomerID(id);
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
+export const getOrderBySellerID = async (id) => {
+  try {
+    const res = await api.getOrderBySellerID(id);
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
 export const customerAcceptOrder = async (orderID, productID) => {
   try {
     const res = await api.customerAcceptOrder(orderID, productID);

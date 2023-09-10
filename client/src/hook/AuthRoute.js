@@ -7,6 +7,9 @@ export const AuthRoute = ({ children, role }) => {
 
   //Navigate the user to blocked page if they are not the specific user
 
+  if (user?.type === "seller" && user?.status !== "approved") {
+    return <Navigate to="/blocked" />;
+  }
   if (user == null) {
     return <Navigate to="/blocked" />;
   }

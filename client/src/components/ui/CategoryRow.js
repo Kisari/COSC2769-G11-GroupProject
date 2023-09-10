@@ -42,16 +42,11 @@ const CategoryRow = ({ data }) => {
         {data?.attributes?.map((data, index) => {
           return <AttributeRow key={index} data={data} />;
         })}
-        {/* <button
-          type="button"
-          className="btn custom-btn btn-custom position-relative btn-sm"
-        >
-          + Attribute
-        </button> */}
       </div>
       <div className="col-12">
         <div className="collapse" id={data?._id}>
           <div className="card card-body p-0 ps-3">
+            {console.log(data?.child)}
             {data?.child &&
               data?.child?.map((child) => {
                 return <CategoryRow data={child} key={child?._id} />;

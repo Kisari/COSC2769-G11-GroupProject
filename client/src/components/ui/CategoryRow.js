@@ -1,13 +1,25 @@
 import React, { useState } from "react";
 
+import { deleteCategory } from "../../action/category";
+import { useNavigate } from "react-router-dom";
+
 import AttributeRow from "./AttributeRow.js";
-import CreateCategoryForm from "./CreateCategoryForm.js";
+import UpdateCategoryForm from "./UpdateCategoryForm.js";
 
 const CategoryRow = ({ data }) => {
-  const [showCreateCategory, setShowCreateCategory] = useState(false);
+  const navigate = useNavigate();
+  const [showUpdateCategory, setShowUpdateCategory] = useState(false);
 
-  const handleShowCreateCategory = () => {
-    setShowCreateCategory((prev) => !prev);
+  const handleShowUpdateCategory = () => {
+    setShowUpdateCategory((prev) => !prev);
+  };
+
+  const handleRemoveCategory = async () => {
+    await deleteCategory(data?._id).then((res) => {
+      if (res) {
+        navigate(0);
+      }
+    });
   };
   return (
     <div className="col-12 my-3">
@@ -21,20 +33,24 @@ const CategoryRow = ({ data }) => {
           #{data?._id} Category: <b> {data?.name}</b>
         </button>
         <div className="d-flex flex-row justify-content-end col gap-1 gap-md-2">
-          <button className="btn btn-danger">Remove</button>
-          <button className="btn btn-warning">Update</button>
           <button
-            className="btn btn-info"
-            onClick={() => handleShowCreateCategory()}
+            className="btn btn-danger"
+            onClick={() => handleRemoveCategory(data?._id)}
           >
-            Create
+            Remove
+          </button>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleShowUpdateCategory()}
+          >
+            Update
           </button>
         </div>
-        {showCreateCategory && (
-          <CreateCategoryForm
+        {showUpdateCategory && (
+          <UpdateCategoryForm
             data={data}
-            show={showCreateCategory}
-            handleClose={handleShowCreateCategory}
+            show={showUpdateCategory}
+            handleClose={handleShowUpdateCategory}
           />
         )}
       </div>
@@ -42,12 +58,6 @@ const CategoryRow = ({ data }) => {
         {data?.attributes?.map((data, index) => {
           return <AttributeRow key={index} data={data} />;
         })}
-        {/* <button
-          type="button"
-          className="btn custom-btn btn-custom position-relative btn-sm"
-        >
-          + Attribute
-        </button> */}
       </div>
       <div className="col-12">
         <div className="collapse" id={data?._id}>

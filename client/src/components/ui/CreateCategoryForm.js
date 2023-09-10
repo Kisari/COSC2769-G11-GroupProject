@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from "react";
 
-import { getAllCategory } from "../../action/category.js";
+import { getAllCategory, createCategory } from "../../action/category.js";
+import { useNavigate } from "react-router-dom";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 import FormInput from "./FormInput.js";
 
-const CreateCategoryForm = ({ data, show, handleClose }) => {
+const CreateCategoryForm = ({ data, show, handleClose, isSub }) => {
   const [allCats, setAllCats] = useState([]);
   const [currentChoice, setCurrentChoice] = useState("");
+  const [atrInput, setAtrInpur] = useState("");
   const [atrList, setAtrList] = useState([]);
+  const navigate = useNavigate();
+
+  const handleAddAtr = (atr) => {
+    if (!atrList?.includes(atr)) {
+      setAtrList([...atrList, atr]);
+    }
+  };
+
+  const handleRemoveAtr = (atr) => {
+    if (atrList?.includes(atr)) {
+      setAtrList(atrList.filter((elems) => elems !== atr));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -17,14 +34,22 @@ const CreateCategoryForm = ({ data, show, handleClose }) => {
     var payload = {};
 
     for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+      if (idx === 3 && !value) {
+        continue;
+      }
       if (idx === 2) {
+        payload = { ...payload, [key]: atrList };
       } else {
         payload = { ...payload, [key]: value };
       }
       idx += 1;
     }
-    console.log("Submit creating categories form", e);
+
+    await createCategory(payload).then((res) => {
+      if (res?.category) {
+        navigate(0);
+      }
+    });
   };
   useEffect(() => {
     async function getAllCategoryData() {
@@ -58,30 +83,65 @@ const CreateCategoryForm = ({ data, show, handleClose }) => {
             type={"text"}
             name={"description"}
           ></FormInput>
-          <FormInput
-            label={"Category Attribute"}
-            placeholder={"Enter category name"}
-            type={"text"}
-            name={"attributes"}
-          ></FormInput>
-          <select
-            className="form-select mb-3"
-            name="category"
-            value={currentChoice}
-            required
-            onChange={(e) => setCurrentChoice(e.target.value)}
-          >
-            <option value={""} disabled>
-              Select a category
-            </option>
-            {allCats?.map((cat) => {
+          <div className="col-12 d-flex flex-row justify-content-center align-items-center gap-2">
+            <div className="col">
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Category Attribute</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter the attribute name you want"
+                  required
+                  name={"attributes"}
+                  onChange={(e) => setAtrInpur(e.target.value)}
+                />
+              </Form.Group>
+            </div>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={() => handleAddAtr(atrInput)}
+            >
+              Add
+            </button>
+          </div>
+          <div className="col-12 d-flex flex-row flex-wrap gap-2 mb-3">
+            {atrList?.map((item, index) => {
               return (
-                <option value={cat?._id} key={cat?._id}>
-                  {cat?.name}
-                </option>
+                <span
+                  className="badge bg-secondary d-flex flex-row align-items-center"
+                  key={index}
+                >
+                  {item}
+                  <button
+                    className="btn-sm btn text-white"
+                    type="button"
+                    onClick={() => handleRemoveAtr(item)}
+                  >
+                    -
+                  </button>
+                </span>
               );
             })}
-          </select>
+          </div>
+          {!isSub && (
+            <select
+              className="form-select mb-3"
+              name="parents"
+              value={currentChoice}
+              onChange={(e) => setCurrentChoice(e.target.value)}
+            >
+              <option value={""} disabled>
+                Select a parent category
+              </option>
+              {allCats?.map((cat) => {
+                return (
+                  <option value={cat?._id} key={cat?._id}>
+                    {cat?.name}
+                  </option>
+                );
+              })}
+            </select>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button type="button" variant="secondary" onClick={handleClose}>

@@ -8,7 +8,7 @@ module.exports.add = async (req, res) => {
     attributes: req.body.attributes,
     parents: req.body.parents,
   };
-  console.log(data.name)
+  console.log(data.name);
 
   const existingCategory = await Category.findOne({ name: data.name });
 

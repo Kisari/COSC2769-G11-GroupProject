@@ -36,3 +36,42 @@ export const logoutUser = async () => {
     console.log(data);
   } catch (error) {}
 };
+
+export const getAllSeller = async () => {
+  try {
+    const res = await api.getAllSeller();
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
+export const approveSeller = async (id) => {
+  try {
+    const res = await api.approveSeller(id);
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
+export const rejectSeller = async (id) => {
+  try {
+    const res = await api.rejectSeller(id);
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};

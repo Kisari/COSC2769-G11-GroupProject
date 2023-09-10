@@ -94,6 +94,7 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
             type={"text"}
             name={"name"}
             value={data?.name}
+            isDisable={"true"}
           ></FormInput>
           <FormInput
             label={"Product Stock"}

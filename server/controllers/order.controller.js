@@ -266,4 +266,7 @@ module.exports.sellerCanceled = async (req, res) => {
   }
 }
 
+// Get customer's information
+module.exports.getCustomerInfo
+
 

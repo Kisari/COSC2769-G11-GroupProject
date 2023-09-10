@@ -110,7 +110,7 @@ module.exports.loginPost = async (req, res) => {
     }
 
     const token = createToken(validUser);
-    res.cookie("jwt", token, { maxAge: 24 * 60 * 60 });
+    res.cookie("jwt", token, { maxAge: 1000 * 60 * 60 * 24});
     // Success status
     res.status(200).json({ token: token });
   } catch (err) {

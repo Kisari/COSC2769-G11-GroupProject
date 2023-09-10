@@ -1,33 +1,34 @@
 const Product = require("../models/product.model");
 
-// Create a new product
-module.exports.add = async (req, res) => {
-  let data = {
-    name: req?.body?.name,
-    stock: req?.body?.stock,
-    description: req?.body?.description,
-    price: req?.body?.price,
-    image: req?.file?.path,
-    seller: req.id,
-    // Delete the split in real app
-    categories: req?.body?.categories,
-    attributes: req?.body?.attributes,
-  };
+// Create a new product 
+module.exports.add = async(req,res) => {
 
-  data.image = data.image.replace(/\\/g, "/");
+    let data = {
+        name : req?.body?.name,
+        stock : req?.body?.stock,
+        description : req?.body?.description,
+        price : req?.body?.price,
+        image: req?.file?.path,
+        seller: req.id,
+        // Delete the split in real app 
+        categories : req?.body?.categories,
+        attributes: req?.body?.attributes
+    };
+    
 
-  // Parse attributes as Json for mapping
-  if (data.attributes) {
-    data.attributes = JSON.parse(data.attributes);
-  }
-  try {
-    const product = await Product.create(data);
-    res.status(200).json({ product });
-    console.log(product);
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-};
+    // Parse attributes as Json for mapping 
+    if (data.attributes) {
+        data.attributes = JSON.parse(data.attributes); 
+    }
+    try{
+        const product = await Product.create(data);
+        res.status(200).json({product});
+        console.log(product);
+    }
+    catch(error){
+        res.status(500).json({message: error});
+    }
+}
 
 // Product inventory for seller
 module.exports.getInventory = async (req, res) => {

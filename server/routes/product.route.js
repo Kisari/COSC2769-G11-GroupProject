@@ -10,7 +10,7 @@ productRouter.get('/api/v1/product', productController.getAll);
 productRouter.get('/api/v1/product/:id', productController.get);
 productRouter.post('/api/v1/product', requireAuth, uploadImg, productController.add);
 productRouter.delete('/api/v1/product/:id', requireAuth, productController.delete);
-productRouter.put('/api/v1/product/:id', requireAuth, uploadImg, productController.update);
+productRouter.put('/api/v1/product/:id', requireAuth, productController.update);
 productRouter.get('/api/v1/inventory', requireAuth, productController.getInventory);
 
 module.exports = productRouter;

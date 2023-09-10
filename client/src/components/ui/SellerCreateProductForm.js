@@ -37,12 +37,17 @@ const SellerCreateProductForm = ({ show, handleClose }) => {
           atr = { ...atr, [key]: value };
         }
       } else {
-        payload = { ...payload, [key]: value };
+        if (idx === 3 || idx === 5) {
+          payload = { ...payload, [key]: parseInt(value) };
+        } else {
+          payload = { ...payload, [key]: value };
+        }
       }
       idx += 1;
     }
     payload = { ...payload, attributes: atr };
-    payload = { ...payload, user: user?._id };
+
+    console.log(payload);
 
     await createProduct(payload).then((res) => {
       console.log(res);

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { addChildForRender } from "../../helper/Category.js";
+import { getAllCategory } from "../../action/category.js";
 
 import CategoryRow from "../../components/ui/CategoryRow.js";
 import Card from "../../components/ui/Card.js";
@@ -74,6 +75,22 @@ const AdminCategoryList = () => {
       actionText: "Calculate",
     },
   ];
+
+  const [allCats, setAllCats] = useState([]);
+
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllCategory().then((res) => {
+        if (res) {
+          setAllCats(res);
+        }
+      });
+    }
+    getInitialData();
+  }, []);
+
+  console.log(allCats);
+
   return (
     <div className="p-md-3">
       <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row mb-md-4">

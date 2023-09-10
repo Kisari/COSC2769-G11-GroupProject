@@ -9,16 +9,20 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
   const [productDetail, setProductDetail] = useState([]);
 
   useEffect(() => {
-    async function getAllProductDetail() {
-      await getProductByID(data?.productId).then((res) => {
+    async function getProductDetail(id) {
+      await getProductByID(id).then((res) => {
         if (res) {
-          console.log(res);
+          setProductDetail([...productDetail, res]);
         }
       });
     }
-
-    getAllProductDetail();
-  }, []);
+    if (data && data?.length !== 0) {
+      data.forEach((element) => {
+        getProductDetail(element?.productId);
+      });
+    }
+    // eslint-disable-next-line
+  }, [data]);
 
   function stateProgressBar() {
     switch (data?.status) {
@@ -35,7 +39,7 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
   return (
     <Modal show={show} onHide={handleShow}>
       <Modal.Header closeButton>
-        <Modal.Title className="ms-auto">#{data?.id} Order</Modal.Title>
+        <Modal.Title className="ms-auto">#{data?._id} Order</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex flex-column justify-content-center align-items-center">

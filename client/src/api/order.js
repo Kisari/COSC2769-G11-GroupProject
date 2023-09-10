@@ -8,6 +8,11 @@ export const getAllOrderByCustomer = () =>
 export const getAllOrderBySeller = () =>
   axios.get(`${backend_url}/api/v1/seller/order`);
 
+export const getOrderByCustomerID = (orderID) =>
+  axios.get(`${backend_url}/api/v1/customer/order/${orderID}`);
+
+export const getOrderBySellerID = (orderID) =>
+  axios.get(`${backend_url}/api/v1/seller/order/${orderID}`);
 export const customerAcceptOrder = (orderID, productID) =>
   axios.put(
     `${backend_url}/api/v1/customer/order/${orderID}/details/${productID}/accepted`

@@ -11,16 +11,14 @@ const SellerOrderList = () => {
   useEffect(() => {
     async function getInitialData() {
       await getAllOrderBySeller().then((res) => {
-        if (res) {
-          setOrders(res);
+        if (res?.orders) {
+          setOrders(res?.orders);
         }
       });
     }
 
     getInitialData();
   }, []);
-
-  console.log(orders);
 
   const displayData = [
     {
@@ -58,7 +56,8 @@ const SellerOrderList = () => {
             <div className="col-5 fw-bold">Action</div>
           </div>
         </div>
-        {[1, 2, 3].map((item, index) => {
+        {}
+        {orders.map((item, index) => {
           return (
             <div className="col-12 text-center" key={index}>
               <OrderRow data={item} />

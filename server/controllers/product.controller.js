@@ -1,34 +1,26 @@
 const Product = require("../models/product.model");
 
-// Create a new product 
-module.exports.add = async(req,res) => {
-
-    let data = {
-        name : req?.body?.name,
-        stock : req?.body?.stock,
-        description : req?.body?.description,
-        price : req?.body?.price,
-        image: req?.file?.path,
-        seller: req.id,
-        // Delete the split in real app 
-        categories : req?.body?.categories,
-        attributes: req?.body?.attributes
-    };
-    
-
-    // Parse attributes as Json for mapping 
-    if (data.attributes) {
-        data.attributes = JSON.parse(data.attributes); 
-    }
-    try{
-        const product = await Product.create(data);
-        res.status(200).json({product});
-        console.log(product);
-    }
-    catch(error){
-        res.status(500).json({message: error});
-    }
-}
+// Create a new product
+module.exports.add = async (req, res) => {
+  let data = {
+    name: req?.body?.name,
+    stock: req?.body?.stock,
+    description: req?.body?.description,
+    price: req?.body?.price,
+    image: req?.file?.path,
+    seller: req.id,
+    // Delete the split in real app
+    categories: req?.body?.categories,
+    attributes: req?.body?.attributes,
+  };
+  try {
+    const product = await Product.create(data);
+    res.status(200).json({ product });
+    console.log(product);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
 
 // Product inventory for seller
 module.exports.getInventory = async (req, res) => {
@@ -40,7 +32,7 @@ module.exports.getInventory = async (req, res) => {
       "name"
     );
     console.log(products);
-    res.status(201).json({ products });
+    res.status(200).json({ products });
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -141,7 +133,7 @@ module.exports.delete = async (req, res) => {
   try {
     const deleted = await Product.findByIdAndDelete({ _id: id });
     res
-      .status(201)
+      .status(200)
       .json({ message: "Delete successfully", product: deleted._id });
   } catch (err) {
     res.status(500).json({ message: err });

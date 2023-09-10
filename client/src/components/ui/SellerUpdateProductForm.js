@@ -41,7 +41,8 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
       idx += 1;
     }
     payload = { ...payload, attributes: atr };
-    payload = { ...payload, user: user?._id };
+
+    console.log(payload);
 
     await updateProduct(data?._id, payload).then((res) => {
       console.log(res);

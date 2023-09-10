@@ -9,6 +9,9 @@ export const getAllOrderByCustomer = () =>
 export const getAllOrderBySeller = () =>
   axios.get(`${backend_url}/api/v1/seller/order`);
 
+export const getSellerStatistic = () =>
+  axios.get(`${backend_url}/api/v1/seller/statistics`);
+
 export const getCustomerInfoByOrderID = (id) =>
   axios.get(`${backend_url}/api/v1/seller/order/${id}/customer`);
 

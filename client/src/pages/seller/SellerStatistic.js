@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllOrderBySeller } from "../../action/order";
+import { getSellerStatistic } from "../../action/order";
 
 import Card from "../../components/ui/Card.js";
 
@@ -8,9 +8,10 @@ const SellerStatistic = () => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     async function getInitialData() {
-      await getAllOrderBySeller().then((res) => {
-        if (res?.orders) {
-          setOrders(res?.orders);
+      await getSellerStatistic().then((res) => {
+        if (res) {
+          console.log(res);
+          setOrders(res);
         }
       });
     }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { addToCartAction } from "../action/cart";
+import axios from "axios"; // Import Axios
 
 // Import Bootstrap Component
 import Container from "react-bootstrap/Container";
@@ -14,9 +16,44 @@ const ProductDetail = () => {
   const location = useLocation();
   const [product, setProduct] = useState({});
   const [cart, setCart] = useState([]);
+  const [cartID, setCartID] = useState("");
 
-  const addToCart = (product) => {
-    setCart([...cart, { number: 1, product: product }]);
+  const addToCart = async (product) => {
+    try {
+      // Check if the product already exists in the cart
+      const existingProductIndex = cart.findIndex(
+        (item) => item.product._id === product._id
+      );
+
+      if (existingProductIndex !== -1) {
+        // If the product exists, update its quantity by incrementing by 1
+        const updatedCart = [...cart];
+        updatedCart[existingProductIndex].number += 1;
+        setCart(updatedCart);
+
+        // Call the addToCart API
+        const response = await axios.post("http://localhost:4000/api/v1/cart", {
+          productId: product._id,
+          quantity: updatedCart[existingProductIndex].number + 1,
+        });
+        // Handle the API response as needed
+        console.log("API Response:", response.data);
+        setCartID(response.data.cart._id);
+      } else {
+        // Call the addToCart API
+        const response = await axios.post("http://localhost:4000/api/v1/cart", {
+          productId: product._id,
+          quantity: 1,
+        });
+        // If the product is not in the cart, add it with a quantity of 1
+        setCart([...cart, { number: 1, product: product }]);
+      }
+    } catch (error) {
+      console.error(
+        "An error occurred while adding the product to the cart:",
+        error
+      );
+    }
   };
 
   // Load the cart from localStorage when the component mounts
@@ -26,6 +63,10 @@ const ProductDetail = () => {
       setCart(JSON.parse(storedCart));
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartID", JSON.stringify(cartID));
+  }, [cartID]);
 
   // Save the cart to localStorage whenever it changes
   useEffect(() => {

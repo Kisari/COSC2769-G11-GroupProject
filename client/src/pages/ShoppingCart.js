@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import Axios
+
 import {
   Container,
   Row,
@@ -14,11 +16,10 @@ import {
 import productImage from "../assets/images/producttest.webp";
 
 function ShoppingCart() {
-  const [quantities, setQuantities] = useState([1, 1, 1]);
   const [cart, setCart] = useState([]);
+  const [cartID, setCartID] = useState("");
 
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const itemPrice = 44.0; // Price for each item
   const shippingFee = 5.0; // Shipping fee
 
   // Load quantities from localStorage when the component mounts
@@ -29,28 +30,59 @@ function ShoppingCart() {
     }
   }, []);
 
-  console.log(cart);
-  // Save quantities to localStorage whenever they change
+  // Load the cart from localStorage when the component mounts
   useEffect(() => {
-    localStorage.setItem("quantities", JSON.stringify(quantities));
-  }, [quantities]);
+    const storedCardID = localStorage.getItem("cartID");
+    if (storedCardID) {
+      setCartID(JSON.parse(storedCardID));
+    }
+  }, []);
 
-  const handleQuantityChange = (index, newQuantity) => {
-    if (newQuantity === 0) {
-      const newQuantities = [...quantities];
-      newQuantities.splice(index, 1); // Remove the item at the specified index
-      setQuantities(newQuantities);
-    } else {
-      const newQuantities = [...quantities];
-      newQuantities[index] = newQuantity;
-      setQuantities(newQuantities);
+  // Save the cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  // Handle checkout
+  const handleCheckout = async () => {
+    try {
+      // Make an API request to trigger the checkout
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/checkout"
+      );
+      setCart([]);
+      console.log(response.data);
+      setShowSuccessAlert(true);
+    } catch (error) {
+      console.error("Checkout error:", error);
     }
   };
 
-  const handleDeleteItem = (index) => {
-    const newQuantities = [...quantities];
-    newQuantities.splice(index, 1); // Remove the item at the specified index
-    setQuantities(newQuantities);
+  const handleQuantityChange = async (data, number) => {
+    // Call the addToCart API
+    const response = await axios.post("http://localhost:4000/api/v1/cart", {
+      productId: data.product._id,
+      quantity: number,
+    });
+    // Handle the API response as needed
+    console.log("API Response:", response.data);
+    if (number === 0) {
+      setCart(cart.filter((item) => item.product._id !== data.product._id));
+      // Call the remove product from cart API
+    }
+    // Check if the product already exists in the cart
+    else {
+      const existingProductIndex = cart.findIndex(
+        (item) => item.product._id === data.product._id
+      );
+      const updatedCart = [...cart];
+      updatedCart[existingProductIndex].number = number;
+      setCart(updatedCart);
+    }
+  };
+
+  const handleDeleteItem = (data) => {
+    setCart(cart.filter((item) => item.product._id !== data.product._id));
   };
 
   const handlePurchase = () => {
@@ -61,16 +93,16 @@ function ShoppingCart() {
   };
 
   const calculateTotalPrice = () => {
-    const totalPrice = quantities.reduce(
-      (total, quantity) => total + quantity * itemPrice,
+    const totalPrice = cart.reduce(
+      (total, item) => total + item.product.price * item.number,
       0
     );
     return totalPrice.toFixed(2); // Format to two decimal places
   };
 
   const calculateTotalPriceWithShipping = () => {
-    const totalPrice = quantities.reduce(
-      (total, quantity) => total + quantity * itemPrice,
+    const totalPrice = cart.reduce(
+      (total, item) => total + item.product.price * item.number,
       0
     );
     return (totalPrice + shippingFee).toFixed(2); // Add shipping fee and format to two decimal places
@@ -96,7 +128,7 @@ function ShoppingCart() {
                         <h1 className="fw-bold mb-0 text-black">
                           Shopping Cart
                         </h1>
-                        <h6 className="mb-0 text-muted">3 items</h6>
+                        <h6 className="mb-0 text-muted">{cart.length} items</h6>
                       </div>
                       <hr className="my-4" />
 
@@ -115,20 +147,24 @@ function ShoppingCart() {
                             </h6>
                           </Col>
                           <Col md={3} lg={3} xl={2} className="d-flex">
+                            {/* Minue Button */}
                             <Button
                               variant="link"
                               className="px-2"
                               onClick={() =>
-                                handleQuantityChange(index, data.number)
+                                handleQuantityChange(data, data.number - 1)
                               }
                             >
                               <i className="bi bi-dash"></i>
                             </Button>
                             <Form.Control
+                              style={{
+                                width: "50px",
+                              }}
                               id={`form${index}`}
                               min="0"
                               name="quantity"
-                              value={1}
+                              value={data.number}
                               type="number"
                               className="form-control form-control-sm"
                               onChange={(e) =>
@@ -138,10 +174,13 @@ function ShoppingCart() {
                                 )
                               }
                             />
+                            {/* Plus Button */}
                             <Button
                               variant="link"
                               className="px-2"
-                              // onClick={() => handleQuantityChange(index, 1)}
+                              onClick={() =>
+                                handleQuantityChange(data, data.number + 1)
+                              }
                             >
                               <i className="bi bi-plus-lg"></i>
                             </Button>
@@ -153,7 +192,7 @@ function ShoppingCart() {
                             <a
                               href="#!"
                               className="text-muted"
-                              onClick={() => handleDeleteItem(index)}
+                              onClick={() => handleDeleteItem(data)}
                             >
                               <i className="bi bi-x"></i>
                             </a>
@@ -182,8 +221,8 @@ function ShoppingCart() {
                       <hr className="my-4" />
 
                       <div className="d-flex justify-content-between mb-4">
-                        <h5 className="text-uppercase">items 3</h5>
-                        <h5>{calculateTotalPrice()} VND</h5>
+                        <h5 className="text-uppercase">items {cart.length}</h5>
+                        <h5>{calculateTotalPrice()} $</h5>
                       </div>
 
                       <h5 className="text-uppercase mb-3">Shipping</h5>
@@ -227,17 +266,14 @@ function ShoppingCart() {
 
                       <div className="d-flex justify-content-between mb-5">
                         <h5 className="text-uppercase">Total price</h5>
-                        <h5>
-                          {calculateTotalPriceWithShipping()}
-                          VND
-                        </h5>
+                        <h5>{calculateTotalPriceWithShipping()}$</h5>
                       </div>
 
                       <Button
                         type="button"
                         className="btn btn-dark btn-block btn-lg"
                         data-mdb-ripple-color="dark"
-                        onClick={handlePurchase}
+                        onClick={handleCheckout}
                       >
                         Purchase
                       </Button>

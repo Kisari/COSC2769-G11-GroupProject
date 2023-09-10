@@ -9,6 +9,7 @@ import Seller from "../pages/Seller.js";
 import Admin from "../pages/Admin.js";
 
 import AccessDenied from "../pages/AccessDenied.js";
+import OrderManagement from "../pages/OrderManagement.js";
 
 // Public Routes
 const publicRoutes = [
@@ -20,6 +21,7 @@ const publicRoutes = [
   { path: "/shoppingCart", component: ShoppingCart },
   { path: "/sellers/*", component: Seller, layout: null, require: "seller" },
   { path: "/admin/*", component: Admin, layout: null, require: "admin" },
+  { path: "/orderManagement", component: OrderManagement },
 ];
 
 // Private Routes

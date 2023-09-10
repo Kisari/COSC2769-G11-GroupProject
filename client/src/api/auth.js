@@ -2,6 +2,7 @@
 import axios from "axios";
 
 const backend_url = "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 export const signupUser = (formData) =>
   axios.post(`${backend_url}/api/v1/user/signup`, formData);

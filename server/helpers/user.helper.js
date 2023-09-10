@@ -17,7 +17,7 @@ const hashPassword = async function (doc, next) {
 };
 
 // Authentication using jwt
-const maxAge = 24 * 60 * 60 * 60;
+const maxAge = 1000 * 60 * 60 * 24;
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_KEY, {
     // Token expires in 1 day

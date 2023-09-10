@@ -16,7 +16,6 @@ module.exports.add = async(req,res) => {
         attributes: req?.body?.attributes
     };
     
-    data.image = data.image.replace(/\\/g, '/');
 
     // Parse attributes as Json for mapping 
     if (data.attributes) {

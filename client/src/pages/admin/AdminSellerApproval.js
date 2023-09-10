@@ -6,10 +6,13 @@ import {
   rejectSeller,
 } from "../../action/auth.js";
 
+import { useNavigate } from "react-router-dom";
+
 import Card from "../../components/ui/Card.js";
 
 const AdminSellerApproval = () => {
   const [sellerList, setSellerList] = useState([]);
+  const navigate = useNavigate();
 
   const displayData = [
     {
@@ -48,12 +51,16 @@ const AdminSellerApproval = () => {
 
   const handleAcceptSeller = async (id) => {
     await approveSeller(id).then((res) => {
-      console.log(res);
+      if (res) {
+        navigate(0);
+      }
     });
   };
   const handleRejectSeller = async (id) => {
     await rejectSeller(id).then((res) => {
-      console.log(res);
+      if (res) {
+        navigate(0);
+      }
     });
   };
 

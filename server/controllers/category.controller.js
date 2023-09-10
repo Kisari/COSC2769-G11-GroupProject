@@ -8,7 +8,7 @@ module.exports.add = async (req, res) => {
     attributes: req.body.attributes,
     parents: req.body.parents,
   };
-  console.log(data.name)
+  console.log(data.name);
 
   const existingCategory = await Category.findOne({ name: data.name });
 
@@ -56,7 +56,7 @@ module.exports.update = async (req, res) => {
   const id = req.params.id;
   const data = {
     // Split for testing
-    attributes: req.body.attributes.split(","),
+    attributes: req.body.attributes,
     parents: req.body.parents,
     description: req.body.description,
   };

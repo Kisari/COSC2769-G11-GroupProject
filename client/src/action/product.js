@@ -13,11 +13,23 @@ export const getAllProduct = async () => {
   } catch (error) {}
 };
 
+export const getAllProductOfSeller = async () => {
+  try {
+    const res = await api.getAllProductOfSeller();
+
+    if (res?.status === 200) {
+      const { data } = res;
+      console.log(data);
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
 export const getProductByID = async (id) => {
   try {
     const res = await api.getProductByID(id);
-
-    console.log(res);
 
     if (res?.status === 200) {
       const { data } = res;

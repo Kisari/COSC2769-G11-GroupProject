@@ -24,7 +24,7 @@ const ProductRow = ({ data }) => {
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   }
-  console.log();
+  console.log(data);
 
   return (
     <div className="d-flex flex-row flex-wrap col-12 text-warp my-1">
@@ -35,7 +35,7 @@ const ProductRow = ({ data }) => {
       >
         {data?.image?.split("\\")?.[4] && (
           <img
-            src={require(`../../uploads/${data?.image?.split("\\")?.[4]}`)}
+            src={require(`../../uploads/${data?.image?.split("\\")[4]}`)}
             alt="..."
             className="img-fluid"
             style={{ width: "64px", height: "64px" }}

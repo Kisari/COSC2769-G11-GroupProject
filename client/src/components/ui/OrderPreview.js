@@ -11,8 +11,8 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
   useEffect(() => {
     async function getProductDetail(id) {
       await getProductByID(id).then((res) => {
-        if (res) {
-          setProductDetail([...productDetail, res]);
+        if (res?.product) {
+          setProductDetail([...productDetail, res?.product]);
         }
       });
     }
@@ -24,18 +24,6 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
     // eslint-disable-next-line
   }, [data]);
 
-  function stateProgressBar() {
-    switch (data?.status) {
-      case "pending":
-        return "col-3";
-      case "accepted":
-        return "col-6";
-      case "rejected":
-        return "col-6";
-      default:
-        return;
-    }
-  }
   return (
     <Modal show={show} onHide={handleShow}>
       <Modal.Header closeButton>
@@ -43,7 +31,7 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <div className="col-12">
+          {/* <div className="col-12">
             <div className="progress col-12">
               <div
                 className={`progress-bar ${stateProgressBar()} bg-warning`}
@@ -55,22 +43,49 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
               <div className="col-6 text-muted">Accepted</div>
               <div className="col-3 text-muted">Shipping</div>
             </div>
-          </div>
+          </div> */}
           <div className="col-12 d-flex flex-column my-3">
-            <div className="d-flex flex-row justify-content-between align-items-center p-2 text-start fw-bold">
-              <div className="col-3">Name</div>
-              <div className="col-6">Description</div>
-              <div className="col-2">Quantity</div>
+            <div className="d-flex flex-row justify-content-between align-items-center p-2 text-start fw-bold text-center">
+              <div className="col-2 text-break">Name</div>
+              <div className="col-3 text-break">Image</div>
+              <div className="col-2 text-break">Quantity</div>
+              <div className="col-2 text-break">Status</div>
+              <div className="col-3 text-break">Action</div>
             </div>
-            {data?.orderItems?.map((product, index) => {
+            {productDetail?.map((product, index) => {
               return (
                 <div
                   key={index}
-                  className="d-flex flex-row justify-content-between align-items-center p-2 text-start text-secondary"
+                  className="d-flex flex-row justify-content-between align-items-center p-2 text-start text-secondary text-center"
                 >
-                  <div className="col-3">{product?.title}</div>
-                  <div className="col-6">{product?.description}</div>
-                  <div className="col-2">{product?.quantity}</div>
+                  <div className="col-2 text-break">{product?.name}</div>
+                  <div className="col-3 text-break">
+                    <img
+                      src={require(`../../uploads/${
+                        product?.image?.split("\\")?.[4]
+                      }`)}
+                      alt="..."
+                      style={{ width: "40px", height: "40px" }}
+                    />
+                  </div>
+                  <div className="col-2 text-break">
+                    {data?.[index]?.quantity}
+                  </div>
+                  <div className="col-2 text-break">
+                    {data?.[index]?.status}
+                  </div>
+                  {data?.[index]?.status !== "accepted" ? (
+                    <div className="col-3 text-break">
+                      <button className="btn btn-sm btn-success">Accept</button>
+                      <button className="btn btn-sm btn-danger">Reject</button>
+                    </div>
+                  ) : (
+                    <div className="col-3 text-break">
+                      <button className="btn btn-sm btn-success" disabled>
+                        None
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -101,14 +116,6 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
               onClick={() => handleShow()}
             >
               Cancel
-            </Button>
-            <Button
-              className="col-5"
-              variant="success"
-              type="submit"
-              onClick={() => handleShow()}
-            >
-              Update
             </Button>
           </div>
         )}

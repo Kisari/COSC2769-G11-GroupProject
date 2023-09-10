@@ -41,7 +41,8 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
       idx += 1;
     }
     payload = { ...payload, attributes: atr };
-    payload = { ...payload, user: user?._id };
+
+    console.log(payload);
 
     await updateProduct(data?._id, payload).then((res) => {
       console.log(res);
@@ -61,7 +62,7 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
 
   return (
     <Modal show={show} onHide={handleClose} size="lg">
-      <Form onSubmit={(e) => handleSubmit(e)}>
+      <Form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
         <Modal.Header closeButton>
           <Modal.Title className="ms-auto">Update Order</Modal.Title>
         </Modal.Header>
@@ -173,8 +174,8 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
             >
               Cancel
             </Button>
-            <Button className="btn btn-success" type="submit">
-              Create
+            <Button className="btn btn-warning" type="submit">
+              Update
             </Button>
           </div>
         </Modal.Footer>

@@ -47,6 +47,8 @@ const AdminCategoryList = () => {
     setShow((prev) => !prev);
   };
 
+  console.log(allCats);
+
   return (
     <div className="p-md-3">
       <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row mb-md-4">

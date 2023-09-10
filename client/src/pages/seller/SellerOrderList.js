@@ -52,7 +52,7 @@ const SellerOrderList = () => {
             <div className="col-1 fw-bold">Id</div>
             <div className="col-2 fw-bold">Products count</div>
             <div className="col-2 fw-bold">Status</div>
-            <div className="col-2 fw-bold">Total</div>
+            <div className="col-2 fw-bold">SubTotal</div>
             <div className="col-5 fw-bold">Action</div>
           </div>
         </div>

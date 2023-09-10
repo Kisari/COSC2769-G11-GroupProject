@@ -5,60 +5,64 @@ import { getSellerStatistic } from "../../action/order";
 import Card from "../../components/ui/Card.js";
 
 const SellerStatistic = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState();
   useEffect(() => {
     async function getInitialData() {
       await getSellerStatistic().then((res) => {
-        if (res) {
-          console.log(res);
-          setOrders(res);
+        if (res?.result) {
+          console.log(res?.result);
+          setOrders(res?.result);
         }
       });
     }
 
     getInitialData();
   }, []);
+  function getTotalStatus(amount) {
+    var total = 0;
+    if (orders) {
+      Object.keys(orders).forEach((key, index) => {
+        total += orders[key];
+      });
+    }
+    return parseInt((amount / total) * 100);
+  }
 
   const displayData = [
     {
       feature: "New Orders",
-      title: 23,
+      title: orders?.new || 0,
       text: "Calculating all the stored product in warehouses",
-      account: 25,
-      actionText: "Show",
+      account: getTotalStatus(orders?.new || 0),
     },
     {
       feature: "Shipped Orders",
-      title: 123,
+      title: orders?.shipped || 0,
       text: "Calculating all the stored product in warehouses",
-      account: 22,
-      actionText: "Show",
+      account: getTotalStatus(orders?.shipped || 0),
     },
     {
       feature: "Canceled Orders",
-      title: 23,
+      title: orders?.canceled || 0,
       text: "Calculating all the stored product in warehouses",
-      account: 9,
-      actionText: "Show",
+      account: getTotalStatus(orders?.canceled || 0),
     },
     {
       feature: "Accepted Orders",
-      title: 22,
+      title: orders?.accepted || 0,
       text: "Calculating all the stored product in warehouses",
-      account: 14,
-      actionText: "Show",
+      account: getTotalStatus(orders?.accepted || 0),
     },
     {
       feature: "Rejected Orders",
-      title: 3,
+      title: orders?.rejected || 0,
       text: "Calculating all the stored product in warehouses",
-      account: 2,
-      actionText: "Show",
+      account: getTotalStatus(orders?.rejected || 0),
     },
   ];
   return (
     <div className="d-flex flex-column align-items-center justify-content-center p-md-4">
-      <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row">
+      <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row gap-4">
         {displayData.map((item, index) => {
           return (
             <div key={index} className="col-12 col-md-4 col-lg-3">

@@ -29,13 +29,19 @@ const OrderRow = ({ data, isView }) => {
     setUpdateModal((prev) => !prev);
   };
 
+  console.log(orderDetail);
+
   return (
     <div className="d-flex flex-row flex-wrap col-12 text-warp my-1">
-      <div className="col-1 fw-muted">123</div>
-      <div className="col-2 fw-muted">3</div>
+      <div className="col-1 fw-muted text-break">{data?._id}</div>
+      <div className="col-2 fw-muted">
+        {orderDetail?.reduce((acc, current) => acc + current?.quantity, 0)}
+      </div>
       <div className="col-2 fw-muted">pending</div>
-      <div className="col-2 fw-bold">$1200</div>
-      <div className="col-5 fw-muted text-truncate d-flex flex-row flex-wrap justify-content-evenly align-items-center">
+      <div className="col-2 fw-bold">
+        ${orderDetail?.reduce((acc, current) => acc + current?.subTotal, 0)}
+      </div>
+      <div className="col-5 fw-muted text-truncate d-flex flex-row flex-wrap justify-content-evenly align-items-start">
         <button
           type="button"
           className="btn btn-info"

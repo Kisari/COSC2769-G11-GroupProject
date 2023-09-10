@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import { getAllOrderBySeller } from "../../action/order";
 
 import OrderRow from "../../components/ui/OrderRow.js";
 import Card from "../../components/ui/Card.js";
 
 const SellerOrderList = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllOrderBySeller().then((res) => {
+        if (res) {
+          setOrders(res);
+        }
+      });
+    }
+
+    getInitialData();
+  }, []);
+
+  console.log(orders);
+
   const displayData = [
     {
       feature: "Total Orders",

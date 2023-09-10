@@ -15,12 +15,16 @@ module.exports.checkout = async (req, res) => {
 
     // Move cart items to the order
     const cart = await Cart.find({ customerId: customerId });
-    const cartItems = await CartDetails.find({ carId: cart._id });
+    const cartItems = await CartDetails.find({ cartId: cart._id });
 
     for (let cartItem of cartItems) {
-      var product = await Product.findById(cartItem.productId);
-      // Calculate the subtotal
+      let product = await Product.findById(cartItem.productId);
+      // if (!product) {
+      //   console.log(`Product with ID ${cartItem.productId} not found`);
+      //   continue; // skip this iteration of the loop
+      // }
       let subTotal = product.price * cartItem.quantity;
+      console.log(subTotal);
       var orderDetails = await OrderDetails.create({
         orderId: order._id,
         productId: cartItem.productId,
@@ -34,6 +38,7 @@ module.exports.checkout = async (req, res) => {
     let total = 0;
     for (let orderItem of orderItems) {
       total += orderItem.subTotal;
+      console.log(total);
     }
 
     // Update the product stock
@@ -52,7 +57,7 @@ module.exports.checkout = async (req, res) => {
     await CartDetails.deleteMany({ cartId: cart._id });
     await Cart.findOneAndRemove({ customerId: customerId });
 
-    res.status(200).json({ order, orderDetails });
+    res.status(200).json({ order, orderItems });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Error during checkout" });

@@ -17,6 +17,8 @@ export const getProductByID = async (id) => {
   try {
     const res = await api.getProductByID(id);
 
+    console.log(res);
+
     if (res?.status === 200) {
       const { data } = res;
       return data;

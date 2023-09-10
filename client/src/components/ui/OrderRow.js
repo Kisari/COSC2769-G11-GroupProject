@@ -21,8 +21,6 @@ const OrderRow = ({ data, isView }) => {
     // eslint-disable-next-line
   }, []);
 
-  console.log(orderDetail);
-
   const hanleViewModal = () => {
     setViewModal((prev) => !prev);
   };

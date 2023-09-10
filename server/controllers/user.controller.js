@@ -87,7 +87,7 @@ module.exports.loginPost = async (req, res) => {
 
     if (customer) {
       user = customer;
-    } else {
+    } else if (seller) {
       user = seller;
     }
 
@@ -103,7 +103,7 @@ module.exports.loginPost = async (req, res) => {
     }
 
     const token = createToken(validUser);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: 24 * 60 * 60 });
+    res.cookie("jwt", token, { maxAge: 24 * 60 * 60 });
     // Success status
     res.status(200).json({ token: token });
   } catch (err) {

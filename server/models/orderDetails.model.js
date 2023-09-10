@@ -19,7 +19,7 @@ const orderDetailsSchema = mongoose.Schema({
 
     subTotal: Number,
 
-    productStatus: {
+    status: {
         type: String,
         enum: ['new', 'shipped', 'canceled', 'accepted', 'rejected'],
         default: 'new'

@@ -9,13 +9,11 @@ const SellerOrderList = () => {
       feature: "Total Orders",
       title: 243,
       text: "Involving all the orders contain your products",
-      actionText: "Detail",
     },
     {
       feature: "In Pending",
       title: 4,
       text: "All the orders that need your action! Please handle as soon as possible",
-      actionText: "Process",
     },
   ];
   return (

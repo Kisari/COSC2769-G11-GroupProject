@@ -104,7 +104,8 @@ module.exports.get = async (req, res) => {
 module.exports.update = async (req, res) => {
     const id = req.params.id;
     console.log(id);
-    const { name, stock, description, price, attributes, categories } = req.body;
+    const { name, stock, description, price, attributes, categories } = req?.body;
+    console.log(name);
     const image = req?.file?.path;
 
     try {

@@ -85,7 +85,8 @@ module.exports.loginPost = async (req, res) => {
     let user;
     let admin = {
       email: 'admin@gmail.com',
-      password: 'admin123'
+      password: 'admin123',
+      type: 'admin'
     };
     let validUser;
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -11,13 +11,29 @@ import {
   Alert,
 } from "react-bootstrap";
 
-import product from "../assets/images/producttest.webp";
+import productImage from "../assets/images/producttest.webp";
 
 function ShoppingCart() {
   const [quantities, setQuantities] = useState([1, 1, 1]);
+  const [cart, setCart] = useState([]);
+
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const itemPrice = 44.0; // Price for each item
   const shippingFee = 5.0; // Shipping fee
+
+  // Load quantities from localStorage when the component mounts
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart"));
+    if (storedCart) {
+      setCart(storedCart);
+    }
+  }, []);
+
+  console.log(cart);
+  // Save quantities to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("quantities", JSON.stringify(quantities));
+  }, [quantities]);
 
   const handleQuantityChange = (index, newQuantity) => {
     if (newQuantity === 0) {
@@ -84,24 +100,26 @@ function ShoppingCart() {
                       </div>
                       <hr className="my-4" />
 
-                      {quantities.map((quantity, index) => (
+                      {cart.map((data, index) => (
+                        // Product Component in Shopping
                         <div
                           className="row mb-4 d-flex justify-content-between align-items-center"
-                          key={index}
+                          key={data.product._id}
                         >
                           <Col md={2} lg={2} xl={2}>
-                            <Image src={product} fluid rounded />
+                            <Image src={productImage} fluid rounded />
                           </Col>
                           <Col md={3} lg={3} xl={3}>
-                            <h6 className="text-muted">Shirt</h6>
-                            <h6 className="text-black mb-0">Cotton T-shirt</h6>
+                            <h6 className="text-black mb-0">
+                              {data.product.name}
+                            </h6>
                           </Col>
                           <Col md={3} lg={3} xl={2} className="d-flex">
                             <Button
                               variant="link"
                               className="px-2"
                               onClick={() =>
-                                handleQuantityChange(index, quantity - 1)
+                                handleQuantityChange(index, data.number)
                               }
                             >
                               <i className="bi bi-dash"></i>
@@ -110,12 +128,12 @@ function ShoppingCart() {
                               id={`form${index}`}
                               min="0"
                               name="quantity"
-                              value={quantity}
+                              value={1}
                               type="number"
                               className="form-control form-control-sm"
                               onChange={(e) =>
                                 handleQuantityChange(
-                                  index,
+                                  data.number,
                                   parseInt(e.target.value)
                                 )
                               }
@@ -123,15 +141,13 @@ function ShoppingCart() {
                             <Button
                               variant="link"
                               className="px-2"
-                              onClick={() =>
-                                handleQuantityChange(index, quantity + 1)
-                              }
+                              // onClick={() => handleQuantityChange(index, 1)}
                             >
                               <i className="bi bi-plus-lg"></i>
                             </Button>
                           </Col>
                           <Col md={3} lg={2} xl={2} className="offset-lg-1">
-                            <h6 className="mb-0">€ 44.00</h6>
+                            <h6 className="mb-0">$ {data.product.price}</h6>
                           </Col>
                           <Col md={1} lg={1} xl={1} className="text-end">
                             <a
@@ -147,6 +163,7 @@ function ShoppingCart() {
 
                       <hr className="my-4" />
 
+                      {/* Back to  shop button */}
                       <div className="pt-5">
                         <h6 className="mb-0">
                           <a href="#!" className="text-body">
@@ -157,6 +174,8 @@ function ShoppingCart() {
                       </div>
                     </div>
                   </Col>
+
+                  {/* Summary Part Start */}
                   <Col lg={4} className="bg-grey">
                     <div className="p-5">
                       <h3 className="fw-bold mb-5 mt-2 pt-1">Summary</h3>
@@ -224,6 +243,7 @@ function ShoppingCart() {
                       </Button>
                     </div>
                   </Col>
+                  {/* Summary Part End */}
                 </Row>
               </Card.Body>
             </Card>

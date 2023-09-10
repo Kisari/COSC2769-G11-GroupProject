@@ -14,7 +14,7 @@ import AccessDenied from "../pages/AccessDenied.js";
 const publicRoutes = [
   { path: "/", component: Home },
   { path: "/blocked", component: AccessDenied },
-  { path: "/productDetail", component: ProductDetail },
+  { path: "/productDetail/:id", component: ProductDetail },
   { path: "/login", component: Login, layout: null },
   { path: "/signup", component: Signup, layout: null },
   { path: "/shoppingCart", component: ShoppingCart },

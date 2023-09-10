@@ -14,7 +14,7 @@ module.exports.checkout = async (req, res) => {
     const order = await Order.create({ customerId, totalPrice });
 
     // Move cart items to the order
-    const cart = await Cart.find({ customerId: customerId });
+    const cart = await Cart.findOne({ customerId: customerId });
     const cartItems = await CartDetails.find({ cartId: cart._id });
 
     for (let cartItem of cartItems) {

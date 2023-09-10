@@ -7,6 +7,7 @@ const userRouter = require('./routes/user.route');
 const productRouter = require('./routes/product.route');
 const categoryRouter = require('./routes/category.route');
 const cartRouter = require('./routes/cart.route');
+const orderRouter = require('./routes/order.route')
 
 dotenv.config();
 
@@ -14,7 +15,10 @@ const app = express();
 
 // middleware
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 
 // static img upload foler
@@ -44,5 +48,7 @@ app.use(userRouter);
 app.use(productRouter);
 app.use(categoryRouter);
 app.use(cartRouter);
+app.use(orderRouter);
+
 
 module.exports = app;

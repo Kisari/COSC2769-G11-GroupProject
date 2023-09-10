@@ -6,9 +6,17 @@ function returnRecusiveData(data) {
 }
 
 function findTheChildOfItem(data, item) {
-  var theChild = data?.filter((elements) => elements?.parent === item?.id);
+  var theChild = data?.filter((elements) =>
+    elements?.parents?.includes(item?._id)
+  );
+
   if (theChild.length > 0) {
-    return { ...item, child: findTheChildOfItem(data, theChild[0]) };
+    var arrayOfChilds = [];
+    theChild?.forEach((child, index) => {
+      var subChild = findTheChildOfItem(data, child);
+      arrayOfChilds.push(subChild);
+    });
+    return { ...item, child: arrayOfChilds };
   }
   return item;
 }

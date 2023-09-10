@@ -17,11 +17,11 @@ const hashPassword = async function (doc, next) {
 };
 
 // Authentication using jwt
-const maxAge = 24 * 60 * 60;
-const createToken = (user) => {
-  return jwt.sign({ user }, process.env.JWT_KEY, {
+const maxAge = 1000 * 60 * 60 * 24;
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_KEY, {
     // Token expires in 1 day
-    expiresIn: maxAge,
+    expiresIn: Date.now() + maxAge,
   });
 };
 
@@ -31,14 +31,15 @@ const requireAuth = (req, res, next) => {
     
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, process.env.JWT_KEY, (err, decodedToken) => {
+          jwt.verify(token, process.env.JWT_KEY, (err, decodedToken) => {
             if (err) {
                 console.log(err.message);
                 res.status(401).json({error: "Authentication failed"});
             }
             else {
                 console.log(decodedToken);
-                req.user = {id: decodedToken.id};
+                req.id = decodedToken.id;
+                console.log(req.id);
                 next();
             }
         })

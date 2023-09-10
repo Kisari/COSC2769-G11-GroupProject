@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllProduct } from "../../action/product.js";
+import { getAllProductOfSeller } from "../../action/product.js";
 import { useTableSearch } from "../../hook/TableSearchHook.js";
 
 import Card from "../../components/ui/Card.js";
@@ -27,7 +27,7 @@ const SellerProductList = () => {
 
   useEffect(() => {
     async function getInitialData() {
-      await getAllProduct().then((res) => {
+      await getAllProductOfSeller().then((res) => {
         if (res?.products) {
           setProducts(res?.products);
         }
@@ -54,13 +54,11 @@ const SellerProductList = () => {
       feature: "Total Product",
       title: countAllProductQuantity(products),
       text: "Calculating all the stored product in warehouses",
-      actionText: "Detail",
     },
     {
       feature: "Out Of Stock",
       title: countAllProductOutOfStock(products),
       text: "All the products that quantity equals 0 and need to restock",
-      actionText: "Detail",
     },
   ];
   return (
@@ -78,7 +76,6 @@ const SellerProductList = () => {
         <div className="col-12 mb-3 d-flex flex-row">
           <p className="fs-4 fw-bolder">Product List</p>
           <div className="d-flex ms-auto flex-row">
-            <button className="btn btn-warning">Update</button>
             <button
               className="btn btn-success ms-3"
               onClick={() => handleShowCreateProductForm()}
@@ -86,10 +83,12 @@ const SellerProductList = () => {
               Create
             </button>
           </div>
-          <SellerCreateProductForm
-            show={showCreateProductForm}
-            handleClose={handleShowCreateProductForm}
-          />
+          {showCreateProductForm && (
+            <SellerCreateProductForm
+              show={showCreateProductForm}
+              handleClose={handleShowCreateProductForm}
+            />
+          )}
         </div>
         <div className="col-12 mb-3 d-flex flex-column flex-md-row">
           <div className="col-12 col-md-6 d-flex flex-column">
@@ -151,12 +150,13 @@ const SellerProductList = () => {
         <div className="col-12 text-center mb-3">
           <div className="d-flex flex-row flex-wrap col-12">
             <div className="col-1 fw-bold">Id</div>
-            <div className="col-2 fw-bold">Image</div>
+            <div className="col-1 fw-bold">Image</div>
             <div className="col-2 fw-bold">Name</div>
             <div className="col-3 fw-bold">Description</div>
             <div className="col-1 fw-bold">Price</div>
             <div className="col-1 fw-bold">Stock</div>
             <div className="col-2 fw-bold">Created</div>
+            <div className="col-1 fw-bold">Action</div>
           </div>
         </div>
         {filteredData &&

@@ -35,7 +35,8 @@ export const AuthProvider = ({ children }) => {
       user?.type === "admin"
     ) {
       navigate("/admin");
-    } else if (
+    }
+    if (
       user &&
       (location.pathname === "/login" || location.pathname === "/signup") &&
       user?.type === "seller"

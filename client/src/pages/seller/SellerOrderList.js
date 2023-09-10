@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import { getAllOrderBySeller } from "../../action/order";
 
 import OrderRow from "../../components/ui/OrderRow.js";
 import Card from "../../components/ui/Card.js";
 
 const SellerOrderList = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function getInitialData() {
+      await getAllOrderBySeller().then((res) => {
+        if (res?.orders) {
+          setOrders(res?.orders);
+        }
+      });
+    }
+
+    getInitialData();
+  }, []);
+
   const displayData = [
     {
       feature: "Total Orders",
-      title: 243,
+      title: orders?.length,
       text: "Involving all the orders contain your products",
-      actionText: "Detail",
     },
     {
       feature: "In Pending",
-      title: 4,
-      text: "All the orders that need your action! Please handle as soon as possible",
-      actionText: "Process",
+      title: orders.filter((item) => item?.orderStatus === "pending").length,
+      text: "All the orders that need your action and customer action",
     },
   ];
   return (
@@ -38,11 +52,12 @@ const SellerOrderList = () => {
             <div className="col-1 fw-bold">Id</div>
             <div className="col-2 fw-bold">Products count</div>
             <div className="col-2 fw-bold">Status</div>
-            <div className="col-2 fw-bold">Total</div>
+            <div className="col-2 fw-bold">SubTotal</div>
             <div className="col-5 fw-bold">Action</div>
           </div>
         </div>
-        {[1, 2, 3].map((item, index) => {
+        {}
+        {orders.map((item, index) => {
           return (
             <div className="col-12 text-center" key={index}>
               <OrderRow data={item} />

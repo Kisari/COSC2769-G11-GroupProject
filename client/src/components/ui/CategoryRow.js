@@ -16,9 +16,9 @@ const CategoryRow = ({ data }) => {
           className="btn btn-primary col-6"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target={`#${data?.id}`}
+          data-bs-target={`#${data?._id}`}
         >
-          #{data?.id} Category: {data?.name}
+          #{data?._id} Category: <b> {data?.name}</b>
         </button>
         <div className="d-flex flex-row justify-content-end col gap-1 gap-md-2">
           <button className="btn btn-danger">Remove</button>
@@ -30,27 +30,27 @@ const CategoryRow = ({ data }) => {
             Create
           </button>
         </div>
-        <CreateCategoryForm
-          data={data}
-          show={showCreateCategory}
-          handleClose={handleShowCreateCategory}
-        />
+        {showCreateCategory && (
+          <CreateCategoryForm
+            data={data}
+            show={showCreateCategory}
+            handleClose={handleShowCreateCategory}
+          />
+        )}
       </div>
-      <div className="col-12 mt-2 gap-4">
+      <div className="col-12 mt-2 d-flex gap-3">
         {data?.attributes?.map((data, index) => {
           return <AttributeRow key={index} data={data} />;
         })}
-        <button
-          type="button"
-          className="btn custom-btn btn-custom position-relative btn-sm"
-        >
-          + Attribute
-        </button>
       </div>
       <div className="col-12">
-        <div className="collapse" id={data?.id}>
+        <div className="collapse" id={data?._id}>
           <div className="card card-body p-0 ps-3">
-            {data?.child && <CategoryRow data={data?.child} />}
+            {console.log(data?.child)}
+            {data?.child &&
+              data?.child?.map((child) => {
+                return <CategoryRow data={child} key={child?._id} />;
+              })}
           </div>
         </div>
       </div>

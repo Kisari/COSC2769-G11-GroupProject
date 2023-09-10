@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { createProduct } from "../../action/product";
 import { getAllCategory } from "../../action/category";
-
-import { useAuth } from "../../hook/AuthHook";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -11,10 +10,10 @@ import Form from "react-bootstrap/Form";
 import FormInput from "./FormInput";
 
 const SellerCreateProductForm = ({ show, handleClose }) => {
+  const navigate = useNavigate();
   const [file, setFile] = useState();
   const [allCats, setAllCats] = useState([]);
   const [currentChoice, setCurrentChoice] = useState("");
-  const { user } = useAuth();
 
   const handleSetFile = (e) => {
     console.log(e.target.files);
@@ -37,15 +36,22 @@ const SellerCreateProductForm = ({ show, handleClose }) => {
           atr = { ...atr, [key]: value };
         }
       } else {
-        payload = { ...payload, [key]: value };
+        if (idx === 3 || idx === 5) {
+          payload = { ...payload, [key]: parseInt(value) };
+        } else {
+          payload = { ...payload, [key]: value };
+        }
       }
       idx += 1;
     }
     payload = { ...payload, attributes: atr };
-    payload = { ...payload, user: user?._id };
+
+    console.log(payload);
 
     await createProduct(payload).then((res) => {
-      console.log(res);
+      if (res) {
+        navigate(0);
+      }
     });
   };
 

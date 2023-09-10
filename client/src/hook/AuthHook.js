@@ -41,7 +41,12 @@ export const AuthProvider = ({ children }) => {
       (location.pathname === "/login" || location.pathname === "/signup") &&
       user?.type === "seller"
     ) {
-      navigate("/sellers");
+      console.log(user?.status);
+      if (user?.status !== "approved") {
+        navigate("/sellers");
+      } else {
+        navigate("/blocked");
+      }
     } else if (
       user &&
       (location.pathname === "/login" || location.pathname === "/signup") &&

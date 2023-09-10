@@ -14,26 +14,7 @@ const AdminSellerApproval = () => {
   const [sellerList, setSellerList] = useState([]);
   const navigate = useNavigate();
 
-  const displayData = [
-    {
-      feature: "Total Pending",
-      title: 56,
-      text: "All the sellers that has registered recently",
-      actionText: "Details",
-    },
-    {
-      feature: "Total Accepted",
-      title: 342,
-      text: "Total sellers are active in the website",
-      actionText: "Show",
-    },
-    {
-      feature: "Total Rejected",
-      title: 23,
-      text: "All the sellers that do not meet requirements",
-      actionText: "Details",
-    },
-  ];
+  const displayData = [];
 
   useEffect(() => {
     async function getAllPendingSeller() {
@@ -76,7 +57,7 @@ const AdminSellerApproval = () => {
         })}
       </div>
       <div className="col-12 text-start">
-        <p className="fw-bold text-info fs-3">Catogory List</p>
+        <p className="fw-bold text-info fs-3">Seller List</p>
       </div>
       <div className="col-12">
         <div className="col-12 text-center mb-3">

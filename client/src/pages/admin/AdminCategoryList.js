@@ -8,26 +8,7 @@ import Card from "../../components/ui/Card.js";
 import CreateCategoryForm from "../../components/ui/CreateCategoryForm";
 
 const AdminCategoryList = () => {
-  const displayData = [
-    {
-      feature: "Total Category",
-      title: 243,
-      text: "Show all the avaiable categories that has been created",
-      actionText: "Calculate",
-    },
-    {
-      feature: "Total Attribute",
-      title: 1239,
-      text: "Calculating all the attributes of all avaiable categories",
-      actionText: "Calculate",
-    },
-    {
-      feature: "Total Unused Category",
-      title: 23,
-      text: "Estimating all the category that have no products",
-      actionText: "Calculate",
-    },
-  ];
+  const displayData = [];
 
   const [allCats, setAllCats] = useState([]);
   const [show, setShow] = useState(false);

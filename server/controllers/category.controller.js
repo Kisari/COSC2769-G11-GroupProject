@@ -5,12 +5,12 @@ module.exports.add = async (req, res) => {
   let data = {
     name: req.body.name,
     description: req.body.description,
-    attributes: req.body.attributes.split(","),
-    parents: req.body.parents,
+    attributes: req.body.attributes,
+    parent: req.body.parent,
   };
+  console.log(data.name)
 
-  const name = req.body.name;
-  const existingCategory = await Category.findOne({ name });
+  const existingCategory = await Category.findOne({ name: data.name });
 
   if (existingCategory) {
     res.json({ message: "Category already existed" });

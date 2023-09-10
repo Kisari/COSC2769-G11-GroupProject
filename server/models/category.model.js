@@ -14,7 +14,7 @@ const categorySchema = new mongoose.Schema({
         type: [String],
     },
 
-    parents: [{
+    parent: [{
         type: mongoose.Types.ObjectId,
         ref: 'Category'
     }]

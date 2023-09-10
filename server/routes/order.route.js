@@ -14,7 +14,9 @@ orderRouter.get('/api/v1/seller/order/:id', requireAuth, orderController.sellerG
 orderRouter.put('/api/v1/customer/order/:orderId/details/:id/accepted', requireAuth, orderController.customerAccept);
 orderRouter.put('/api/v1/customer/order/:orderId/details/:id/rejected', requireAuth, orderController.customerReject);
 orderRouter.put('/api/v1/seller/order/:orderId/details/:id/shipped', requireAuth, orderController.sellerShipped);
-orderRouter.put('/api/v1/seller/order/:orderId/details/:id/canceled', requireAuth, orderController.sellerCanceled)
+orderRouter.put('/api/v1/seller/order/:orderId/details/:id/canceled', requireAuth, orderController.sellerCanceled);
+// Get customer's information
+orderRouter.get('/api/v1/seller/order/:orderId/customer')
 
 
 

@@ -21,7 +21,7 @@ const maxAge = 24 * 60 * 60 * 60;
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_KEY, {
     // Token expires in 1 day
-    expiresIn: maxAge,
+    expiresIn: Date.now() + maxAge,
   });
 };
 

@@ -89,8 +89,6 @@ const AdminCategoryList = () => {
     getInitialData();
   }, []);
 
-  console.log(allCats);
-
   return (
     <div className="p-md-3">
       <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row mb-md-4">
@@ -105,13 +103,16 @@ const AdminCategoryList = () => {
       <div className="col-12 text-start">
         <p className="fw-bold text-info fs-3">Catogory List</p>
       </div>
-      {addChildForRender(testData)?.map((category, index) => {
-        return (
-          <div key={index}>
-            {!category?.parent && <CategoryRow data={category} />}
-          </div>
-        );
-      })}
+      {allCats &&
+        addChildForRender(allCats)?.map((category, index) => {
+          return (
+            <div key={index}>
+              {category?.parents?.length === 0 && (
+                <CategoryRow data={category} />
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 };

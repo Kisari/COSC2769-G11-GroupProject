@@ -23,13 +23,13 @@ const SellerOrderList = () => {
   const displayData = [
     {
       feature: "Total Orders",
-      title: 243,
+      title: orders?.length,
       text: "Involving all the orders contain your products",
     },
     {
       feature: "In Pending",
-      title: 4,
-      text: "All the orders that need your action! Please handle as soon as possible",
+      title: orders.filter((item) => item?.orderStatus === "pending").length,
+      text: "All the orders that need your action and customer action",
     },
   ];
   return (

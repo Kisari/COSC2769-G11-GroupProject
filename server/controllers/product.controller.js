@@ -13,7 +13,7 @@ module.exports.add = async (req, res) => {
         attributes: req?.body?.attributes,
     };
 
-    console.log(JSON.stringify(data, null, 2));
+    data.attributes = JSON.parse(data.attributes);
 
     try {
         const product = await Product.create(data);

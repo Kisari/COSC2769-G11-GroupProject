@@ -6,7 +6,7 @@ module.exports.add = async (req, res) => {
     name: req.body.name,
     description: req.body.description,
     attributes: req.body.attributes,
-    parent: req.body.parent,
+    parents: req.body.parents,
   };
   console.log(data.name)
 

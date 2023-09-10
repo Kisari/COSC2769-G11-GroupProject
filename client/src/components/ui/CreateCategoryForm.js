@@ -9,12 +9,20 @@ import FormInput from "./FormInput.js";
 const CreateCategoryForm = ({ data, show, handleClose }) => {
   const [allCats, setAllCats] = useState([]);
   const [currentChoice, setCurrentChoice] = useState("");
+  const [atrList, setAtrList] = useState([]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    var idx = 0;
+    var payload = {};
 
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
+      if (idx === 2) {
+      } else {
+        payload = { ...payload, [key]: value };
+      }
+      idx += 1;
     }
     console.log("Submit creating categories form", e);
   };
@@ -43,6 +51,18 @@ const CreateCategoryForm = ({ data, show, handleClose }) => {
             placeholder={"Enter category name"}
             type={"text"}
             name={"name"}
+          ></FormInput>
+          <FormInput
+            label={"Category Description"}
+            placeholder={"Enter category description"}
+            type={"text"}
+            name={"description"}
+          ></FormInput>
+          <FormInput
+            label={"Category Attribute"}
+            placeholder={"Enter category name"}
+            type={"text"}
+            name={"attributes"}
           ></FormInput>
           <select
             className="form-select mb-3"

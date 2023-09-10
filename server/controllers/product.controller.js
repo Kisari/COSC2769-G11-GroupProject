@@ -11,22 +11,19 @@ module.exports.add = async(req,res) => {
         price : req?.body?.price,
         image: req?.file?.path,
         seller: req.id,
-        // Delete the split in real app 
-        categories : req?.body?.categories,
+        categories : req?.body?.category,
         attributes: req?.body?.attributes
     };
     
+    console.log(JSON.stringify(data, null, 2));
 
-    // Parse attributes as Json for mapping 
-    if (data.attributes) {
-        data.attributes = JSON.parse(data.attributes); 
-    }
     try{
         const product = await Product.create(data);
         res.status(200).json({product});
         console.log(product);
     }
     catch(error){
+        console.log(error);
         res.status(500).json({message: error});
     }
 }
@@ -117,10 +114,6 @@ module.exports.update = async(req,res) => {
         // Split for testing
         categories: req?.body?.categories
     };
-
-    if (data.attributes) {
-        data.attributes = JSON.parse(data.attributes); 
-    }
 
     try {
         const updated = await Product.findByIdAndUpdate({_id: id}, {$set: data}, {new: true});

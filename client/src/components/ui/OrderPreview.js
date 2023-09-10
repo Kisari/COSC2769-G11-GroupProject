@@ -48,12 +48,11 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
             <div className="d-flex flex-row justify-content-between align-items-center p-2 text-start fw-bold text-center">
               <div className="col-2 text-break">Name</div>
               <div className="col-3 text-break">Image</div>
-              <div className="col-1 text-break">Quantity</div>
+              <div className="col-2 text-break">Quantity</div>
               <div className="col-2 text-break">Status</div>
               <div className="col-3 text-break">Action</div>
             </div>
             {productDetail?.map((product, index) => {
-              console.log(data);
               return (
                 <div
                   key={index}
@@ -69,16 +68,24 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
                       style={{ width: "40px", height: "40px" }}
                     />
                   </div>
-                  <div className="col-1 text-break">
+                  <div className="col-2 text-break">
                     {data?.[index]?.quantity}
                   </div>
                   <div className="col-2 text-break">
                     {data?.[index]?.status}
                   </div>
-                  <div className="col-3 text-break">
-                    <button className="btn btn-sm btn-success">Accept</button>
-                    <button className="btn btn-sm btn-danger">Reject</button>
-                  </div>
+                  {data?.[index]?.status !== "accepted" ? (
+                    <div className="col-3 text-break">
+                      <button className="btn btn-sm btn-success">Accept</button>
+                      <button className="btn btn-sm btn-danger">Reject</button>
+                    </div>
+                  ) : (
+                    <div className="col-3 text-break">
+                      <button className="btn btn-sm btn-success" disabled>
+                        None
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}

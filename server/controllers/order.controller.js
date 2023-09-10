@@ -3,6 +3,7 @@ const OrderDetails = require("../models/orderDetails.model")
 const Cart = require("../models/cart.model")
 const CartDetails = require("../models/cartDetails.model")
 const Product = require("../models/product.model")
+const Customer = require('../models/customer.model')
 
 // Check out cart and creat an order
 module.exports.checkout = async (req, res) => {
@@ -138,7 +139,7 @@ module.exports.sellerGet = async (req, res) => {
 // Check the order status
 async function updateOrderStatus(orderId) {
   const status = ['accepted', 'rejected', 'canceled'];
-  const orderDetails = await OrderDetails.find({orderId});
+  const orderDetails = await OrderDetails.find({ orderId });
   const completed = orderDetails.every(detail => status.includes(detail.status));
 
   // All the order details are statisfied
@@ -215,7 +216,7 @@ module.exports.sellerShipped = async (req, res) => {
 
   try {
     const order = await Order.findById(orderId);
-    const orderDetails = await OrderDetails.findOne({ _id: orderDetailsId}).populate('productId');
+    const orderDetails = await OrderDetails.findOne({ _id: orderDetailsId }).populate('productId');
     // Change only when the product is shipped
     console.log(orderDetails.productId.seller.toString() == sellerId.toString());
     if (orderDetails.productId.seller.toString() == sellerId.toString()) {
@@ -267,6 +268,24 @@ module.exports.sellerCanceled = async (req, res) => {
 }
 
 // Get customer's information
-module.exports.getCustomerInfo
+module.exports.getCustomerInfo = async (req, res) => {
+  const orderId = req.params.id;
+
+  try {
+    const order = await Order.findById(orderId);
+    const customer = await Customer.findById(order.customerId);
+    const customerInfo = {
+      name: customer.userName,
+      address: customer.address,
+      phone: customer.phone
+    }
+    res.status(200).json({ customerInfo });
+  }
+
+  catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Cannot get data' });
+  }
+}
 
 

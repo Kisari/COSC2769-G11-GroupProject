@@ -16,7 +16,7 @@ orderRouter.put('/api/v1/customer/order/:orderId/details/:id/rejected', requireA
 orderRouter.put('/api/v1/seller/order/:orderId/details/:id/shipped', requireAuth, orderController.sellerShipped);
 orderRouter.put('/api/v1/seller/order/:orderId/details/:id/canceled', requireAuth, orderController.sellerCanceled);
 // Get customer's information
-orderRouter.get('/api/v1/seller/order/:orderId/customer')
+orderRouter.get('/api/v1/seller/order/:id/customer', requireAuth, orderController.getCustomerInfo);
 
 
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllProduct } from "../../action/product.js";
+import { getAllProductOfSeller } from "../../action/product.js";
 import { useTableSearch } from "../../hook/TableSearchHook.js";
 
 import Card from "../../components/ui/Card.js";
@@ -27,7 +27,7 @@ const SellerProductList = () => {
 
   useEffect(() => {
     async function getInitialData() {
-      await getAllProduct().then((res) => {
+      await getAllProductOfSeller().then((res) => {
         if (res?.products) {
           setProducts(res?.products);
         }

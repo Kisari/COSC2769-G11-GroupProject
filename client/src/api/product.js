@@ -5,6 +5,9 @@ const backend_url = "http://localhost:4000";
 
 export const getAllProduct = () => axios.get(`${backend_url}/api/v1/product`);
 
+export const getAllProductOfSeller = () =>
+  axios.get(`${backend_url}/api/v1/inventory`);
+
 export const getProductByID = (id) =>
   axios.get(`${backend_url}/api/v1/product/${id}`);
 

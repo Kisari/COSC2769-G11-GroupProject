@@ -9,11 +9,11 @@ const confirmNewUser = (doc, next) => {
 };
 
 // Hash password before the user is saved to db
-const hashPassword = async function (doc, next) {
+const hashPassword = async function (password) {
   const salt = await bcrypt.genSalt();
-  doc.password = await bcrypt.hash(doc.password, salt);
+  const hashed = await bcrypt.hash(password, salt);
 
-  next();
+  return hashed;
 };
 
 // Authentication using jwt

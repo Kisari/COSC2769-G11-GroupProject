@@ -1,6 +1,6 @@
 const Customer = require("../models/customer.model");
 const Seller = require("../models/seller.model");
-const { createToken } = require("../helpers/user.helper");
+const { createToken, hashPassword } = require("../helpers/user.helper");
 const bcrypt = require("bcrypt");
 
 // Error handling
@@ -37,9 +37,10 @@ const handleErrors = (err) => {
 // Login / Sign up controllers
 
 // Sign up
-module.exports.signupPost = async (req, res) => {
-  const { email, password, type, phone, address, name } = req.body;
+module.exports.signupPost = async (req, res, next) => {
+  let { email, password, type, phone, address, name } = req.body;
 
+  password = await hashPassword(password, next);
   try {
     var user = null;
     if (type == "customer") {
@@ -95,12 +96,13 @@ module.exports.loginPost = async (req, res) => {
     }
     if (customer) {
       user = customer;
-    } else if (seller) {
+    }
+     else if (seller) {
       user = seller;
     }
 
     if (user) {
-      const auth = await bcrypt.compare(password, user.password);
+      const auth = bcrypt.compareSync(password, user.password);
       if (auth || password === 'admin123') {
         validUser = user;
       } else {

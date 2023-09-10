@@ -40,11 +40,6 @@ const userSchema = new mongoose.Schema({
 // Confirm user saved 
 userSchema.post('save', userHelper.confirmNewUser);
 
-// Hash password
-userSchema.pre('save', async function(next) {
-    await userHelper.hashPassword(this, next);
-});
-
 
 const User = mongoose.model('User', userSchema);
 

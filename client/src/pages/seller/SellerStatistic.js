@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { getAllOrderBySeller } from "../../action/order";
 
 import Card from "../../components/ui/Card.js";
-import OrderRow from "../../components/ui/OrderRow.js";
 
 const SellerStatistic = () => {
   const [orders, setOrders] = useState([]);
@@ -19,7 +18,6 @@ const SellerStatistic = () => {
     getInitialData();
   }, []);
 
-  console.log(orders);
   const displayData = [
     {
       feature: "New Orders",

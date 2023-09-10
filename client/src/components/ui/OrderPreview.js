@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { getProductByID } from "../../action/product";
+import { useNavigate } from "react-router-dom";
 import {
   getCustomerInfoByOrderID,
   sellerShipOrder,
@@ -11,16 +12,15 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
 const OrderPreview = ({ data, show, handleShow, mode, customer }) => {
+  const navigate = useNavigate();
   const [productDetail, setProductDetail] = useState([]);
   const [customerInfo, setCustomerInfo] = useState();
-
-  console.log(data);
 
   const handleShippedProduct = async (index) => {
     if (data?.[index]?.orderId && data?.[index]?._id) {
       await sellerShipOrder(data?.[index]?.orderId, data?.[index]?._id).then(
         (res) => {
-          console.log(res);
+          navigate(0);
         }
       );
     }
@@ -29,7 +29,7 @@ const OrderPreview = ({ data, show, handleShow, mode, customer }) => {
     if (data?.[index]?.orderId && data?.[index]?._id) {
       await sellerCancelOrder(data?.[index]?.orderId, data?.[index]?._id).then(
         (res) => {
-          console.log(res);
+          navigate(0);
         }
       );
     }

@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import { getOrderBySellerID } from "../../action/order";
 
 import OrderPreview from "./OrderPreview.js";
 
 const OrderRow = ({ data, isView }) => {
+  const [orderDetail, setOrderDetail] = useState();
   const [viewModal, setViewModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+
+  useEffect(() => {
+    async function getOrderDetail() {
+      await getOrderBySellerID(data?._id).then((res) => {
+        if (res?.result) {
+          setOrderDetail(res?.result);
+        }
+      });
+    }
+    getOrderDetail();
+    // eslint-disable-next-line
+  }, []);
+
+  console.log(orderDetail);
 
   const hanleViewModal = () => {
     setViewModal((prev) => !prev);
@@ -40,7 +57,7 @@ const OrderRow = ({ data, isView }) => {
       </div>
       {viewModal && (
         <OrderPreview
-          data={data}
+          data={orderDetail}
           show={viewModal}
           handleShow={setViewModal}
           mode={"View"}
@@ -48,7 +65,7 @@ const OrderRow = ({ data, isView }) => {
       )}
       {updateModal && (
         <OrderPreview
-          data={data}
+          data={orderDetail}
           show={updateModal}
           handleShow={setUpdateModal}
           mode={"Update"}

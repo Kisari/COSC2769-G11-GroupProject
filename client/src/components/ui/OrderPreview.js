@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { getProductByID } from "../../action/product";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
 const OrderPreview = ({ data, show, handleShow, mode }) => {
+  const [productDetail, setProductDetail] = useState([]);
+
+  useEffect(() => {
+    async function getAllProductDetail() {
+      await getProductByID(data?.productId).then((res) => {
+        if (res) {
+          console.log(res);
+        }
+      });
+    }
+
+    getAllProductDetail();
+  }, []);
+
   function stateProgressBar() {
     switch (data?.status) {
       case "pending":
@@ -16,7 +32,6 @@ const OrderPreview = ({ data, show, handleShow, mode }) => {
         return;
     }
   }
-  console.log(mode);
   return (
     <Modal show={show} onHide={handleShow}>
       <Modal.Header closeButton>

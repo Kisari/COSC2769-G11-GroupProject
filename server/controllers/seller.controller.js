@@ -36,8 +36,8 @@ module.exports.approveSeller = async (req, res) => {
     const seller = await Seller.findById(sellerId);
     if (seller) {
       seller.status = "approved";
-      await Seller.save();
-      res.status(200).json({ message: `Seller is accepted`, orderDetails });
+      await seller.save();
+      res.status(200).json({ message: `Seller is accepted`, seller });
     } else {
       res.status(400).json({ message: "Seller not found" });
     }
@@ -55,8 +55,8 @@ module.exports.rejectSeller = async (req, res) => {
     const seller = await Seller.findById(sellerId);
     if (seller) {
       seller.status = "rejected";
-      await Seller.save();
-      res.status(200).json({ message: `Seller is rejected`, orderDetails });
+      await seller.save();
+      res.status(200).json({ message: `Seller is rejected`, seller });
     } else {
       res.status(400).json({ message: "Seller not found" });
     }

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllOrderBySeller } from "../../action/order";
+import { getSellerStatistic } from "../../action/order";
 
 import Card from "../../components/ui/Card.js";
-import OrderRow from "../../components/ui/OrderRow.js";
 
 const SellerStatistic = () => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     async function getInitialData() {
-      await getAllOrderBySeller().then((res) => {
-        if (res?.orders) {
-          setOrders(res?.orders);
+      await getSellerStatistic().then((res) => {
+        if (res) {
+          console.log(res);
+          setOrders(res);
         }
       });
     }
@@ -19,7 +19,6 @@ const SellerStatistic = () => {
     getInitialData();
   }, []);
 
-  console.log(orders);
   const displayData = [
     {
       feature: "New Orders",

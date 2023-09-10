@@ -5,54 +5,7 @@ import { getAllCategory } from "../../action/category.js";
 
 import CategoryRow from "../../components/ui/CategoryRow.js";
 import Card from "../../components/ui/Card.js";
-
-var testData = [
-  {
-    _id: "64e234d2e360f233a9c99ad5",
-    id: 1,
-    name: "Clothing and Accessories",
-    attributes: ["Entertaining", "Music", "Electrical"],
-    parent: 2,
-    __v: 0,
-  },
-  {
-    _id: "64e234d2e360f233a9c99ad6",
-    id: 2,
-    name: "Electronics and Gadgets",
-    attributes: [],
-    __v: 0,
-  },
-  {
-    _id: "64e234d2e360f233a9c99ad7",
-    id: 3,
-    name: "Home and Kitchen Appliances",
-    attributes: [],
-    parent: 1,
-    __v: 0,
-  },
-  {
-    _id: "64e234d2e360f233a9c99ad8",
-    id: 4,
-    name: "Beauty and Personal Care",
-    attributes: [],
-    __v: 0,
-  },
-  {
-    _id: "64e234d2e360f233a9c99ad9",
-    id: 5,
-    name: "Books, Music, and Movies",
-    attributes: [],
-    __v: 0,
-  },
-  {
-    _id: "64e23ac7a11f741d717017e0",
-    id: 21,
-    name: "Instruments",
-    attributes: ["Entertaining", "Music"],
-    parent: 5,
-    __v: 0,
-  },
-];
+import CreateCategoryForm from "../../components/ui/CreateCategoryForm";
 
 const AdminCategoryList = () => {
   const displayData = [
@@ -77,6 +30,7 @@ const AdminCategoryList = () => {
   ];
 
   const [allCats, setAllCats] = useState([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     async function getInitialData() {
@@ -89,7 +43,9 @@ const AdminCategoryList = () => {
     getInitialData();
   }, []);
 
-  console.log(allCats);
+  const handleShowCreateForm = () => {
+    setShow((prev) => !prev);
+  };
 
   return (
     <div className="p-md-3">
@@ -102,16 +58,23 @@ const AdminCategoryList = () => {
           );
         })}
       </div>
-      <div className="col-12 text-start">
+      <div className="col-12 d-flex flex-row justify-content-between align-items-center">
         <p className="fw-bold text-info fs-3">Catogory List</p>
+        <button className="btn btn-info" onClick={() => handleShowCreateForm()}>
+          Create New
+        </button>
+        <CreateCategoryForm show={show} handleClose={handleShowCreateForm} />
       </div>
-      {addChildForRender(testData)?.map((category, index) => {
-        return (
-          <div key={index}>
-            {!category?.parent && <CategoryRow data={category} />}
-          </div>
-        );
-      })}
+      {allCats &&
+        addChildForRender(allCats)?.map((category, index) => {
+          return (
+            <div key={index}>
+              {category?.parents?.length === 0 && (
+                <CategoryRow data={category} />
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 };

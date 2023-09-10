@@ -40,6 +40,19 @@ export const getOrderByCustomerID = async (id) => {
   } catch (error) {}
 };
 
+export const getSellerStatistic = async () => {
+  try {
+    const res = await api.getSellerStatistic();
+
+    if (res?.status === 200) {
+      const { data } = res;
+      return data;
+    } else {
+      return res;
+    }
+  } catch (error) {}
+};
+
 export const getCustomerInfoByOrderID = async (id) => {
   try {
     const res = await api.getCustomerInfoByOrderID(id);
@@ -94,7 +107,7 @@ export const customerRejectOrder = async (orderID, productID) => {
 
 export const sellerShipOrder = async (orderID, productID) => {
   try {
-    const res = await api.customerAcceptOrder(orderID, productID);
+    const res = await api.sellerShipOrder(orderID, productID);
 
     if (res?.status === 200) {
       const { data } = res;
@@ -107,7 +120,7 @@ export const sellerShipOrder = async (orderID, productID) => {
 
 export const sellerCancelOrder = async (orderID, productID) => {
   try {
-    const res = await api.customerAcceptOrder(orderID, productID);
+    const res = await api.sellerCancelOrder(orderID, productID);
 
     if (res?.status === 200) {
       const { data } = res;

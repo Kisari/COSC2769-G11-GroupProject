@@ -55,8 +55,7 @@ module.exports.get = async (req, res) => {
 module.exports.update = async (req, res) => {
   const id = req.params.id;
   const data = {
-    // Split for testing
-    attributes: req.body.attributes.split(","),
+    attributes: req.body.attributes,
     parents: req.body.parents,
     description: req.body.description,
   };

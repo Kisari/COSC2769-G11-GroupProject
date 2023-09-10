@@ -19,10 +19,6 @@ module.exports.checkout = async (req, res) => {
 
     for (let cartItem of cartItems) {
       let product = await Product.findById(cartItem.productId);
-      // if (!product) {
-      //   console.log(`Product with ID ${cartItem.productId} not found`);
-      //   continue; // skip this iteration of the loop
-      // }
       let subTotal = product.price * cartItem.quantity;
       console.log(subTotal);
       var orderDetails = await OrderDetails.create({
@@ -38,7 +34,7 @@ module.exports.checkout = async (req, res) => {
     let total = 0;
     for (let orderItem of orderItems) {
       total += orderItem.subTotal;
-      console.log(total);
+      console.log(total)
     }
 
     // Update the product stock

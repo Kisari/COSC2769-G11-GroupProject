@@ -10,6 +10,7 @@ import Admin from "../pages/Admin.js";
 
 import AccessDenied from "../pages/AccessDenied.js";
 import OrderManagement from "../pages/OrderManagement.js";
+import OrderDetail from "../components/ui/OrderDetail.js";
 
 // Public Routes
 const publicRoutes = [
@@ -22,6 +23,7 @@ const publicRoutes = [
   { path: "/sellers/*", component: Seller, layout: null, require: "seller" },
   { path: "/admin/*", component: Admin, layout: null, require: "admin" },
   { path: "/orderManagement", component: OrderManagement },
+  { path: "/orderDetail/:id", component: OrderDetail },
 ];
 
 // Private Routes

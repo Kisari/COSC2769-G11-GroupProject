@@ -30,16 +30,27 @@ const CardProduct = ({ data }) => {
           alt="Product Image"
         />
       )} */}
-      <img src={product} className="Product image" alt="Product Image" />
+      {data?.image?.split("\\")?.[4] && (
+        <img
+          src={require(`../../uploads/${data?.image?.split("\\")[4]}`)}
+          alt="..."
+          className="img-fluid"
+        />
+      )}
+
+      {data?.image?.split("/")?.[4] && (
+        <img
+          src={require(`../../uploads/${data?.image?.split("/")[4]}`)}
+          alt="..."
+          className="img-fluid"
+        />
+      )}
 
       <div className="card-body">
         <h5 className="card-title">{data?.name}</h5>
         <h6 className="card-title text-danger">${data?.price}</h6>
         <p className="card-text">{data?.description}</p>
         {/* later need to include a button instead of a tag */}
-        {/* <a href="#" className="btn btn-primary">
-          Buy Now
-        </a> */}
       </div>
     </div>
   );

@@ -65,6 +65,7 @@ function Home() {
       {/* Normal Product */}
 
       <div className="container-lg mt-4">
+        <h3>Products</h3>
         <MenuTabs products={products} />
         <div className="d-flex justify-content-center mt-5">
           <PaginationCustom />

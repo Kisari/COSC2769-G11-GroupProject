@@ -47,3 +47,17 @@ cp .env.sample .env
 ```bash
 npm start
 ```
+
+- Testing accounts:
+
+```bash
+For Seller:
+minhseller@gmail.com
+test123
+```
+
+```bash
+For Admin:
+admin@gmail.com
+admin123
+```

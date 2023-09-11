@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "../../../hook/AuthHook";
 
@@ -53,9 +54,11 @@ const Header = () => {
           </div>
           <div className="col-2 d-flex justify-content-end align-items-center">
             {user ? (
-              <button type="button" className="btn btn-outline-secondary">
-                {user?.userName}
-              </button>
+              <Link to="/orderManagement">
+                <button type="button" className="btn btn-outline-secondary">
+                  {user?.userName}
+                </button>
+              </Link>
             ) : (
               <button
                 type="button"

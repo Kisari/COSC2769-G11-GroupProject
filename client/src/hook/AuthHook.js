@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
       user?.type === "seller"
     ) {
       console.log(user?.status);
-      if (user?.status !== "approved") {
+      if (user?.status === "approved") {
         navigate("/sellers");
       } else {
         navigate("/blocked");

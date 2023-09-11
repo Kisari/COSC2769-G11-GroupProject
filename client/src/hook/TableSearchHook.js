@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 //warning : DONT TRY TO UNDERSTAND THIS
 
-export const useTableSearch = ({ searchVal, data, sortOption }) => {
+export const useTableSearch = ({ searchVal, data }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [origData, setOrigData] = useState([]);
   const [searchIndex, setSearchIndex] = useState([]);
@@ -47,28 +47,9 @@ export const useTableSearch = ({ searchVal, data, sortOption }) => {
           return false;
         })
       );
-    } else setFilteredData(origData);
-    if (sortOption.option !== 0) {
-      const value = sortOption.option;
-      if (value === 1) {
-        setFilteredData((prev) =>
-          prev.sort((a, b) => (a?.name > b?.name ? 1 : -1))
-        );
-      }
-      if (value === 2) {
-        setFilteredData((prev) =>
-          prev.sort((a, b) => (a?.price > b?.price ? 1 : -1))
-        );
-      } else {
-        setFilteredData((prev) =>
-          prev.sort((a, b) => (a?.dateAdded > b?.dateAdded ? 1 : -1))
-        );
-      }
-    }
-    if (sortOption.asc === true) {
-      setFilteredData((prev) => prev.reverse());
-    }
-  }, [searchVal, origData, searchIndex, sortOption]);
+    } else setFilteredData(filteredData);
+    // eslint-disable-next-line
+  }, [searchVal, origData, searchIndex]);
 
   return { filteredData };
 };

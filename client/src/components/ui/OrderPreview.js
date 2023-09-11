@@ -37,6 +37,7 @@ const OrderPreview = ({ data, show, handleShow, mode, customer }) => {
   useEffect(() => {
     async function getProductDetail(id) {
       await getProductByID(id).then((res) => {
+        console.log(res);
         if (res?.product) {
           setProductDetail([...productDetail, res?.product]);
         }
@@ -91,13 +92,16 @@ const OrderPreview = ({ data, show, handleShow, mode, customer }) => {
                 >
                   <div className="col-2 text-break">{product?.name}</div>
                   <div className="col-3 text-break">
-                    <img
-                      src={require(`../../uploads/${
-                        product?.image?.split("\\")?.[4]
-                      }`)}
-                      alt="..."
-                      style={{ width: "40px", height: "40px" }}
-                    />
+                    {console.log(product?.image?.split("/")?.[4])}
+                    {product?.image?.split("/")?.[4] && (
+                      <img
+                        src={require(`../../uploads/${
+                          product?.image?.split("/")?.[4]
+                        }`)}
+                        alt="..."
+                        style={{ width: "40px", height: "40px" }}
+                      />
+                    )}
                   </div>
                   <div className="col-2 text-break">
                     {data?.[index]?.quantity}

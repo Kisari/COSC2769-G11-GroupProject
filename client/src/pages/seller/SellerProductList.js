@@ -14,8 +14,6 @@ const SellerProductList = () => {
     option: 0,
     asc: false,
   });
-
-  console.log("FUCKING THIS", products);
   const { filteredData } = useTableSearch({
     searchVal: search,
     data: products,

@@ -29,8 +29,6 @@ const OrderRow = ({ data, isView }) => {
     setUpdateModal((prev) => !prev);
   };
 
-  console.log(orderDetail);
-
   return (
     <div className="d-flex flex-row flex-wrap col-12 text-warp my-1">
       <div className="col-1 fw-muted text-break">{data?._id}</div>

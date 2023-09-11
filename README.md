@@ -62,6 +62,12 @@ admin@gmail.com
 admin123
 ```
 
+```bash
+For Customer:
+thongtest@gmail.com
+thong@123
+```
+
 Contribution
      Name              SId      Score
 

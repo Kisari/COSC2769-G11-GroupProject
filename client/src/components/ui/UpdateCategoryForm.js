@@ -51,7 +51,7 @@ const UpdateCategoryForm = ({ data, show, handleClose }) => {
 
     await updateCategory(data?._id, payload).then((res) => {
       if (res?.category) {
-        // navigate(0);
+        navigate(0);
       }
     });
   };

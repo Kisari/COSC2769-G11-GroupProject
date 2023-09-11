@@ -63,7 +63,7 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
     <Modal show={show} onHide={handleClose} size="lg">
       <Form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
         <Modal.Header closeButton>
-          <Modal.Title className="ms-auto">Update Order</Modal.Title>
+          <Modal.Title className="ms-auto">Update Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -82,7 +82,6 @@ const SellerUpdateProductForm = ({ data, show, handleClose }) => {
             <Form.Control
               type="file"
               placeholder="Image"
-              required
               name="image"
               min="1"
               onChange={handleSetFile}

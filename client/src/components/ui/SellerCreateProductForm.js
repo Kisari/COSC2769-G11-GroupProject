@@ -46,7 +46,7 @@ const SellerCreateProductForm = ({ show, handleClose }) => {
     }
     payload = { ...payload, attributes: atr };
 
-    console.log(payload);
+    console.log("sedind", payload);
 
     await createProduct(payload).then((res) => {
       if (res) {
@@ -70,7 +70,7 @@ const SellerCreateProductForm = ({ show, handleClose }) => {
     <Modal show={show} onHide={handleClose} size="lg">
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Modal.Header closeButton>
-          <Modal.Title className="ms-auto">Create Order</Modal.Title>
+          <Modal.Title className="ms-auto">Create Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="formBasicEmail">

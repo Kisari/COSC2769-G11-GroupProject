@@ -14,8 +14,8 @@ export const getProductByID = (id) =>
 export const createProduct = (formData) =>
   axios.post(`${backend_url}/api/v1/product`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 
 export const deleteProduct = (id) =>
@@ -24,6 +24,6 @@ export const deleteProduct = (id) =>
 export const updateProduct = (id, formData) =>
   axios.put(`${backend_url}/api/v1/product/${id}`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
   });

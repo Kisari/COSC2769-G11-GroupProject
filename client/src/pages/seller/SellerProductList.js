@@ -14,10 +14,11 @@ const SellerProductList = () => {
     option: 0,
     asc: false,
   });
+
+  console.log("FUCKING THIS", products);
   const { filteredData } = useTableSearch({
     searchVal: search,
     data: products,
-    sortOption: sortOption,
   });
   const [showCreateProductForm, setShowCreateProductForm] = useState(false);
 
@@ -49,6 +50,29 @@ const SellerProductList = () => {
     }
   }
 
+  function getFilteredData() {
+    var sortData = [];
+    filteredData?.forEach((element) => {
+      sortData.push(element);
+    });
+    if (sortOption?.option !== 0) {
+      const value = sortOption?.option;
+      if (value === 1) {
+        sortData.sort((a, b) =>
+          b?.name.toLowerCase() > a?.name.toLowerCase() ? 1 : -1
+        );
+      } else if (value === 2) {
+        sortData.sort((a, b) => b?.price - a?.price);
+      } else {
+        sortData.sort((a, b) => (a?.dateAdded > b?.dateAdded ? 1 : -1));
+      }
+    }
+    if (sortOption.asc === true) {
+      sortData.reverse();
+    }
+    return sortData;
+  }
+
   const displayData = [
     {
       feature: "Total Product",
@@ -61,6 +85,7 @@ const SellerProductList = () => {
       text: "All the products that quantity equals 0 and need to restock",
     },
   ];
+
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
       <div className="col-12 d-flex flex-column flex-md-row justify-content-center justify-content-md-evenly flex-wrap row">
@@ -160,7 +185,7 @@ const SellerProductList = () => {
           </div>
         </div>
         {filteredData &&
-          filteredData?.map((item, index) => {
+          getFilteredData()?.map((item, index) => {
             return (
               <div className="col-12 text-center" key={index}>
                 <ProductRow data={item} />

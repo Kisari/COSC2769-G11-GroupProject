@@ -75,3 +75,9 @@ Truong Hong Van      s3957034     5
 To Gia Hy            s3927539     5
 Vo Thanh Thong       s3878071     5
 Truong Bach Minh     s3891909     5
+
+Presentation:
+https://www.youtube.com/watch?fbclid=IwAR0vo1rOBYmqyil5lg7BwE2xV0U7O_NVnu1LSRmP7cQkPSbmPsWC5LCbyv0&v=ottsv5A7lVA&feature=youtu.be
+
+Github: 
+https://github.com/vothanhthong/COSC2769-G11-GroupProject

@@ -17,8 +17,6 @@ function MenuTabs({ products }) {
   const [productList, setProductList] = useState([]);
   const [filteredProductList, setFilteredProductList] = useState([]); // State for the filtered product list
 
-  // console.log(products);
-
   // Initial productList
   useEffect(() => {
     // Initialize the product list with all products when the component mounts
@@ -38,31 +36,6 @@ function MenuTabs({ products }) {
     const filteredList = getProductByCategory(key);
     setFilteredProductList(filteredList);
   }, [key, nameFilter, minPrice, maxPrice]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const enteredNameFilter = formData.get("name");
-    const enteredMin = formData.get("min");
-    const enteredMax = formData.get("max");
-    const enteredStartDate = formData.get("startDate");
-    const enteredEndDate = formData.get("endDate");
-    // Update the state variables for name filter, min price, max price, start date, and end date
-    setNameFilter(enteredNameFilter);
-    setMinPrice(enteredMin);
-    setMaxPrice(enteredMax);
-    setStartDate(enteredStartDate);
-    setEndDate(enteredEndDate);
-
-    console.log(enteredStartDate);
-    console.log(enteredEndDate);
-    console.log(enteredEndDate > enteredEndDate);
-    // console.log(nameFilter);
-    // console.log(minPrice);
-    // console.log(maxPrice);
-    // console.log(filteredProductList);
-  };
 
   // Get Product by category
   function getUniqueCategory(data) {
@@ -94,37 +67,6 @@ function MenuTabs({ products }) {
 
       // Check if the product matches the category and name filter
       const matchesCategory = hasCategory;
-
-      // // Check if the product's price is within the specified range
-      // const price = parseFloat(product?.price);
-      // const priceInRange =
-      //   (isNaN(minPrice) || price >= parseFloat(minPrice)) &&
-      //   (isNaN(maxPrice) || price <= parseFloat(maxPrice));
-
-      // // Check if the product's date is within the specified range
-      // const productDate = new Date(product?.date);
-      // const startDateFilter = startDate ? new Date(startDate) : null;
-      // const endDateFilter = endDate ? new Date(endDate) : null;
-      // const dateInRange =
-      //   (!startDateFilter || productDate >= startDateFilter) &&
-      //   (!endDateFilter || productDate <= endDateFilter);
-
-      // if (nameFilter !== "" && minPrice !== "" && maxPrice !== "") {
-      //   return (
-      //     matchesCategory &&
-      //     priceInRange &&
-      //     product?.name.toLowerCase().includes(nameFilter.toLowerCase())
-      //   );
-      // } else if (nameFilter !== "") {
-      //   return (
-      //     matchesCategory &&
-      //     product?.name.toLowerCase().includes(nameFilter.toLowerCase())
-      //   );
-      // } else if (minPrice !== "" && maxPrice !== "" && nameFilter === "") {
-      //   return matchesCategory && priceInRange;
-      // } else if (startDate !== "" && endDate !== "") {
-      //   return matchesCategory && dateInRange;
-      // }
       return matchesCategory;
     });
 
@@ -151,7 +93,6 @@ function MenuTabs({ products }) {
     });
 
     setFilteredProductList(result);
-    console.log(result);
   };
 
   // Handle filter by price
@@ -165,9 +106,6 @@ function MenuTabs({ products }) {
     setMinPrice(enteredMin);
     setMaxPrice(enteredMax);
 
-    console.log(minPrice);
-    console.log(maxPrice);
-
     const result = products?.products?.filter((product) => {
       const hasCategory = product?.categories?.some((cat) => cat?._id === key);
       // Check if the product matches the category and name filter
@@ -177,13 +115,10 @@ function MenuTabs({ products }) {
         (isNaN(minPrice) || price >= parseFloat(minPrice)) &&
         (isNaN(maxPrice) || price <= parseFloat(maxPrice));
 
-      console.log(priceInRange);
-
       return matchesCategory && priceInRange;
     });
 
     setFilteredProductList(result);
-    console.log(result);
   };
 
   // Handle filter by date create
@@ -197,9 +132,6 @@ function MenuTabs({ products }) {
     setStartDate(enteredStartDate);
     setEndDate(enteredEndDate);
 
-    console.log(minPrice);
-    console.log(maxPrice);
-
     const result = products?.products?.filter((product) => {
       const hasCategory = product?.categories?.some((cat) => cat?._id === key);
       // Check if the product matches the category and name filter
@@ -212,7 +144,6 @@ function MenuTabs({ products }) {
     });
 
     setFilteredProductList(result);
-    console.log(result);
   };
 
   // Render the form based on the selected filter
@@ -282,41 +213,6 @@ function MenuTabs({ products }) {
                 {/* Header Start */}
                 <div className="">
                   <h3>{singleCat?.name}</h3>
-
-                  {/* Filer by name Form */}
-                  {/* <div>
-                  <input
-                    type="text"
-                    value={nameFilter}
-                    onChange={(e) => setNameFilter(e.target.value)} // Update name filter state
-                  />
-                  <button onClick={() => setKey(singleCat?._id)}>Go</button>
-                </div> */}
-
-                  {/* Filter by price */}
-                  {/* <div>
-                  <input
-                    type="number"
-                    placeholder="Min Price"
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max Price"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                  />
-                  <button>Go</button>
-                </div> */}
-
-                  {/* Filter by Date */}
-                  {/* <div>
-                  <input type="date" />
-                  <input type="date" />
-                  <button>Go</button>
-                </div> */}
-                  {/* Fitler form end */}
                 </div>
                 {/* Header End */}
 

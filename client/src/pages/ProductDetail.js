@@ -83,11 +83,21 @@ const ProductDetail = () => {
         <Row>
           <Col>
             <Container>
-              <img
-                src={productImage}
-                className="Product image"
-                alt="Product Image"
-              />
+              {product?.image?.split("\\")?.[4] && (
+                <img
+                  src={require(`../uploads/${product?.image?.split("\\")[4]}`)}
+                  alt="..."
+                  className="img-fluid"
+                />
+              )}
+
+              {product?.image?.split("/")?.[4] && (
+                <img
+                  src={require(`../uploads/${product?.image?.split("/")[4]}`)}
+                  alt="..."
+                  className="img-fluid"
+                />
+              )}
             </Container>
           </Col>
           <Col>

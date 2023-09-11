@@ -1,5 +1,3 @@
-// OrderManagement.js
-
 import React, { useEffect, useState } from "react";
 import OrderCard from "../components/ui/OrderCard";
 import axios from "axios"; // Import Axios for making API requests
@@ -30,16 +28,14 @@ const OrderManagement = () => {
 
   return (
     <div className="container-lg mt-4">
-      <h1>Order Management</h1>
+      <h1>Orders History</h1>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Order ID</th>
-            <th>Customer ID</th>
             <th>Date Created</th>
             <th>Order Status</th>
             <th>Total Price</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>

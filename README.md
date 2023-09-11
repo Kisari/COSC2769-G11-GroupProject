@@ -61,3 +61,11 @@ For Admin:
 admin@gmail.com
 admin123
 ```
+
+Contribution
+     Name              SId      Score
+
+Truong Hong Van      s3957034     5
+To Gia Hy            s3927539     5
+Vo Thanh Thong       s3878071     5
+Truong Bach Minh     s3891909     5

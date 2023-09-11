@@ -139,7 +139,25 @@ function ShoppingCart() {
                           key={data.product._id}
                         >
                           <Col md={2} lg={2} xl={2}>
-                            <Image src={productImage} fluid rounded />
+                            {data.product?.image?.split("\\")?.[4] && (
+                              <img
+                                src={require(`../uploads/${
+                                  data.product?.image?.split("\\")[4]
+                                }`)}
+                                alt="..."
+                                className="img-fluid"
+                              />
+                            )}
+
+                            {data.product?.image?.split("/")?.[4] && (
+                              <img
+                                src={require(`../uploads/${
+                                  data.product?.image?.split("/")[4]
+                                }`)}
+                                alt="..."
+                                className="img-fluid"
+                              />
+                            )}
                           </Col>
                           <Col md={3} lg={3} xl={3}>
                             <h6 className="text-black mb-0">

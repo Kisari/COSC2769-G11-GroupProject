@@ -18,55 +18,6 @@ const Header = () => {
     await logout();
   };
   return (
-    // <Navbar className="bg-body-tertiary ">
-    //   <Container>
-    //     <Link to="/">
-    //       <Navbar.Brand href="#home">
-    //         <img src={logo} height="40" alt="brand logo" />
-    //       </Navbar.Brand>
-    //     </Link>
-
-    //     <Navbar.Toggle />
-    //     <Navbar.Collapse className="justify-content-end">
-    //       {user ? (
-    //         <>
-    //           <Navbar.Text>{user?.userName}</Navbar.Text>
-    //         </>
-    //       ) : (
-    //         <button
-    //           type="button"
-    //           className="btn btn-outline-secondary"
-    //           onClick={() => navigate("/login")}
-    //         >
-    //           Sign In
-    //         </button>
-    //       )}
-    //       <Link to="/shoppingCart">
-    //         <Button variant="outline-primary">
-    //           <i className="bi bi-cart"></i>
-    //         </Button>
-    //       </Link>
-    //       {user && (
-    //         <Link to="/orderManagement">
-    //           <Button variant="outline-primary">Orders</Button>
-    //         </Link>
-    //       )}
-    //       {user ? (
-    //         <Button variant="outline-primary" onClick={() => handleLogOut()}>
-    //           Logout
-    //         </Button>
-    //       ) : (
-    //         <button
-    //           type="button"
-    //           className="btn btn-primary"
-    //           onClick={() => navigate("/signup")}
-    //         >
-    //           Sign Up
-    //         </button>
-    //       )}
-    //     </Navbar.Collapse>
-    //   </Container>
-    // </Navbar>
     <div className="container-fluid py-5 border-bottom">
       <div className="container-lg">
         <div className="row">

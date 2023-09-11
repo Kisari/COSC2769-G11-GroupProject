@@ -61,3 +61,9 @@ For Admin:
 admin@gmail.com
 admin123
 ```
+
+```bash
+For Customer:
+thongtest@gmail.com
+thong@123
+```

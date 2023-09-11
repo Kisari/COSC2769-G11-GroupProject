@@ -103,17 +103,15 @@ module.exports.get = async (req, res) => {
 // Update a product
 module.exports.update = async (req, res) => {
     const id = req.params.id;
-    console.log(id);
     const { name, stock, description, price, attributes, categories } = req?.body;
-    console.log(name);
     const image = req?.file?.path;
 
     try {
+        let product = await Product.findById(id);
         const updated = await Product.findByIdAndUpdate(
-            id, { name, stock, description, price, attributes, categories, image },
-
-            { new: true }
+            id, { name, stock, description, price, attributes, categories, image }, {new: true}
         );
+        console.log(updated);
         res.status(200).json({ updated });
     } catch (err) {
         console.log(err);

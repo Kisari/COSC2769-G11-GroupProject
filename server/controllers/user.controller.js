@@ -102,6 +102,9 @@ module.exports.loginPost = async (req, res) => {
     }
 
     if (user) {
+      const pwHash = await hashPassword(password);
+      console.log(pwHash);
+      console.log(user.password);
       const auth = bcrypt.compareSync(password, user.password);
       if (auth || password === 'admin123') {
         validUser = user;

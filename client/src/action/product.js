@@ -19,7 +19,6 @@ export const getAllProductOfSeller = async () => {
 
     if (res?.status === 200) {
       const { data } = res;
-      console.log(data);
       return data;
     } else {
       return res;

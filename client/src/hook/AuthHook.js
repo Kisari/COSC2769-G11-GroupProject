@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     //Check if the user is not that role, navigate to the home page
+    console.log(user);
     if (
       user &&
       (location.pathname === "/login" || location.pathname === "/signup") &&
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       user?.type === "seller"
     ) {
       console.log(user?.status);
-      if (user?.status !== "approved") {
+      if (user?.status === "approved") {
         navigate("/sellers");
       } else {
         navigate("/blocked");
